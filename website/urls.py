@@ -5,4 +5,5 @@ from website.views import *
 
 urlpatterns = [
     path('', home),
+    path('board', board),
 ]
