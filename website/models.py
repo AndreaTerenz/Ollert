@@ -6,10 +6,6 @@ from django.db.models import Model
 # "estende" il modello User fornito da django admin
 class UserProfile(Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    name = models.CharField(
-        max_length=128,
-        null=False
-    )
     profile_pic = models.ImageField()
 
 
