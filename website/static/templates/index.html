@@ -31,7 +31,20 @@
                             <div class="dropdown-menu">
                                 <a class="dropdown-item" href="#">Gestione board</a>
                             </div>
+
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/logout">Logout
+                            <span class="visually-hidden">(current)</span>
+                        </a>
                     </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/login">Login
+                            <span class="visually-hidden">(current)</span>
+                        </a>
+                    </li>
+                      {% endif %}
                 </ul>
                 <form class="d-flex">
                     <input class="form-control me-sm-2" type="text" placeholder="Search">

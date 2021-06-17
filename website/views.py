@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import NewUserForm
 from django.contrib import messages  # import messages
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 
 # Create your views here.
 from django.views.decorators.http import require_http_methods
@@ -30,7 +30,7 @@ def landing(request):
     user = request.user
 
     if user.is_authenticated:
-        return render(request, 'registration/profile.html', status=200)
+        return render(request, 'profile.html', status=200)
     else:
         return redirect('register/')
         # return registrationPage(request)
@@ -38,18 +38,15 @@ def landing(request):
 
 
 @require_http_methods(["GET", "HEAD", "POST"])
-def registrationPage(request):
+def register_request(request):
     if request.method == "POST":
         form = NewUserForm(request.POST)
-        print("AAAAA")
-        print("QUI")
-        user = form.save()
-        login(request, user)
-        print("QUI2")
-        messages.success(request, "Registrazione avvenuta con successo")
-        print("QUI3")
-        return redirect("profile")
-        messages.error(request, "Registrazione fallita. Informazioni invalide")
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, "Registrazione avvenuta con successo")
+            return redirect("profile")
+        messages.error(request, "Registrazione fallita. Informazioni non valide")
     form = NewUserForm
     return render(request, 'registration/register.html', context={"register_form": form})
 
@@ -73,8 +70,19 @@ def login_request(request):
     form = AuthenticationForm()
     return render(request, 'registration/login.html', context={"login_form": form})
 
+
 def profile(request):
     return render(request, 'profile.html', status=200)
+
+
+def logout_request(request):
+    logout(request)
+    messages.info(request, "Ti sei disconnesso correttamente")
+    return redirect("homepage")
+
+def homepage(request):
+    return render(request, 'homepage.html', status=200)
+
 
 @require_http_methods(["GET", "HEAD"])
 def board_debug(request):
