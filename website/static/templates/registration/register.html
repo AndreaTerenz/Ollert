@@ -1,10 +1,14 @@
 {% extends 'index.html' %}
+{% load crispy_forms_filters %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block content %}
     <h3>Registrati! </h3>
-    <form>
-        <fieldset>
+    <form method="POST">
+        {% csrf_token %}
+        {{ register_form|crispy }}
+        {% comment %}<fieldset>
             <div class="form-group">
                 <label for="exampleInputEmail1" class="form-label mt-4">Username</label>
                 <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
@@ -30,9 +34,11 @@
             <div class="form-group">
                 <label for="exampleInputPassword1" class="form-label mt-4">Conferma password</label>
                 <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-            </div>
-            <button type="button" class="btn btn-dark">Crea account</button>
-        </fieldset>
+            </div>{% endcomment %}
+       <input type="submit" class="btn btn-dark" value="Crea account">
+        {#        </fieldset>#}
     </form>
+    <button type="button" class="btn btn-link"><a href="login/">Sei già registrato? Accedi</a>
+    </button>
 {% endblock %}
 
