@@ -8,15 +8,6 @@
     <form method="POST">
         {% csrf_token %}
         {{ login_form|crispy }}
-        {% comment %}<div class="form-floating mb-3">
-                <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-                <label for="floatingInput">Indirizzo email</label>
-            </div>
-            <div class="form-floating">
-                <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-                <label for="floatingPassword">Password</label>
-            </div>
-            {% endcomment %}
         <input type="submit" class="btn btn-dark" value="Conferma">
     </form>
     <button type="button" class="btn btn-link"><a href="register/">Non sei registrato? Crea un account</a>

@@ -8,35 +8,7 @@
     <form method="POST">
         {% csrf_token %}
         {{ register_form|crispy }}
-        {% comment %}<fieldset>
-            <div class="form-group">
-                <label for="exampleInputEmail1" class="form-label mt-4">Username</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                       placeholder="Inserisci username">
-                <small id="emailHelp" class="form-text text-muted">Obbligatorio. 150 caratteri o meno. Solo lettere,
-                    cifre e @/. /+/-/_ .</small>
-            </div>
-            <div class="form-group">
-                <label for="exampleInputEmail1" class="form-label mt-4">Email</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                       placeholder="Inserisci email">
-            </div>
-            <div class="form-group">
-                <label for="exampleInputPassword1" class="form-label mt-4">Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                <small id="emailHelp" class="form-text text-muted">
-                    <li>La password non può essere troppo simile alle altre informazioni personali.</li>
-                    <li> La password deve contenere almeno 8 caratteri.</li>
-                    <li> La tua password non può essere una password comunemente usata.</li>
-                    <li> La tua password non può essere completamente numerica.</li>
-                </small>
-            </div>
-            <div class="form-group">
-                <label for="exampleInputPassword1" class="form-label mt-4">Conferma password</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-            </div>{% endcomment %}
-       <input type="submit" class="btn btn-dark" value="Crea account">
-        {#        </fieldset>#}
+        <input type="submit" class="btn btn-dark" value="Crea account">
     </form>
     <button type="button" class="btn btn-link"><a href="login/">Sei già registrato? Accedi</a>
     </button>
