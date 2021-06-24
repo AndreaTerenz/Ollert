@@ -1,6 +1,18 @@
 {% extends 'index.html' %}
 {% load static %}
 
+{% block extra-nav %}
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+       aria-haspopup="true" aria-expanded="false">Impostazioni</a>
+    <div class="dropdown-menu dropdown-menu-end">
+        <a class="dropdown-item" href="#">Sfondo</a>
+        <a class="dropdown-item" href="#">Cambia nome</a>
+        <a class="dropdown-item" href="#">Gestisci membri</a>
+    </div>
+</li>
+{% endblock %}
+
 {% block content %}
     <div>
         <figure class="text-center">
