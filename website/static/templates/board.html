@@ -2,15 +2,15 @@
 {% load static %}
 
 {% block extra-nav %}
-<li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
-       aria-haspopup="true" aria-expanded="false">Impostazioni</a>
-    <div class="dropdown-menu dropdown-menu-end">
-        <a class="dropdown-item" href="#">Sfondo</a>
-        <a class="dropdown-item" href="#">Cambia nome</a>
-        <a class="dropdown-item" href="#">Gestisci membri</a>
-    </div>
-</li>
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+           aria-haspopup="true" aria-expanded="false">Impostazioni</a>
+        <div class="dropdown-menu dropdown-menu-end">
+            <a class="dropdown-item" href="#">Sfondo</a>
+            <a class="dropdown-item" href="#">Cambia nome</a>
+            <a class="dropdown-item" href="#">Gestisci membri</a>
+        </div>
+    </li>
 {% endblock %}
 
 {% block content %}
@@ -32,10 +32,10 @@
             </div>
             <button class="btn btn-light">+ Aggiungi un'altra scheda</button>
         </div>
-        {% comment %}
-         <div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
+        <div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
             <button class="btn btn-light">+ Aggiungi una lista</button>
         </div>
+        {% comment %}
 
         </div>
         <div class="card text-white bg-secondary mb-3" style="max-width: 20rem;">

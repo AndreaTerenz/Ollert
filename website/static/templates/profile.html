@@ -2,12 +2,12 @@
 {% load static %}
 
 {% block content %}
-    <div>
-        {% if user.is_authenticated %}
-            Ciao {{ user.username }}!
-        {% else %}
-            <p>Non sei loggato</p>
-            <a href="{% url 'login' %}">Log In</a>
-        {% endif %}
+    <div class="container">
+        <div class="row justify-content-center" style="font-size: xxx-large">
+            {{ user.username }}
+        </div>
+        <div class="row justify-content-start bg-primary" style="font-size: large; padding: 10px">
+            Le tue board:
+        </div>
     </div>
 {% endblock %}

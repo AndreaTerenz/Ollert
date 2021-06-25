@@ -26,18 +26,6 @@ CHECK_BOARDS = False
 
 
 @require_http_methods(["GET", "HEAD", "POST"])
-def landing(request):
-    user = request.user
-
-    if user.is_authenticated:
-        return render(request, 'profile.html', status=200)
-    else:
-        return redirect('register/')
-        # return registrationPage(request)
-        # return render(request, 'registration/login.html', status=200)
-
-
-@require_http_methods(["GET", "HEAD", "POST"])
 def register_request(request):
     if request.method == "POST":
         form = NewUserForm(request.POST)
@@ -71,15 +59,28 @@ def login_request(request):
     return render(request, 'registration/login.html', context={"login_form": form})
 
 
+def is_user_authenticated(request):
+    return request.user.is_authenticated
+
+
+@require_http_methods(["GET", "HEAD"])
 def profile(request):
+    if not is_user_authenticated(request):
+        messages.warning(request, "Devi effettuare il login")
+        return redirect("homepage")
+
     return render(request, 'profile.html', status=200)
 
 
+@require_http_methods(["GET", "HEAD"])
 def logout_request(request):
-    logout(request)
-    messages.success(request, "Ti sei disconnesso correttamente")
+    if is_user_authenticated(request):
+        logout(request)
+        messages.success(request, "Ti sei disconnesso correttamente")
     return redirect("homepage")
 
+
+@require_http_methods(["GET", "HEAD"])
 def homepage(request):
     return render(request, 'homepage.html', status=200)
 
