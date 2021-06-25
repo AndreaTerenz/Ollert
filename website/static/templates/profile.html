@@ -2,12 +2,19 @@
 {% load static %}
 
 {% block content %}
-    <div class="container">
-        <div class="row justify-content-center" style="font-size: xxx-large">
-            {{ user.username }}
+    <div class="container justify-content-center">
+        <div class="row justify-content-center fs-1" style="margin: 20px;">
+            Ciao, {{ user.username }}!
         </div>
-        <div class="row justify-content-start bg-primary" style="font-size: large; padding: 10px">
-            Le tue board:
-        </div>
+        <ul class="row list-group">
+            <li class="list-group-item bg-primary">
+                <h4 class="list-group-item-heading fw-bold">Le tue board</h4>
+            </li>
+            <li class="list-group-item fs-5">Board 1</li>
+            <li class="list-group-item fs-5">Board 2</li>
+            {% for board in boards %}
+                <li class="list-group-item fs-5">{{ board.name }}</li>
+            {% endfor %}
+        </ul>
     </div>
 {% endblock %}

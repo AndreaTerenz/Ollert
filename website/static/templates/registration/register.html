@@ -10,7 +10,7 @@
         {{ register_form|crispy }}
         <input type="submit" class="btn btn-dark" value="Crea account">
     </form>
-    <button type="button" class="btn btn-link"><a href="login/">Sei già registrato? Accedi</a>
+    <button type="button" class="btn btn-link"><a href="{% url 'login' %}">Sei già registrato? Accedi</a>
     </button>
 {% endblock %}
 

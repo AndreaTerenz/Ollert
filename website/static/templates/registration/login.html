@@ -10,7 +10,7 @@
         {{ login_form|crispy }}
         <input type="submit" class="btn btn-dark" value="Conferma">
     </form>
-    <button type="button" class="btn btn-link"><a href="register/">Non sei registrato? Crea un account</a>
+    <button type="button" class="btn btn-link"><a href="{% url 'register' %}">Non sei registrato? Crea un account</a>
     </button>
 
 {% endblock %}
