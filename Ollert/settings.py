@@ -56,7 +56,6 @@ ROOT_URLCONF = 'Ollert.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [str(BASE_DIR.joinpath('templates'))],
         'DIRS': ['website/static/templates/'],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -71,11 +70,11 @@ TEMPLATES = [
 ]
 
 MESSAGE_TAGS = {
-        messages.DEBUG: 'alert-secondary',
-        messages.INFO: 'alert-info',
-        messages.SUCCESS: 'alert-success',
-        messages.WARNING: 'alert-warning',
-        messages.ERROR: 'alert-danger',
+        messages.DEBUG: 'secondary',
+        messages.INFO: 'info',
+        messages.SUCCESS: 'success',
+        messages.WARNING: 'warning',
+        messages.ERROR: 'danger',
 }
 
 WSGI_APPLICATION = 'Ollert.wsgi.application'

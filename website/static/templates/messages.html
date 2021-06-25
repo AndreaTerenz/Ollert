@@ -1,11 +1,22 @@
 {% if messages %}
     {% for message in messages %}
-        <div class="container-fluid p-0">
-            <div class="alert {{ message.tags }} alert-dismissible" role="alert">
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                {{ message }}
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+            <div id="liveToast" class="toast hide bg-{{ message.tags }}" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <strong class="me-auto">{{ message.tags }}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body text-dark">
+                    <strong>{{ message }}</strong>
+                </div>
             </div>
         </div>
     {% endfor %}
+
+    <script>
+        var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+        toastElList.map(el => new bootstrap.Toast(el)).forEach(t => t.show())
+    </script>
 {% endif %}
+
 

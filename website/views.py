@@ -61,7 +61,7 @@ def login_request(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                messages.info(request, f"Ora sei loggato come {username}.")
+                messages.success(request, f"Ora sei loggato come {username}.")
                 return redirect("profile")
             else:
                 messages.error(request, "Username o password non validi")
@@ -77,7 +77,7 @@ def profile(request):
 
 def logout_request(request):
     logout(request)
-    messages.info(request, "Ti sei disconnesso correttamente")
+    messages.success(request, "Ti sei disconnesso correttamente")
     return redirect("homepage")
 
 def homepage(request):
