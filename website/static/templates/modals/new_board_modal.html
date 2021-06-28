@@ -1,0 +1,31 @@
+{% extends "base_modal.html" %}
+
+
+{% block modal_wrapper %}
+    {% with modalID="newBoardModal" object="board" %}
+        {{ block.super }}
+    {% endwith %}
+{% endblock %}
+
+{% block modal_body %}
+    <form class="row mx-3">
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Nome</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Categoria</label>
+            <select class="form-select" aria-label="Default select example">
+                <option selected>Seleziona...</option>
+                <option value="0">Nessuna</option>
+                {% for cat in categories %}
+                    <option value="{{ cat }}">{{ cat }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3 form-check">
+            <label class="form-check-label" for="exampleCheck1">Preferito</label>
+            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+        </div>
+    </form>
+{% endblock %}

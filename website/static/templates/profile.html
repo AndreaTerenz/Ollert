@@ -6,17 +6,22 @@
         <div class="row justify-content-center fs-1" style="margin: 20px;">
             Ciao, {{ user.username }}!
         </div>
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-                +
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" href="#">Aggiungi board</a></li>
-                <li><a class="dropdown-item" href="#">Aggiungi categoria</a></li>
-            </ul>
+        <div class="row my-2">
+            <div class="col dropdown">
+                <button class="btn bg-success btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                         class="bi bi-plus"
+                         viewBox="0 0 16 16">
+                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"></path>
+                    </svg>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li><a class="dropdown-item" href="#" data-bs-target="#newBoardModal" data-bs-toggle="modal" >Aggiungi board</a></li>
+                    <li><a class="dropdown-item" href="#" data-bs-target="#newCatModal" data-bs-toggle="modal" >Aggiungi categoria</a></li>
+                </ul>
+            </div>
         </div>
-
 
         <ul class="row list-group">
             <li class="list-group-item bg-primary">
@@ -29,4 +34,8 @@
             {% endfor %}
         </ul>
     </div>
+
+    <!-- Modal -->
+    {% include "modals/new_board_modal.html" %}
+    {% include "modals/new_category_modal.html" %}
 {% endblock %}
