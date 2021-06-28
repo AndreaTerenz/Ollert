@@ -35,8 +35,7 @@ def register_request(request):
             messages.success(request, "Registrazione avvenuta con successo")
             return redirect("profile")
         messages.error(request, "Registrazione fallita. Informazioni non valide")
-    form = NewUserForm
-    return render(request, 'registration/register.html', context={"register_form": form})
+    return render(request, 'registration/register.html', context={"register_form": NewUserForm()})
 
 
 @require_http_methods(["GET", "HEAD", "POST"])
