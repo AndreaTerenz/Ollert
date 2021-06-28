@@ -9,7 +9,7 @@ class UserProfile(Model):
     profile_pic = models.ImageField()
 
 
-class Board(Model):
+class Category(Model):
     name = models.CharField(
         max_length=128,
         null=False
@@ -19,8 +19,25 @@ class Board(Model):
         on_delete=models.CASCADE
     )
 
-    # a quanto pare django non conosce il concetto di "più di un campo come primary key"
-    # e quindi devi fare sta cosa. ma dio mio
+    class Meta:
+        unique_together = ("name", "user")
+
+
+class Board(Model):
+    name = models.CharField(
+        max_length=128,
+        null=False
+    )
+    user = models.ForeignKey(
+        UserProfile,
+        on_delete=models.CASCADE
+    )
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.DO_NOTHING
+    )
+    favorite = models.BooleanField(default=False)
+
     class Meta:
         unique_together = ("name", "user")
 
