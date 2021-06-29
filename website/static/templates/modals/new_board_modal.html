@@ -2,9 +2,14 @@
 
 
 {% block modal_wrapper %}
-    {% with modalID="newBoardModal" object="board" %}
+    {% with modalID="newBoardModal" okFunction="ok_newBoard" object="board" %}
         {{ block.super }}
     {% endwith %}
+    <script>
+        function ok_newBoard() {
+            console.log("AAAAA")
+        }
+    </script>
 {% endblock %}
 
 {% block modal_body %}
@@ -29,3 +34,4 @@
         </div>
     </form>
 {% endblock %}
+

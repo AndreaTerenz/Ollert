@@ -2,9 +2,14 @@
 
 
 {% block modal_wrapper %}
-    {% with modalID="newCatModal" object="categoria" %}
+    {% with modalID="newCatModal" object="categoria" okFunction="ok_newCategory" %}
         {{ block.super }}
     {% endwith %}
+    <script>
+        function ok_newCategory() {
+            console.log("ANDRE SCEMO")
+        }
+    </script>
 {% endblock %}
 
 {% block modal_body %}
@@ -15,3 +20,4 @@
         </div>
     </form>
 {% endblock %}
+
