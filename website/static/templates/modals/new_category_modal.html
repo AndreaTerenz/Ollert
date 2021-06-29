@@ -1,15 +1,10 @@
-{% extends "base_modal.html" %}
-
+{% extends "modals/base_modal.html" %}
+{% load static %}
 
 {% block modal_wrapper %}
-    {% with modalID="newCatModal" object="categoria" okFunction="ok_newCategory" %}
+    {% with modalID="newCatModal" object="categoria" okFunction="ok_newCategory()" %}
         {{ block.super }}
     {% endwith %}
-    <script>
-        function ok_newCategory() {
-            console.log("ANDRE SCEMO")
-        }
-    </script>
 {% endblock %}
 
 {% block modal_body %}
@@ -21,3 +16,6 @@
     </form>
 {% endblock %}
 
+{% block modal_script %}
+    <script src="{% static 'js/new_category.js' %}"></script>
+{% endblock %}

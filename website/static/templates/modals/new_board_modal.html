@@ -1,15 +1,11 @@
-{% extends "base_modal.html" %}
+{% extends "modals/base_modal.html" %}
+{% load static %}
 
 
 {% block modal_wrapper %}
-    {% with modalID="newBoardModal" okFunction="ok_newBoard" object="board" %}
+    {% with modalID="newBoardModal" okFunction="ok_newBoard()" object="board" %}
         {{ block.super }}
     {% endwith %}
-    <script>
-        function ok_newBoard() {
-            console.log("AAAAA")
-        }
-    </script>
 {% endblock %}
 
 {% block modal_body %}
@@ -35,3 +31,6 @@
     </form>
 {% endblock %}
 
+{% block modal_script %}
+    <script src="{% static 'js/new_board.js' %}"></script>
+{% endblock %}

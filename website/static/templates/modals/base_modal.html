@@ -13,9 +13,13 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn bg-danger btn-secondary" data-bs-dismiss="modal">Annulla</button>
-                    <button type="button" class="btn bg-success btn-primary" onclick="{{ okFunction }}()">Ok</button>
+                    <button type="button" class="btn bg-success btn-primary" onclick="{{ okFunction }}">Ok</button>
                 </div>
             </div>
         </div>
     </div>
+
+    {% block modal_script %}
+    {% endblock %}
 {% endblock %}
+
