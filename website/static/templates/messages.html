@@ -1,12 +1,19 @@
 {% if messages %}
     {% for message in messages %}
         <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-            <div id="liveToast" class="toast hide bg-{{ message.tags }}" role="alert" aria-live="assertive" aria-atomic="true">
+            <div id="liveToast" class="toast hide bg-{{ message.tags }}" role="alert" aria-live="assertive"
+                 aria-atomic="true">
                 <div class="toast-header">
-                    <strong class="me-auto">{{ message.tags }}</strong>
+                    <strong class="me-auto" style="font-size: 14px">
+                        {% if message.tags == 'danger' %}
+                            ERROR {# bootstrap sei una bestia #}
+                        {% else %}
+                            {{ message.tags | upper }}
+                        {% endif %}
+                    </strong>
                     <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
-                <div class="toast-body text-dark">
+                <div class="toast-body text-dark" style="font-size: 16px">
                     <strong>{{ message }}</strong>
                 </div>
             </div>

@@ -5,11 +5,9 @@
     <div class="container justify-content-center">
         <div class="row justify-content-center fs-1" style="margin: 20px;">
             <div class="col justify-content-center align-items-center d-flex" style="width: 100%">
-                {% if propic != "NaN" %}
-                    <img src="/media/{{ propic }}" alt="profile_pic"
-                         class="mx-3 border border-2 border-light rounded-circle" width="95" height="95"
-                         style="padding: 5px;">
-                {% endif %}
+                <img src="/media/{{ propic }}" alt="profile_pic"
+                     class="mx-3 border border-2 border-light rounded-circle" width="86" height="86"
+                     style="padding: 4px;">
                 Ciao, {{ user.username }}!
             </div>
         </div>

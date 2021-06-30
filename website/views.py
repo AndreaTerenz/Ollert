@@ -3,19 +3,15 @@ import os
 from django.core.files.uploadedfile import UploadedFile
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from icecream import ic
-
-from .forms import NewUserForm
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
-
-# Create your views here.
 from django.views.decorators.http import require_http_methods
 
-# Puramente per debug, prima o poi lo si toglie
 from .models import UserProfile
+from .forms import NewUserForm
 
+# Puramente per debug, prima o poi lo si toglie
 CHECK_BOARDS = False
 
 
@@ -40,8 +36,9 @@ def register_request(request):
             login(request, user)
             messages.success(request, "Registrazione avvenuta con successo")
             return redirect("profile")
-        errors = form.error_messages
-        messages.error(request, f"Registrazione fallita. {errors}")
+
+        handle_form_errors(request, form, "Registrazione fallita:")
+
     return render(request, 'registration/register.html', context={"register_form": NewUserForm()})
 
 
@@ -55,14 +52,19 @@ def login_request(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                messages.success(request, f"Ora sei loggato come {username}.")
+                messages.success(request, f"Hai acceduto come {username}.")
                 return redirect("profile")
-            else:
-                messages.error(request, "Username o password non validi")
-        else:
-            messages.error(request, "Username o password non validi")
-    form = AuthenticationForm()
-    return render(request, 'registration/login.html', context={"login_form": form})
+
+        handle_form_errors(request, form, "Accesso fallito:")
+
+    return render(request, 'registration/login.html', context={"login_form": AuthenticationForm()})
+
+
+def handle_form_errors(request, form, header):
+    key = list(form.errors.keys())[0]
+    error = form.errors[key][0]
+
+    messages.error(request, f"{header}{error}")
 
 
 def is_user_authenticated(request):
@@ -76,10 +78,8 @@ def profile(request):
         return redirect("homepage")
 
     user = request.user.userprofile
-    if (pic_name := user.profile_pic.name) == '':
-        pic_name = 'NaN'
 
-    return render(request, 'profile.html', status=200, context={'propic': pic_name})
+    return render(request, 'profile.html', status=200, context={'propic': user.profile_pic.name})
 
 
 @require_http_methods(["GET", "HEAD"])
