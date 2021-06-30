@@ -6,7 +6,7 @@
 {% block content %}
     <h3 class="row my-3">Registrati! </h3>
     <div class="row my-4">
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {{ register_form|crispy }}
             <input type="submit" class="btn btn-dark my-2" value="Crea account">
@@ -14,4 +14,3 @@
     </div>
     <a class="row" href="{% url 'login' %}">Sei già registrato? Accedi</a>
 {% endblock %}
-

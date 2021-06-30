@@ -1,15 +1,11 @@
-from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-
-
-# Create your forms here.
-from website.models import UserProfile
+from django.forms import ImageField, EmailField
 
 
 class NewUserForm(UserCreationForm):
-    propic = forms.ImageField(required=False)
-    email = forms.EmailField(required=True)
+    propic: ImageField = ImageField(required=False)
+    email = EmailField(required=True)
 
     class Meta:
         model = User
@@ -21,6 +17,5 @@ class NewUserForm(UserCreationForm):
 
         if commit:
             user.save()
-            UserProfile.objects.create(user=user, profile_pic=self.cleaned_data['propic'])
 
         return user

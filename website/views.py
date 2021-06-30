@@ -1,8 +1,10 @@
+import os
+
+from django.core.files.uploadedfile import UploadedFile
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.decorators import login_required
+from icecream import ic
+
 from .forms import NewUserForm
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
@@ -12,29 +14,34 @@ from django.contrib.auth import login, authenticate, logout
 from django.views.decorators.http import require_http_methods
 
 # Puramente per debug, prima o poi lo si toglie
+from .models import UserProfile
+
 CHECK_BOARDS = False
-
-
-# def registerPage(request):
-#     context = {}
-#     return render(request, 'registration/register.html', context)
-#
-#
-# def loginPage(request):
-#     context = {}
-#     return render(request, 'registration/login.html', context)
 
 
 @require_http_methods(["GET", "HEAD", "POST"])
 def register_request(request):
     if request.method == "POST":
-        form = NewUserForm(request.POST)
+        form = NewUserForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save()
+            propic: UploadedFile = request.FILES.get("propic", default=None)
+
+            if propic is not None:
+                tmp = f"{user.id}{propic.name}"
+                ext = os.path.splitext(propic.name)[1]
+
+                propic.name = f"{hash(tmp)}{ext}"
+
+                UserProfile.objects.create(user=user, profile_pic=propic)
+            else:
+                UserProfile.objects.create(user=user)
+
             login(request, user)
             messages.success(request, "Registrazione avvenuta con successo")
             return redirect("profile")
-        messages.error(request, "Registrazione fallita. Informazioni non valide")
+        errors = form.error_messages
+        messages.error(request, f"Registrazione fallita. {errors}")
     return render(request, 'registration/register.html', context={"register_form": NewUserForm()})
 
 
@@ -68,7 +75,11 @@ def profile(request):
         messages.warning(request, "Devi effettuare il login")
         return redirect("homepage")
 
-    return render(request, 'profile.html', status=200)
+    user = request.user.userprofile
+    if (pic_name := user.profile_pic.name) == '':
+        pic_name = 'NaN'
+
+    return render(request, 'profile.html', status=200, context={'propic': pic_name})
 
 
 @require_http_methods(["GET", "HEAD"])
@@ -99,3 +110,9 @@ def board(request, title):
         return render(request, 'board.html', status=200)
     else:
         return HttpResponse("User cannot be anonymous", status=403)
+
+
+@require_http_methods(["POST"])
+def create_board(request):
+    print("UE COJONE CIAO")
+    return HttpResponse("Ye", status=200)

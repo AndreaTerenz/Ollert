@@ -6,7 +6,7 @@ from django.db.models import Model
 # "estende" il modello User fornito da django admin
 class UserProfile(Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    profile_pic = models.ImageField(upload_to='propic')
+    profile_pic = models.ImageField(upload_to='propics')
 
 
 class Category(Model):

@@ -4,7 +4,14 @@
 {% block content %}
     <div class="container justify-content-center">
         <div class="row justify-content-center fs-1" style="margin: 20px;">
-            Ciao, {{ user.username }}!
+            <div class="col justify-content-center align-items-center d-flex" style="width: 100%">
+                {% if propic != "NaN" %}
+                    <img src="/media/{{ propic }}" alt="profile_pic"
+                         class="mx-3 border border-2 border-light rounded-circle" width="95" height="95"
+                         style="padding: 5px;">
+                {% endif %}
+                Ciao, {{ user.username }}!
+            </div>
         </div>
         <div class="row my-2">
             <div class="col dropdown">
@@ -17,8 +24,10 @@
                     </svg>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                    <li><a class="dropdown-item" href="#" data-bs-target="#newBoardModal" data-bs-toggle="modal" >Aggiungi board</a></li>
-                    <li><a class="dropdown-item" href="#" data-bs-target="#newCatModal" data-bs-toggle="modal" >Aggiungi categoria</a></li>
+                    <li><a class="dropdown-item" href="#" data-bs-target="#newBoardModal" data-bs-toggle="modal">Aggiungi
+                        board</a></li>
+                    <li><a class="dropdown-item" href="#" data-bs-target="#newCatModal" data-bs-toggle="modal">Aggiungi
+                        categoria</a></li>
                 </ul>
             </div>
         </div>

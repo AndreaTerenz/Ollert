@@ -19,3 +19,4 @@ tests/report/
 .idea/
 /website/migrations/*
 *.sqlite3
+/website/media/propics/*
