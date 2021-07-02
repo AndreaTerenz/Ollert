@@ -1,19 +1,19 @@
 function ok_newBoard() {
-    console.log("AAAAA")
 
-    // 1) prendere dati dal modale (how?)
+    let name = document.getElementById("boardName").value;
+    let category = document.getElementById("selectCategory").value;
+    let favorite = document.getElementById("favoriteCheck").checked;
+    console.log(name, category, favorite);
 
-    // 2) inviare richiesta POST al server con fetch
-    /*
-    fetch([url], {
-        method: "POST",
-        credentials: 'same-origin',
-        headers: {
-            "X-CSRFToken": Cookies.get('csrftoken')
-        },
-        body: [dati del modale]
-    }).then((r) => console.log([messaggio di conferma]))
-     */
 
-    // 3) aggiungere linea alla tabella
+
+
+
+
+    let ul = document.getElementById("list");
+    let li = document.createElement("li");
+    li.className = "list-group-item fs-5"
+    li.innerText="AAAA";
+    ul.appendChild(li);
+
 }

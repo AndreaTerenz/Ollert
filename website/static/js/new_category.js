@@ -1,3 +1,4 @@
 function ok_newCategory() {
-    console.log("ANDRE SCEMO")
+    let name = document.getElementById("categoryName").value;
+    console.log(name);
 }

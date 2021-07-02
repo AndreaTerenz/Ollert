@@ -30,15 +30,15 @@
             </div>
         </div>
 
-        <ul class="row list-group">
+        <ul class="row list-group" id='list'>
             <li class="list-group-item bg-primary">
                 <h4 class="list-group-item-heading fw-bold">Le tue board</h4>
             </li>
             <li class="list-group-item fs-5">Board 1</li>
             <li class="list-group-item fs-5">Board 2</li>
-            {% for board in boards %}
+            {% comment %}{% for board in boards %}
                 <li class="list-group-item fs-5">{{ board.name }}</li>
-            {% endfor %}
+            {% endfor %}{% endcomment %}
         </ul>
     </div>
 
