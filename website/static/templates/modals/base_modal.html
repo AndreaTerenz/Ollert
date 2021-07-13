@@ -19,6 +19,14 @@
         </div>
     </div>
 
+    <script>
+        function closeModal(id) {
+            let mod_el = document.getElementById(id)
+            let mod = bootstrap.Modal.getInstance(mod_el)
+            mod.hide()
+        }
+    </script>
+
     {% block modal_script %}
     {% endblock %}
 {% endblock %}

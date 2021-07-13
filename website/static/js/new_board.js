@@ -7,13 +7,11 @@ function ok_newBoard() {
 
 
 
-
-
-
     let ul = document.getElementById("list");
     let li = document.createElement("li");
     li.className = "list-group-item fs-5"
-    li.innerText="AAAA";
+    li.innerText=name;
     ul.appendChild(li);
 
+    closeModal("newBoardModal")
 }
