@@ -36,7 +36,7 @@
             </li>
             {% if boards|length > 0 %}
                 {% for board in boards %}
-                    <li class="list-group-item fs-5"><a href="{% url 'board' name=board %}">{{ board }}</a></li>
+                    <li class="list-group-item fs-5"><a href="{% url 'get-board' name=board %}">{{ board }}</a></li>
                 {% endfor %}
             {% else %}
                 <li class="list-group-item align-content-center" style="color:gray;">Nessuna board trovata...</li>

@@ -71,19 +71,17 @@ def handle_form_errors(request, form, header):
 
 def get_authenticated_user(request):
     output = request.user
-    return output if output.is_authenticated else None
+    return output.userprofile if output.is_authenticated else None
 
 
 @require_http_methods(["GET", "HEAD"])
 def profile(request):
     if user := get_authenticated_user(request):
-        user = user.userprofile
-
         data = {'propic': user.profile_pic.name}
 
         try:
             boards = []
-            for b in Board.objects.filter(user=user):
+            for b in Board.objects.filter(user=ic(user)):
                 boards.append(b.name)
             data.update({"boards": boards})
         except Model.DoesNotExist:
@@ -118,20 +116,18 @@ def board_debug(request):
 def board(request, name):
     if user := get_authenticated_user(request):
         try:
-            # Cerca la board per l'utente
-            Board.objects.get(user=user, name=name)
+            board_obj = Board.objects.get(user=user, name=name)
 
-            # TODO:
-            # [leggere qui i dati della board per bene]
+            # FIXME: questa lettura dei dati della board è un po' farlocca (board.name è uguale all'argomento name)
+            # ma vabbè
+            data: dict = {"board_name": board_obj.name}
 
-            data: dict = {"board_name": name}
-
-            # Usa i dati della board per generare l'html
+            # Usa i dati ottenuti per generare l'html
             return render(request, 'board.html', status=200, context=data)
         except:
             # Se non esiste, segnala un errore
             messages.warning(request, f"La board {name} non esiste per questo utente")
-            return render(request, 'profile.html', status=406)
+            return redirect("profile")
     else:
         return HttpResponse("User cannot be anonymous", status=403)
 
@@ -139,7 +135,6 @@ def board(request, name):
 @require_http_methods(["POST"])
 def create_board(request, name, category, f):
     if user := get_authenticated_user(request):
-        user = user.userprofile
         favorite = f == "true"
 
         try:
