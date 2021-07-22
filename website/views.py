@@ -1,14 +1,16 @@
 import os
 
 from django.core.files.uploadedfile import UploadedFile
+from django.db.models import Model
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
 from django.views.decorators.http import require_http_methods
+from icecream import ic
 
-from .models import UserProfile
+from .models import UserProfile, Board, Category
 from .forms import NewUserForm
 
 # Puramente per debug, prima o poi lo si toglie
@@ -67,26 +69,38 @@ def handle_form_errors(request, form, header):
     messages.error(request, f"{header}{error}")
 
 
-def is_user_authenticated(request):
-    return request.user.is_authenticated
+def get_authenticated_user(request):
+    output = request.user
+    return output if output.is_authenticated else None
 
 
 @require_http_methods(["GET", "HEAD"])
 def profile(request):
-    if not is_user_authenticated(request):
-        messages.warning(request, "Devi effettuare il login")
-        return redirect("homepage")
+    if user := get_authenticated_user(request):
+        user = user.userprofile
 
-    user = request.user.userprofile
+        data = {'propic': user.profile_pic.name}
 
-    return render(request, 'profile.html', status=200, context={'propic': user.profile_pic.name})
+        try:
+            boards = []
+            for b in Board.objects.filter(user=user):
+                boards.append(b.name)
+            data.update({"boards": boards})
+        except Model.DoesNotExist:
+            pass
+
+        return render(request, 'profile.html', status=200, context=data)
+
+    messages.warning(request, "Devi effettuare il login")
+    return redirect("homepage")
 
 
 @require_http_methods(["GET", "HEAD"])
 def logout_request(request):
-    if is_user_authenticated(request):
+    if get_authenticated_user(request):
         logout(request)
         messages.success(request, "Ti sei disconnesso correttamente")
+
     return redirect("homepage")
 
 
@@ -101,18 +115,51 @@ def board_debug(request):
 
 
 @require_http_methods(["GET", "HEAD"])
-def board(request, title):
-    if (user := request.user).is_authenticated:
-        # TODO: controllare se la board "title" esiste per l'utente "user"
-        if CHECK_BOARDS:
-            pass
+def board(request, name):
+    if user := get_authenticated_user(request):
+        try:
+            # Cerca la board per l'utente
+            Board.objects.get(user=user, name=name)
 
-        return render(request, 'board.html', status=200)
+            # TODO:
+            # [leggere qui i dati della board per bene]
+
+            data: dict = {"board_name": name}
+
+            # Usa i dati della board per generare l'html
+            return render(request, 'board.html', status=200, context=data)
+        except:
+            # Se non esiste, segnala un errore
+            messages.warning(request, f"La board {name} non esiste per questo utente")
+            return render(request, 'profile.html', status=406)
     else:
         return HttpResponse("User cannot be anonymous", status=403)
 
 
 @require_http_methods(["POST"])
-def create_board(request):
-    print("UE COJONE CIAO")
-    return HttpResponse("Ye", status=200)
+def create_board(request, name, category, f):
+    if user := get_authenticated_user(request):
+        user = user.userprofile
+        favorite = f == "true"
+
+        try:
+            # Cerca la board per l'utente
+            Board.objects.get(user=user, name=name)
+            # Se esiste, segnala un errore
+            messages.warning(request, f"La board {name} esiste già per questo utente")
+            return redirect('profile.html', status=406)
+        except Model.DoesNotExist:
+            # Se non riesce a trovare una board T per questo utente, vuol dire che può essere creata
+            cat = None
+
+            if c != "NaN":
+                # Cerca la categoria C nel profilo dell'utente
+                cat = Category.objects.get(user=user, name=category)
+
+            Board.objects.create(user=user, name=name, category=cat, favorite=favorite)
+
+            messages.success(request, f"Board {name} creata con successo!")
+            return redirect('profile.html', status=200)
+
+    else:
+        return HttpResponse("User cannot be anonymous", status=403)
