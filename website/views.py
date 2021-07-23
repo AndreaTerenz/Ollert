@@ -1,5 +1,6 @@
 import os
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.files.uploadedfile import UploadedFile
 from django.db.models import Model
 from django.http import HttpResponse
@@ -16,6 +17,7 @@ from .forms import NewUserForm
 # Puramente per debug, prima o poi lo si toglie
 CHECK_BOARDS = False
 
+ic.disable()
 
 @require_http_methods(["GET", "HEAD", "POST"])
 def register_request(request):
@@ -84,8 +86,8 @@ def profile(request):
             for b in Board.objects.filter(user=ic(user)):
                 boards.append(b.name)
             data.update({"boards": boards})
-        except Model.DoesNotExist:
-            pass
+        except ObjectDoesNotExist:
+            data.update({"boards": []})
 
         return render(request, 'profile.html', status=200, context=data)
 
@@ -124,7 +126,7 @@ def board(request, name):
 
             # Usa i dati ottenuti per generare l'html
             return render(request, 'board.html', status=200, context=data)
-        except:
+        except ObjectDoesNotExist:
             # Se non esiste, segnala un errore
             messages.warning(request, f"La board {name} non esiste per questo utente")
             return redirect("profile")
@@ -133,7 +135,7 @@ def board(request, name):
 
 
 @require_http_methods(["POST"])
-def create_board(request, name, category, f):
+def create_board(request, name, cat, f):
     if user := get_authenticated_user(request):
         favorite = f == "true"
 
@@ -142,19 +144,20 @@ def create_board(request, name, category, f):
             Board.objects.get(user=user, name=name)
             # Se esiste, segnala un errore
             messages.warning(request, f"La board {name} esiste già per questo utente")
-            return redirect('profile.html', status=406)
-        except Model.DoesNotExist:
+            return redirect("profile")
+        except ObjectDoesNotExist:
             # Se non riesce a trovare una board T per questo utente, vuol dire che può essere creata
-            cat = None
+            category = None
 
-            if c != "NaN":
+            if cat != "NaN":
                 # Cerca la categoria C nel profilo dell'utente
-                cat = Category.objects.get(user=user, name=category)
+                category = Category.objects.get(user=user, name=cat)
 
-            Board.objects.create(user=user, name=name, category=cat, favorite=favorite)
+            Board.objects.create(user=user, name=name, category=category, favorite=favorite)
 
             messages.success(request, f"Board {name} creata con successo!")
-            return redirect('profile.html', status=200)
+            # TODO: dovrebbe ritornare l'html della lista AGGIORNATA delle board, creato da un template apposta
+            return redirect('profile')
 
     else:
         return HttpResponse("User cannot be anonymous", status=403)
