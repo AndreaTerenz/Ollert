@@ -167,3 +167,8 @@ def create_board(request, name, cat, f):
 
     else:
         return HttpResponse("User cannot be anonymous", status=403)
+
+
+# @require_http_methods(["POST"])
+# def create_scheda(request, name, description):
+#     pass
