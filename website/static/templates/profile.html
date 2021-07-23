@@ -1,5 +1,6 @@
 {% extends 'index.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block content %}
     <div class="container justify-content-center">
@@ -45,6 +46,7 @@
     </div>
 
     <!-- Modal -->
+    {%csrf_token%}
     {% include "modals/new_board_modal.html" %}
     {% include "modals/new_category_modal.html" %}
 {% endblock %}

@@ -8,6 +8,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from icecream import ic
 
@@ -133,9 +134,10 @@ def board(request, name):
     else:
         return HttpResponse("User cannot be anonymous", status=403)
 
-
+@csrf_exempt
 @require_http_methods(["POST"])
 def create_board(request, name, cat, f):
+    print('AAAAAAAAAAA')
     if user := get_authenticated_user(request):
         favorite = f == "true"
 
