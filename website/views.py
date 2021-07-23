@@ -2,7 +2,6 @@ import os
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.files.uploadedfile import UploadedFile
-from django.db.models import Model
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -19,6 +18,7 @@ from .forms import NewUserForm
 CHECK_BOARDS = False
 
 ic.disable()
+
 
 @require_http_methods(["GET", "HEAD", "POST"])
 def register_request(request):
@@ -134,10 +134,9 @@ def board(request, name):
     else:
         return HttpResponse("User cannot be anonymous", status=403)
 
-@csrf_exempt
+
 @require_http_methods(["POST"])
 def create_board(request, name, cat, f):
-    print('AAAAAAAAAAA')
     if user := get_authenticated_user(request):
         favorite = f == "true"
 

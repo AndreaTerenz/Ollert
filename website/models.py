@@ -34,7 +34,8 @@ class Board(Model):
     )
     category = models.ForeignKey(
         Category,
-        on_delete=models.DO_NOTHING
+        on_delete=models.DO_NOTHING,
+        null=True
     )
     favorite = models.BooleanField(default=False)
 

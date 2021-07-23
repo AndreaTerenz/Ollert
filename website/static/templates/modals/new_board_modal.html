@@ -17,8 +17,7 @@
         <div class="mb-3">
             <label for="selectCategory" class="form-label">Categoria</label>
             <select class="form-select" id="selectCategory" aria-label="Default select example">
-                <option selected>Seleziona...</option>
-                <option value="0">Nessuna</option>
+                <option selected value="NaN">Nessuna</option>
                 {% for cat in categories %}
                     <option value="{{ cat }}">{{ cat }}</option>
                 {% endfor %}

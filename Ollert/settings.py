@@ -26,8 +26,7 @@ SECRET_KEY = 'django-insecure-j+mmy^)m$=6y^mbo%qhh03n_ea%c_43$wfn8(bh8ygu7))!kq4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
-CORS_ORIGIN_ALLOW_ALL = True
+ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -40,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'website',
-    'corsheaders'
 ]
 
 MIDDLEWARE = [
