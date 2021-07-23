@@ -144,7 +144,7 @@ def board(request, name):
 def create_board(request, name, cat, f):
     if user := get_authenticated_user(request):
         favorite = f == "true"
-
+        ic(cat)
         try:
             # Cerca la board per l'utente
             Board.objects.get(user=user, name=name)
@@ -157,6 +157,7 @@ def create_board(request, name, cat, f):
 
             if cat != "NaN":
                 # Cerca la categoria C nel profilo dell'utente
+                ic(cat, category)
                 category = Category.objects.get(user=user, name=cat)
 
             Board.objects.create(user=user, name=name, category=category, favorite=favorite)

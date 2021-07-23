@@ -5,7 +5,8 @@ function ok_newBoard() {
 
     console.log(name, category, favorite);
 
-    let url = new_board_url.replace("$1", name).replace("$2", category).replace("$3", favorite)
+    let url = new_board_url.format(name, category, favorite)
+    console.log(url)
 
     fetch(url, {
         method: "POST",

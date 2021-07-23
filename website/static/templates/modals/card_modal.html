@@ -3,7 +3,7 @@
 
 
 {% block modal_wrapper %}
-    {% with modalID="cardModal" object=" una scheda" okFunction="ok_newScheda()" %}
+    {% with modalID="cardModal" object="una scheda" okFunction="ok_newCard()" %}
         {{ block.super }}
     {% endwith %}
 {% endblock %}
@@ -12,16 +12,16 @@
     <form class="row mx-3">
         <div class="mb-3">
             <label for="categoryName" class="form-label">Nome</label>
-            <input type="text" class="form-control" id="nomeScheda" aria-describedby="emailHelp">
+            <input type="text" class="form-control" id="cardName" aria-describedby="emailHelp">
         </div>
         <div class="mb-3">
             <label for="exampleFormControlTextarea1" class="form-label">Descrizione</label>
-            <textarea class="form-control" id="descrizioneScheda" rows="3"
+            <textarea class="form-control" id="cardDescription" rows="3"
                       placeholder="Aggiungi una descrizione più dettagliata..."></textarea>
         </div>
     </form>
 {% endblock %}
 
 {% block modal_script %}
-    <script src="{% static 'js/new_scheda.js' %}"></script>
+    <script src="{% static 'js/new_card.js' %}"></script>
 {% endblock %}
