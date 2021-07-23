@@ -80,20 +80,25 @@ def get_authenticated_user(request):
 @require_http_methods(["GET", "HEAD"])
 def profile(request):
     if user := get_authenticated_user(request):
-        data = {'propic': user.profile_pic.name}
+        data = {
+            'propic': user.profile_pic.name,
+            "boards": get_user_boards(user)
+        }
 
-        try:
-            boards = []
-            for b in Board.objects.filter(user=ic(user)):
-                boards.append(b.name)
-            data.update({"boards": boards})
-        except ObjectDoesNotExist:
-            data.update({"boards": []})
-
-        return render(request, 'profile.html', status=200, context=data)
+        return render(request, 'profile/profile.html', status=200, context=data)
 
     messages.warning(request, "Devi effettuare il login")
     return redirect("homepage")
+
+
+def get_user_boards(user):
+    try:
+        boards = []
+        for b in Board.objects.filter(user=user):
+            boards.append(b.name)
+        return boards
+    except ObjectDoesNotExist:
+        return []
 
 
 @require_http_methods(["GET", "HEAD"])
@@ -158,7 +163,7 @@ def create_board(request, name, cat, f):
 
             messages.success(request, f"Board {name} creata con successo!")
             # TODO: dovrebbe ritornare l'html della lista AGGIORNATA delle board, creato da un template apposta
-            return redirect('profile')
+            return render(request, "profile/profile-boards-list.html", context={"boards": get_user_boards(user)})
 
     else:
         return HttpResponse("User cannot be anonymous", status=403)

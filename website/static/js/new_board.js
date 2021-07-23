@@ -15,13 +15,15 @@ function ok_newBoard() {
             "X-Requested-With": "XMLHttpRequest"
         },
     }).then((r) => {
-        console.log(r.status)
-        let ul = document.getElementById("list");
-        let li = document.createElement("li");
-        li.className = "list-group-item fs-5"
-        li.innerText = name;
-        ul.appendChild(li);
-
+        if (r.status === 200) {
+            return r.text()
+        }
+        return null
+    }).then((data) => {
+        if (data) {
+            let ul = document.getElementById("list")
+            ul.innerHTML = data
+        }
         closeModal("newBoardModal")
     })
 }

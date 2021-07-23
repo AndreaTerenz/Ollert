@@ -16,11 +16,7 @@
             <div class="col dropdown">
                 <button class="btn bg-success btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
-                         class="bi bi-plus"
-                         viewBox="0 0 16 16">
-                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"></path>
-                    </svg>
+                    <span class="fa fa-plus fs-5"></span>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                     <li><a class="dropdown-item" href="#" data-bs-target="#newBoardModal" data-bs-toggle="modal">Aggiungi
@@ -32,21 +28,12 @@
         </div>
 
         <ul class="row list-group" id='list'>
-            <li class="list-group-item bg-primary">
-                <h4 class="list-group-item-heading fw-bold">Le tue board</h4>
-            </li>
-            {% if boards|length > 0 %}
-                {% for board in boards %}
-                    <li class="list-group-item fs-5"><a href="{% url 'get-board' name=board %}">{{ board }}</a></li>
-                {% endfor %}
-            {% else %}
-                <li class="list-group-item align-content-center" style="color:gray;">Nessuna board trovata...</li>
-            {% endif %}
+            {% include 'profile/profile-boards-list.html' with boards=boards %}
         </ul>
     </div>
 
     <!-- Modal -->
-    {%csrf_token%}
+    {% csrf_token %}
     <script>
         const new_board_url = '{% url 'make-board' '$1' '$2' '$3' %}'
     </script>

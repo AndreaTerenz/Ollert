@@ -1,0 +1,11 @@
+<li class="list-group-item bg-primary">
+    <h4 class="list-group-item-heading fw-bold">Le tue board</h4>
+</li>
+
+{% if boards|length > 0 %}
+    {% for board in boards %}
+        <li class="list-group-item fs-5"><a href="{% url 'get-board' name=board %}">{{ board }}</a></li>
+    {% endfor %}
+{% else %}
+    <li class="list-group-item align-content-center" style="color:gray;">Nessuna board trovata...</li>
+{% endif %}
