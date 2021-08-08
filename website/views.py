@@ -1,5 +1,6 @@
 import os
 
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.files.uploadedfile import UploadedFile
 from django.http import HttpResponse
@@ -7,7 +8,6 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
-from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from icecream import ic
 
@@ -65,6 +65,85 @@ def login_request(request):
     return render(request, 'registration/login.html', context={"login_form": AuthenticationForm()})
 
 
+@login_required
+@require_http_methods(["GET", "HEAD"])
+def profile(request):
+    user = get_authenticated_user(request)
+    data = {
+        'propic': user.profile_pic.name,
+        "boards": get_user_boards(user)
+    }
+
+    return render(request, 'profile/profile.html', status=200, context=data)
+
+
+@login_required
+@require_http_methods(["GET", "HEAD"])
+def logout_request(request):
+    logout(request)
+    messages.success(request, "Ti sei disconnesso correttamente")
+
+    return redirect("homepage")
+
+
+@require_http_methods(["GET", "HEAD"])
+def homepage(request):
+    return render(request, 'homepage.html', status=200)
+
+
+@login_required
+@require_http_methods(["GET", "HEAD"])
+def board(request, name):
+    user = get_authenticated_user(request)
+
+    try:
+        board_obj = Board.objects.get(user=user, name=name)
+
+        # FIXME: questa lettura dei dati della board è un po' farlocca (board.name è uguale all'argomento name)
+        # ma vabbè
+        data: dict = {"board_name": board_obj.name}
+
+        # Usa i dati ottenuti per generare l'html
+        return render(request, 'board.html', status=200, context=data)
+    except ObjectDoesNotExist:
+        # Se non esiste, segnala un errore
+        messages.warning(request, f"La board {name} non esiste per questo utente")
+        return redirect("profile")
+
+
+@login_required
+@require_http_methods(["POST"])
+def create_board(request, name, cat, f):
+    user = get_authenticated_user(request)
+    favorite = f == "true"
+    ic(cat)
+    try:
+        # Cerca la board per l'utente
+        Board.objects.get(user=user, name=name)
+        # Se esiste, segnala un errore
+        messages.warning(request, f"La board {name} esiste già per questo utente")
+        return redirect("profile")
+    except ObjectDoesNotExist:
+        # Se non riesce a trovare una board T per questo utente, vuol dire che può essere creata
+        category = None
+
+        if cat != "NaN":
+            # Cerca la categoria C nel profilo dell'utente
+            ic(cat, category)
+            category = Category.objects.get(user=user, name=cat)
+
+        Board.objects.create(user=user, name=name, category=category, favorite=favorite)
+
+        messages.success(request, f"Board {name} creata con successo!")
+        # TODO: dovrebbe ritornare l'html della lista AGGIORNATA delle board, creato da un template apposta
+        return render(request, "profile/profile-boards-list.html", context={"boards": get_user_boards(user)})
+
+
+# @require_http_methods(["POST"])
+# def create_scheda(request, name, description):
+#     pass
+
+
 def handle_form_errors(request, form, header):
     key = list(form.errors.keys())[0]
     error = form.errors[key][0]
@@ -77,20 +156,6 @@ def get_authenticated_user(request):
     return output.userprofile if output.is_authenticated else None
 
 
-@require_http_methods(["GET", "HEAD"])
-def profile(request):
-    if user := get_authenticated_user(request):
-        data = {
-            'propic': user.profile_pic.name,
-            "boards": get_user_boards(user)
-        }
-
-        return render(request, 'profile/profile.html', status=200, context=data)
-
-    messages.warning(request, "Devi effettuare il login")
-    return redirect("homepage")
-
-
 def get_user_boards(user):
     try:
         boards = []
@@ -99,77 +164,3 @@ def get_user_boards(user):
         return boards
     except ObjectDoesNotExist:
         return []
-
-
-@require_http_methods(["GET", "HEAD"])
-def logout_request(request):
-    if get_authenticated_user(request):
-        logout(request)
-        messages.success(request, "Ti sei disconnesso correttamente")
-
-    return redirect("homepage")
-
-
-@require_http_methods(["GET", "HEAD"])
-def homepage(request):
-    return render(request, 'homepage.html', status=200)
-
-
-@require_http_methods(["GET", "HEAD"])
-def board_debug(request):
-    return render(request, 'board.html', status=200)
-
-
-@require_http_methods(["GET", "HEAD"])
-def board(request, name):
-    if user := get_authenticated_user(request):
-        try:
-            board_obj = Board.objects.get(user=user, name=name)
-
-            # FIXME: questa lettura dei dati della board è un po' farlocca (board.name è uguale all'argomento name)
-            # ma vabbè
-            data: dict = {"board_name": board_obj.name}
-
-            # Usa i dati ottenuti per generare l'html
-            return render(request, 'board.html', status=200, context=data)
-        except ObjectDoesNotExist:
-            # Se non esiste, segnala un errore
-            messages.warning(request, f"La board {name} non esiste per questo utente")
-            return redirect("profile")
-    else:
-        return HttpResponse("User cannot be anonymous", status=403)
-
-
-@require_http_methods(["POST"])
-def create_board(request, name, cat, f):
-    if user := get_authenticated_user(request):
-        favorite = f == "true"
-        ic(cat)
-        try:
-            # Cerca la board per l'utente
-            Board.objects.get(user=user, name=name)
-            # Se esiste, segnala un errore
-            messages.warning(request, f"La board {name} esiste già per questo utente")
-            return redirect("profile")
-        except ObjectDoesNotExist:
-            # Se non riesce a trovare una board T per questo utente, vuol dire che può essere creata
-            category = None
-
-            if cat != "NaN":
-                # Cerca la categoria C nel profilo dell'utente
-                ic(cat, category)
-                category = Category.objects.get(user=user, name=cat)
-
-            Board.objects.create(user=user, name=name, category=category, favorite=favorite)
-
-            messages.success(request, f"Board {name} creata con successo!")
-            # TODO: dovrebbe ritornare l'html della lista AGGIORNATA delle board, creato da un template apposta
-            return render(request, "profile/profile-boards-list.html", context={"boards": get_user_boards(user)})
-
-    else:
-        return HttpResponse("User cannot be anonymous", status=403)
-
-
-# @require_http_methods(["POST"])
-# def create_scheda(request, name, description):
-#     pass
