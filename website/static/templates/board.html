@@ -14,30 +14,32 @@
 {% endblock %}
 
 {% block content %}
-    <div>
-    <figure class="text-center">
-        <h2>{{ board_name }}</h2>
-    </figure>
-    <!-- Bottone per aggiungere le card -->
+    <div class="row">
+        <figure class="text-center">
+            <h2>{{ board_name }}</h2>
+        </figure>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div>
+                <div id="cardsList">
 
-    <!-- Inserimento delle card -->
-    <div>
-        <div id="cardsList">
-            
+                </div>
+                <!-- Bottone per aggiungere le card -->
+                <div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
+                    <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#cardModal">+
+                        Aggiungi un'altra scheda
+                    </button>
+                </div>
+            </div>
         </div>
-        <div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
-            <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#cardModal">+
-                Aggiungi un'altra scheda
-            </button>
+        <div class="col">
+            <div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
+                <button class="btn btn-light ">+ Aggiungi una lista</button>
+            </div>
         </div>
+    
     </div>
-    <div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
-        <button class="btn btn-light ">+ Aggiungi una lista</button>
-    </div>
-    <!-- Modal -->
-    {% comment %}<script>
-            const new_scheda_url = '{% url 'make-scheda' '$1' '$2' %}'
-        </script>{% endcomment %}
     {% include "modals/card_modal.html" %}
     <template id="cardTemplate">
         <div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
