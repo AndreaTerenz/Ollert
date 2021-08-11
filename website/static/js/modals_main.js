@@ -1,3 +1,9 @@
+function closeModal(id) {
+    let mod_el = document.getElementById(id)
+    let mod = bootstrap.Modal.getInstance(mod_el)
+    mod.hide()
+}
+
 function make_modal_request(input_values, url_format, destination) {
     let url = url_format.format(input_values)
     console.log(url)

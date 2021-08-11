@@ -21,15 +21,7 @@
         </div>
     </div>
 
-    <script>
-        function closeModal(id) {
-            let mod_el = document.getElementById(id)
-            let mod = bootstrap.Modal.getInstance(mod_el)
-            mod.hide()
-        }
-    </script>
-
-    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/modals_main.js' %}"></script>
 
     {% block modal_script %}
     {% endblock %}
