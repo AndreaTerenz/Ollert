@@ -1,0 +1,23 @@
+{% extends "modals/base_modal.html" %}
+{% load static %}
+
+
+{% block modal_wrapper %}
+    {% with modalID="deleteModal" okFunction="ok_newBoard()" object="Eliminazione di una board" %}
+        {{ block.super }}
+    {% endwith %}
+{% endblock %}
+
+
+{% block modal_body %}
+
+    <div class="mb-3">
+        <label for="boardName" class="form-label">Sei sicuro di voler eliminare questa board?</label>
+    </div>
+
+{% endblock %}
+
+{% block modal_script %}
+    <script src="{% static 'js/new_board.js' %}"></script>
+{% endblock %}
+

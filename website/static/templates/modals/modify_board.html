@@ -3,10 +3,11 @@
 
 
 {% block modal_wrapper %}
-    {% with modalID="newBoardModal" okFunction="ok_newBoard()" object="Aggiungi una board" %}
+    {% with modalID="modifyModal" okFunction="ok_newBoard()" object="Modifica una board" %}
         {{ block.super }}
     {% endwith %}
 {% endblock %}
+
 
 {% block modal_body %}
     <form class="row mx-3">
@@ -33,3 +34,4 @@
 {% block modal_script %}
     <script src="{% static 'js/new_board.js' %}"></script>
 {% endblock %}
+
