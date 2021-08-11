@@ -3,7 +3,7 @@
 
 
 {% block modal_wrapper %}
-    {% with modalID="deleteModal" okFunction="ok_newBoard()" object="Eliminazione di una board" %}
+    {% with modalID="deleteModal" okFunction="ok_delete()" object="Eliminazione di una board" %}
         {{ block.super }}
     {% endwith %}
 {% endblock %}
@@ -18,6 +18,6 @@
 {% endblock %}
 
 {% block modal_script %}
-    <script src="{% static 'js/new_board.js' %}"></script>
+    <script src="{% static 'js/delete_board.js' %}"></script>
 {% endblock %}
 
