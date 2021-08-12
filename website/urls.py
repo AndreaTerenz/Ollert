@@ -12,6 +12,7 @@ urlpatterns = [
     path('profile/', views.profile, name="profile"),
     path('logout/', views.logout_request, name="logout"),
     
-    path('create_board/<str:name>/<str:cat>/<str:f>', views.create_board, name='make-board'),
-    #path('create_scheda/<str:name>/<str:description>', views.create_scheda, name='make_scheda')
+    path('create_board/', views.create_board, name='make-board'),
+    path('delete_board/', views.delete_board, name='delete-board'),
+    path('create_card/<str:board>', views.create_card, name='make_card')
 ]

@@ -35,7 +35,7 @@
     <!-- Modal -->
     {% csrf_token %}
     <script>
-        const new_board_url = '{% url 'make-board' '$0' '$1' '$2' %}'
+        const new_board_url = '{% url 'make-board' %}'
     </script>
     {% include "modals/new_board_modal.html" %}
     {% include "modals/new_category_modal.html" %}

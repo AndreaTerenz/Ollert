@@ -1,9 +1,9 @@
+import json
 import os
 
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.files.uploadedfile import UploadedFile
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
@@ -113,35 +113,49 @@ def board(request, name):
 
 @login_required
 @require_http_methods(["POST"])
-def create_board(request, name, cat, f):
+def create_board(request):
     user = get_authenticated_user(request)
-    favorite = f == "true"
-    ic(cat)
+    data = json.loads(request.body)
+
+    ic(data)
     try:
         # Cerca la board per l'utente
-        Board.objects.get(user=user, name=name)
+        Board.objects.get(user=user, name=data["name"])
         # Se esiste, segnala un errore
-        messages.warning(request, f"La board {name} esiste già per questo utente")
+        messages.warning(request, f"La board {data['name']} esiste già per questo utente")
         return redirect("profile")
     except ObjectDoesNotExist:
         # Se non riesce a trovare una board T per questo utente, vuol dire che può essere creata
         category = None
 
-        if cat != "NaN":
+        if data["category"] != "NaN":
             # Cerca la categoria C nel profilo dell'utente
-            ic(cat, category)
-            category = Category.objects.get(user=user, name=cat)
+            ic(data["category"], category)
+            category = Category.objects.get(user=user, name=data["category"])
 
-        Board.objects.create(user=user, name=name, category=category, favorite=favorite)
+        Board.objects.create(user=user, name=data["name"], category=category, favorite=data["favorite"])
 
-        messages.success(request, f"Board {name} creata con successo!")
-        # TODO: dovrebbe ritornare l'html della lista AGGIORNATA delle board, creato da un template apposta
+        messages.success(request, f"Board {data['name']} creata con successo!")
         return render(request, "profile/profile-boards-list.html", context={"boards": get_user_boards(user)})
 
 
-# @require_http_methods(["POST"])
-# def create_scheda(request, name, description):
-#     pass
+@login_required
+@require_http_methods(["POST"])
+def delete_board(request):
+    user = get_authenticated_user(request)
+    data = json.loads(request.body)
+
+    ic(data)
+    try:
+        # Cerca la board per l'utente
+        board_obj = Board.objects.get(user=user, name=data["name"])
+        # Se esiste, la si cancella
+        board_obj.delete()
+        return render(request, "profile/profile-boards-list.html", context={"boards": get_user_boards(user)})
+    except ObjectDoesNotExist:
+        # Se non riesce a trovare la board, si segnala un errore
+        messages.error(request, f"La board {data['name']} non esiste")
+        return redirect("profile")
 
 
 def handle_form_errors(request, form, header):

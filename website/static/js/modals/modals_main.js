@@ -11,10 +11,7 @@ function addOnShowListener(modalID, listener) {
     document.getElementById(modalID).addEventListener("show.bs.modal", listener)
 }
 
-function make_modal_request(input_values, url_format, destination) {
-    let url = url_format.format(input_values)
-    console.log(url)
-
+function make_modal_request(input_data, url, destination, modalID) {
     fetch(url, {
         method: "POST",
         credentials: 'same-origin',
@@ -22,6 +19,7 @@ function make_modal_request(input_values, url_format, destination) {
             "X-CSRFToken": Cookies.get('csrftoken'),
             "X-Requested-With": "XMLHttpRequest"
         },
+        body: JSON.stringify(input_data)
     }).then((r) => {
         if (r.status === 200) {
             return r.text()
@@ -31,6 +29,8 @@ function make_modal_request(input_values, url_format, destination) {
         if (data) {
             let dest_el = document.getElementById(destination)
             dest_el.innerHTML = data
+
+            closeModal(modalID)
         }
     })
 }
