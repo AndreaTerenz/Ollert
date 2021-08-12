@@ -4,6 +4,13 @@ function closeModal(id) {
     mod.hide()
 }
 
+//questa funzione permette, dato un certo modale, di aggiungere un listener da eseguire quando esso viene mostrato
+//(evento "show.bs.modal")
+function addOnShowListener(modalID, listener) {
+    //listener è una funzione
+    document.getElementById(modalID).addEventListener("show.bs.modal", listener)
+}
+
 function make_modal_request(input_values, url_format, destination) {
     let url = url_format.format(input_values)
     console.log(url)

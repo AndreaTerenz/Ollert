@@ -1,8 +1,6 @@
 var board = ""
 
-//si definisce una funzione da eseguire quando viene mostrato il modale con id #deleteModal (evento 'show.bs.modal')
-const modal = document.querySelector("#deleteModal")
-modal.addEventListener('show.bs.modal',  (event) => {
+addOnShowListener("#deleteModal", event => {
     // con questo barbatrucco si ottiene il pulsante che ha triggerato l'evento
     let button = event.relatedTarget
     // il pulsante contiene un attributo custom ('data-bs-board') che ha come valore il nome della board a cui è legato

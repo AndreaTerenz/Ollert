@@ -3,7 +3,7 @@
 
 
 {% block modal_wrapper %}
-    {% with modalID="modifyModal" okFunction="ok_newBoard()" object="Modifica una board" %}
+    {% with modalID="editBoardModal" okFunction="ok_editBoard()" object="Modifica una board" %}
         {{ block.super }}
     {% endwith %}
 {% endblock %}
@@ -32,6 +32,6 @@
 {% endblock %}
 
 {% block modal_script %}
-    <script src="{% static 'js/new_board.js' %}"></script>
+    <script src="{% static 'js/modals/modify_board.js' %}"></script>
 {% endblock %}
 
