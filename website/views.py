@@ -158,6 +158,13 @@ def delete_board(request):
         return redirect("profile")
 
 
+@login_required
+@require_http_methods(["POST"])
+def create_card(request, board):
+    body = json.loads(request.body())
+    user = get_authenticated_user(request)
+
+
 def handle_form_errors(request, form, header):
     key = list(form.errors.keys())[0]
     error = form.errors[key][0]
