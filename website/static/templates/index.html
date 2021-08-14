@@ -49,10 +49,18 @@
                 </li>
             </ul>
 
+
             <ul class="navbar-nav ms-auto">
                 {% block extra-nav %}
                 {% endblock %}
             </ul>
+            {% if user.is_authenticated %}
+                <form class="d-flex">
+                    <a class="dropdown-item" href="#" data-bs-target="#NotificationsModal" data-bs-toggle="modal"><i
+                            class="fa fa-bell-o" aria-hidden="true"></i></a>
+                    <a class="dropdown-item" href="#"><i class="fa fa-cog" aria-hidden="true"></i></a>
+                </form>
+            {% endif %}
         </div>
     </div>
 </nav>
@@ -60,6 +68,7 @@
 
 <body>
 {% include 'messages.html' %}
+{% include 'modals/notifications_modal.html' %}
 <div class="container">
     {% block content %}
     {% endblock %}
