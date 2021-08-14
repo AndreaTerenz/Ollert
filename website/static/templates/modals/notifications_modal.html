@@ -3,7 +3,7 @@
 
 
 {% block modal_wrapper %}
-    {% with modalID="NotificationsModal" okFunction="ok_newBoard()" object="Notifiche" %}
+    {% with modalID="notificationsModal" okFunction="ok_notifications()" object="Notifiche" %}
         {{ block.super }}
     {% endwith %}
 {% endblock %}
@@ -15,5 +15,5 @@
 {% endblock %}
 
 {% block modal_script %}
-    <script src="{% static 'js/modals/new_board.js' %}"></script>
+    <script src="{% static 'js/modals/notifications.js' %}"></script>
 {% endblock %}
