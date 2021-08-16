@@ -1,14 +1,21 @@
+var target_list = ""
+
+addOnShowListener("cardModal", e => {
+    let button = e.relatedTarget
+    target_list = button.getAttribute("data-bs-list")
+})
+
 function ok_newCard() {
     let name = document.getElementById("cardName").value;
     let description = document.getElementById("cardDescription").value;
-    let lista = document.getElementById('cardsList');
+    let list = document.getElementById(target_list);
     let template = document.getElementById('cardTemplate');
 
     console.log(name, description);
     let clone = template.content.cloneNode(true);
     clone.querySelector(".card-header").textContent = name
     clone.querySelector(".card-body").textContent = truncate(description, 64)
-    lista.appendChild(clone);
+    list.appendChild(clone);
 
     closeModal("cardModal")
 }

@@ -1,56 +1,50 @@
 {% extends 'index.html' %}
 {% load static %}
 
-{% block extra-nav %}
-    <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
-           aria-haspopup="true" aria-expanded="false">Impostazioni</a>
-        <div class="dropdown-menu dropdown-menu-end">
-            <a class="dropdown-item" href="#">Sfondo</a>
-            <a class="dropdown-item" href="#">Cambia nome</a>
-            <a class="dropdown-item" href="#">Gestisci membri</a>
-        </div>
+{% block extra-style %}
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/board-style.css' %}">
+{% endblock %}
+
+{% block settings-nav %}
+    <li class="dropdown-item">
+        <a href="#">Sfondo</a></li>
+    <li class="dropdown-item">
+        <a href="#">Cambia nome</a></li>
+    <li class="dropdown-item">
+        <a href="#">Gestisci membri</a>
     </li>
 {% endblock %}
 
 {% block content %}
-    <div class="row">
-        <figure class="text-center">
-            <h2>{{ board_name }}</h2>
-        </figure>
+    <div class="row my-3">
+        <h2 class="fw-bold text-center">{{ board_name }}</h2>
     </div>
     <div class="row mb-5">
         <div class="col-auto">
-            <div id="cardsList" class="overflow-auto" style="width:350px; max-height: 620px;">
+            <div id="cardsList" class="cards-list overflow-auto">
 
             </div>
             <!-- Bottone per aggiungere le card -->
             <!-- quel margin-top di 3 porcamiseria dovrebbe essere tolto quando non c'è nulla della lista ma vabbè-->
-            <div class="card text-white me-auto">
+            <div class="card mt-3 text-white me-auto">
                 <button type="button" class="btn btn-light" data-bs-toggle="modal"
-                        data-bs-target="#cardModal">
+                        data-bs-target="#cardModal" data-bs-list="cardsList">
                     <span class="fa fa-plus pe-2"></span>Aggiungi una scheda
                 </button>
             </div>
         </div>
-        <div class="col">
-            <div class="card text-white me-auto mb-3" style="max-width: 20rem;">
-                <button class="btn btn-light ">
-                    <span class="fa fa-plus pe-2"></span>Aggiungi una lista
-                </button>
-            </div>
-        </div>
 
+        <div class="col-auto">
+            <button class="btn mt-3 btn-light cards-list">
+                <span class="fa fa-plus pe-2"></span>Aggiungi una lista
+            </button>
+        </div>
     </div>
     {% include "modals/card_modal.html" %}
     <template id="cardTemplate">
         <div class="card mx-auto text-white bg-primary mb-3" style="width: 300px">
-            <div class="card-header">Scheda #1</div>
-            <div class="card-body">
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-                    the
-                    card's content.</p>
-            </div>
+            <div class="card-header"></div>
+            <div class="card-body"></div>
         </div>
     </template>
 {% endblock %}

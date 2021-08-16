@@ -1,3 +1,7 @@
 .form-control {
     color:white;
 }
+
+.form-control:focus {
+    color:white;
+}
