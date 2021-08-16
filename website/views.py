@@ -6,8 +6,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.files.uploadedfile import UploadedFile
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
+from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
 from django.views.decorators.http import require_http_methods
 from icecream import ic
 
@@ -75,6 +75,25 @@ def profile(request):
     }
 
     return render(request, 'profile/profile.html', status=200, context=data)
+
+
+@login_required
+@require_http_methods(["GET", "HEAD", "POST"])
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'La tua password è stata correttamente aggiornata!')
+            return redirect('change_password')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'registration/change_password.html', {
+        'form': form
+    })
 
 
 @login_required

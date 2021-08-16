@@ -49,17 +49,28 @@
                 </li>
             </ul>
 
-
             <ul class="navbar-nav ms-auto">
                 {% block extra-nav %}
                 {% endblock %}
             </ul>
+
             {% if user.is_authenticated %}
-                <form class="d-flex">
-                    <a class="dropdown-item" href="#" data-bs-target="#notificationsModal" data-bs-toggle="modal"><i
-                            class="fa fa-bell-o" aria-hidden="true"></i></a>
-                    <a class="dropdown-item" href="#"><i class="fa fa-cog" aria-hidden="true"></i></a>
-                </form>
+                <a class="btn btn-secondary dropdown-toggle" type="button" data-bs-target="#notificationsModal"
+                   data-bs-toggle="modal"><i
+                        class="fa fa-bell-o" aria-hidden="true"></i></a>
+
+                <div class="dropdown">
+                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="settings-dropdown"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa fa-cog" aria-hidden="true"></i>
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="settings-dropdown">
+                        {% block settings-nav %}
+                            <li class="dropdown-item"><a href="{% url 'change_password' %}">Cambia password</a></li>
+                        {% endblock %}
+                    </ul>
+                </div>
             {% endif %}
         </div>
     </div>

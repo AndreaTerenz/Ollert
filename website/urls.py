@@ -14,5 +14,6 @@ urlpatterns = [
     
     path('create_board/', views.create_board, name='make-board'),
     path('delete_board/', views.delete_board, name='delete-board'),
-    path('create_card/<str:board>', views.create_card, name='make_card')
+    path('create_card/<str:board>', views.create_card, name='make_card'),
+    path('edit/', views.change_password, name='change_password')
 ]
