@@ -20,3 +20,7 @@
 ::-webkit-scrollbar-thumb:hover {
     background: #366cba;
 }
+
+.nav-item {
+    margin-left: 10px;
+}

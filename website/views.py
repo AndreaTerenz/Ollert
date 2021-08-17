@@ -14,9 +14,6 @@ from icecream import ic
 from .models import UserProfile, Board, Category
 from .forms import NewUserForm
 
-# Puramente per debug, prima o poi lo si toglie
-CHECK_BOARDS = False
-
 ic.disable()
 
 
@@ -107,6 +104,8 @@ def logout_request(request):
 
 @require_http_methods(["GET", "HEAD"])
 def homepage(request):
+    if get_authenticated_user(request):
+        return redirect('profile')
     return render(request, 'homepage.html', status=200)
 
 
