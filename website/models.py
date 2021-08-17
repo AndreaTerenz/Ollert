@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Model
+from colorful.fields import RGBColorField
 
 
 # "estende" il modello User fornito da django admin
@@ -36,6 +37,9 @@ class Board(Model):
         Category,
         on_delete=models.DO_NOTHING,
         null=True
+    )
+    background = RGBColorField(
+        default='#222'
     )
     favorite = models.BooleanField(default=False)
 
