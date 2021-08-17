@@ -114,19 +114,17 @@ def homepage(request):
 def board(request, name):
     user = get_authenticated_user(request)
 
-    try:
-        board_obj = Board.objects.get(user=user, name=name)
-
+    if board_obj := get_user_board(user, name):
         # FIXME: questa lettura dei dati della board è un po' farlocca (board.name è uguale all'argomento name)
         # ma vabbè
         data: dict = {"board_name": board_obj.name}
 
         # Usa i dati ottenuti per generare l'html
         return render(request, 'board.html', status=200, context=data)
-    except ObjectDoesNotExist:
-        # Se non esiste, segnala un errore
-        messages.warning(request, f"La board {name} non esiste per questo utente")
-        return redirect("profile")
+
+    # Se non esiste, segnala un errore
+    messages.warning(request, f"La board {name} non esiste per questo utente")
+    return redirect("profile")
 
 
 @login_required
@@ -136,13 +134,8 @@ def create_board(request):
     data = json.loads(request.body)
 
     ic(data)
-    try:
-        # Cerca la board per l'utente
-        Board.objects.get(user=user, name=data["name"])
-        # Se esiste, segnala un errore
-        messages.warning(request, f"La board {data['name']} esiste già per questo utente")
-        return redirect("profile")
-    except ObjectDoesNotExist:
+
+    if not (get_user_board(user, data["name"])):
         # Se non riesce a trovare una board T per questo utente, vuol dire che può essere creata
         category = None
 
@@ -156,6 +149,10 @@ def create_board(request):
         messages.success(request, f"Board {data['name']} creata con successo!")
         return render(request, "profile/profile-boards-list.html", context={"boards": get_user_boards(user)})
 
+    # Se esiste, segnala un errore
+    messages.warning(request, f"La board {data['name']} esiste già per questo utente")
+    return redirect("profile")
+
 
 @login_required
 @require_http_methods(["POST"])
@@ -164,16 +161,17 @@ def delete_board(request):
     data = json.loads(request.body)
 
     ic(data)
-    try:
-        # Cerca la board per l'utente
-        board_obj = Board.objects.get(user=user, name=data["name"])
+
+    # Cerca la board per l'utente
+    if board_obj := get_user_board(user, data["name"]):
+        ic(board_obj)
         # Se esiste, la si cancella
         board_obj.delete()
         return render(request, "profile/profile-boards-list.html", context={"boards": get_user_boards(user)})
-    except ObjectDoesNotExist:
-        # Se non riesce a trovare la board, si segnala un errore
-        messages.error(request, f"La board {data['name']} non esiste")
-        return redirect("profile")
+
+    # Se non riesce a trovare la board, si segnala un errore
+    messages.error(request, f"La board {data['name']} non esiste")
+    return redirect("profile")
 
 
 @login_required
@@ -193,6 +191,13 @@ def handle_form_errors(request, form, header):
 def get_authenticated_user(request):
     output = request.user
     return output.userprofile if output.is_authenticated else None
+
+
+def get_user_board(user, name):
+    try:
+        return Board.objects.get(user=user, name=name)
+    except ObjectDoesNotExist:
+        return None
 
 
 def get_user_boards(user):

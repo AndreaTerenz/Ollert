@@ -31,5 +31,8 @@
 {% endblock %}
 
 {% block modal_script %}
+    <script>
+        const new_board_url = '{% url 'make-board' %}'
+    </script>
     <script src="{% static 'js/modals/new_board.js' %}"></script>
 {% endblock %}
