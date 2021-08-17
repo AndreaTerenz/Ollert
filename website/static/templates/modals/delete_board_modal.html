@@ -16,6 +16,9 @@
 {% endblock %}
 
 {% block modal_script %}
+    <script>
+        const delete_board_url = "{% url 'delete-board' %}"
+    </script>
     <script src="{% static 'js/modals/delete_board.js' %}"></script>
 {% endblock %}
 

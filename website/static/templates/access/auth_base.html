@@ -10,7 +10,7 @@
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form|crispy }}
-                <input type="submit" class="btn btn-dark" value="Conferma">
+                <input type="submit" class="btn btn-dark mt-3" value="Conferma">
             </form>
         </div>
         {% block extra-auth %}
