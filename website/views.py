@@ -41,7 +41,7 @@ def register_request(request):
 
         handle_form_errors(request, form, "Registrazione fallita:")
 
-    return render(request, 'registration/register.html', context={"register_form": NewUserForm()})
+    return render(request, 'access/register.html', context={"register_form": NewUserForm()})
 
 
 @require_http_methods(["GET", "HEAD", "POST"])
@@ -59,7 +59,7 @@ def login_request(request):
 
         handle_form_errors(request, form, "Accesso fallito:")
 
-    return render(request, 'registration/login.html', context={"login_form": AuthenticationForm()})
+    return render(request, 'access/login.html', context={"login_form": AuthenticationForm()})
 
 
 @login_required
@@ -88,7 +88,7 @@ def change_password(request):
         handle_form_errors(request, form, "Modifica fallita:")
     else:
         form = PasswordChangeForm(request.user)
-    return render(request, 'registration/change_password.html', {
+    return render(request, 'access/change_password.html', {
         'form': form
     })
 

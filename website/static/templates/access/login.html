@@ -1,0 +1,11 @@
+{% extends 'access/auth_base.html' %}
+
+{% block content %}
+    {% with title="Accedi" form=login_form %}
+        {{ block.super }}
+    {% endwith %}
+{% endblock %}
+
+{% block extra-auth %}
+    <a class="row" href="{% url 'register' %}">Non sei registrato? Crea un account</a>
+{% endblock %}

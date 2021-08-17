@@ -1,7 +1,6 @@
 /* width */
 ::-webkit-scrollbar {
     width: 5px;
-    border-radius: 10px;
 }
 
 /* Track */
