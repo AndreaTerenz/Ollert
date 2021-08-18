@@ -4,6 +4,7 @@ import os
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.files.uploadedfile import UploadedFile
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
@@ -172,6 +173,44 @@ def delete_board(request):
     # Se non riesce a trovare la board, si segnala un errore
     messages.error(request, f"La board {data['name']} non esiste")
     return redirect("profile")
+
+
+@login_required
+@require_http_methods(["POST"])
+def edit_board(request):
+    user = get_authenticated_user(request)
+    data = json.loads(request.body)
+
+    """
+    Formato JSON:
+    {
+        target_field: <name|category|favorite|background>
+        board: <nome board da modificare>
+        new_value: <nuovo valore>
+    }
+    """
+
+    field = data["target_field"]
+    board_name = data["board_name"]
+    new_value = data["new_value"]
+
+    if board_obj := get_user_board(user, board_name):
+        # DIO COME VOGLIO UNO SWITCH IN PYTHON
+        if field == "name":
+            if not (get_user_board(user, new_value)):
+                board_obj.name = new_value
+            else:
+                return HttpResponse(f"Board {new_value} already exists for this user", status=406)
+        if field == "category":
+            board_obj.category = new_value
+        elif field == "favorite":
+            board_obj.favorite = new_value
+        elif field == "background":
+            board_obj.background = new_value
+        board_obj.save()
+        return HttpResponse(f"Board field '{field}' changed", status=200)
+    else:
+        return HttpResponse(f"Board {board_name} not found", status=406)
 
 
 @login_required
