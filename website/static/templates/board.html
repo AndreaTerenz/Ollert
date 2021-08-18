@@ -3,6 +3,11 @@
 
 {% block extra-style %}
     <link rel="stylesheet" type="text/css" href="{% static 'styles/board-style.css' %}">
+    <style>
+        body {
+            background: {{ board_background }};
+        }
+    </style>
 {% endblock %}
 
 {% block settings-nav %}
@@ -40,6 +45,7 @@
             </button>
         </div>
     </div>
+
     {% include "modals/card_modal.html" %}
     <template id="cardTemplate">
         <div class="card mx-auto text-white bg-primary mb-3" style="width: 300px">

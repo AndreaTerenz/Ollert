@@ -116,9 +116,7 @@ def board(request, name):
     user = get_authenticated_user(request)
 
     if board_obj := get_user_board(user, name):
-        # FIXME: questa lettura dei dati della board è un po' farlocca (board.name è uguale all'argomento name)
-        # ma vabbè
-        data: dict = {"board_name": board_obj.name}
+        data: dict = {"board_name": board_obj.name, "board_background": board_obj.background}
 
         # Usa i dati ottenuti per generare l'html
         return render(request, 'board.html', status=200, context=data)
@@ -194,6 +192,7 @@ def edit_board(request):
     board_name = data["board_name"]
     new_value = data["new_value"]
 
+    # FIXME: bisognerebbe capire bene cosa ritornare invece di mere HttpResponse
     if board_obj := get_user_board(user, board_name):
         # DIO COME VOGLIO UNO SWITCH IN PYTHON
         if field == "name":
