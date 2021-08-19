@@ -1,7 +1,11 @@
 {% load static %}
+{% load compress %}
 <!-- Modal -->
 {% block modal_wrapper %}
-    <link type="text/css" rel="stylesheet" href="{% static 'styles/modal_style.css' %}"/>
+    {% compress css %}
+        <link type="text/x-scss" rel="stylesheet" href="{% static 'styles/modal_style.scss' %}"/>
+    {% endcompress %}
+
     <div class="modal fade" id="{{ modalID }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">

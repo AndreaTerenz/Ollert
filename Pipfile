@@ -8,6 +8,8 @@ django = "*"
 pillow = "*"
 django-crispy-forms = "*"
 django-colorful = "*"
+django-compressor = "*"
+django-libsass = "*"
 
 [dev-packages]
 icecream = "*"

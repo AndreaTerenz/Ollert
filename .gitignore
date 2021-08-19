@@ -20,3 +20,4 @@ tests/report/
 /website/migrations/*
 *.sqlite3
 /website/media/propics/*
+/website/static/CACHE/
