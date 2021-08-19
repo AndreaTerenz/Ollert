@@ -1,3 +1,4 @@
+{% load custom_tags %}
 {% load static %}
 
 <!doctype html>
@@ -35,13 +36,17 @@
 
     {% if user.is_authenticated %}
         <!-- tasto per le notifiche -->
-        <div class="dropdown nav-item">
+        <div class="nav-item">
+        {% show_notifications %}
+        </div>
+
+        {% comment %}<div class="dropdown nav-item">
             <a class="btn btn-secondary dropdown-toggle" type="button" href="#" id="notifications-dropdown"
                data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="fa fa-bell-o" aria-hidden="true"></i></a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notifications-dropdown">
-                <li class="dropdown-item disabled">Nessuna notifica da leggere</li>
-            </ul>
+                <li class="dropdown-item disabled"></li>
+            </ul>{% endcomment %}
         </div>
         <div class="dropdown nav-item">
             <!-- tasto per le impostazioni -->
@@ -66,6 +71,7 @@
 <body>
 {% include 'messages.html' %}
 {% include 'modals/notifications_modal.html' %}
+
 <div class="container-fluid" id="mainContent">
     {% block content %}
     {% endblock %}
