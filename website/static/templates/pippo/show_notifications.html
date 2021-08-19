@@ -4,13 +4,23 @@
     <div class="dropdown nav-item">
         <a class="btn btn-secondary dropdown-toggle" role="button" href="#" id="notifications-dropdown"
            data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="fa fa-bell-o" aria-hidden="true"></i> {{ notifications.count }}</a>
+            {% if notifications|length > 0 %}
+                <i class="fa fa-bell" aria-hidden="true"></i> {{ notifications.count }}
+            {% else %}
+                <i class="fa fa-bell-o" aria-hidden="true"></i>
+            {% endif %}
+        </a>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notifications-dropdown">
-            {% for notification in notifications %}
-                {% if notification.board %}
-                    <li><a class="dropdown-item" href="#">@{{ notification.from_user }} ti ha taggato nella board @{{ notification.board }}</a></li>
-                {% endif %}
-            {% endfor %}
+            {% if notifications|length > 0 %}
+                {% for notification in notifications %}
+                    {% if notification.board %}
+                        <li><a class="dropdown-item" href="#">@{{ notification.from_user }} ti ha taggato nella board
+                            @{{ notification.board.name }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <li class="dropdown-item disabled">Nessuna notifica da leggere</li>
+            {% endif %}
         </ul>
     </div>
 {% endblock %}
