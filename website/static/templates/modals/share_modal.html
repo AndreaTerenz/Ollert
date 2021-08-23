@@ -1,0 +1,44 @@
+{% extends "modals/base_modal.html" %}
+{% load static %}
+
+
+{% block modal_wrapper %}
+    {% with modalID="shareModal" object="Condividi con persone e gruppi" okFunction="ok_shareModal()" %}
+        {{ block.super }}
+    {% endwith %}
+{% endblock %}
+
+{% block modal_body %}
+    <form class="row mx-3">
+        <div class="mb-3 row-auto">
+            <label for="cardName" class="form-label">Indirizzo email o nome</label>
+            <input type="text" class="form-control" maxlength="20" id="email" aria-describedby="emailHelp">
+            <div class="dropdown col-auto">
+                <button class="btn btn-secondary dropdown-toggle" role="button" id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown">Permessi
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li><a class="dropdown-item" href="#">Visualizzatore</a></li>
+                    <li><a class="dropdown-item" href="#">Commentatore</a></li>
+                    <li><a class="dropdown-item" href="#">Editor</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <textarea class="form-control" id="cardDescription" rows="3"
+                      placeholder="Messaggio"></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="cardName" class="form-label"><i class="fa fa-link" aria-hidden="true"></i>  Invita con link</label>
+            <p><small class="text-muted">Chiunque sia dotato di link può unirsi come membro della board</small></p>
+            <a href="#">Copia link</a>
+        </div>
+
+
+    </form>
+{% endblock %}
+
+{% block modal_script %}
+    {#    <script src="{% static 'js/modals/new_card.js' %}"></script>#}
+{% endblock %}

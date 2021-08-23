@@ -11,19 +11,16 @@
 {% endblock %}
 
 {% block settings-nav %}
-    <li class="dropdown-item">
-        <a href="#">Sfondo</a></li>
-    <li class="dropdown-item">
-        <a href="#">Cambia nome</a></li>
-    <li class="dropdown-item">
-        <a href="#">Gestisci membri</a>
-    </li>
+    <li><a class="dropdown-item" href="#">Modifica sfondo</a></li>
+    <li><a class="dropdown-item" href="#">Rinomina board</a></li>
+    <li><a class="dropdown-item" href="#">Gestisci membri</a></li>
 {% endblock %}
 
 {% block content %}
     <div class="row my-3">
         <h2 class="fw-bold text-center">{{ board_name }}</h2>
     </div>
+
     <div class="row mb-5">
         <div class="col-auto">
             <div id="cardsList" class="cards-list overflow-auto">
@@ -44,9 +41,18 @@
                 <span class="fa fa-plus pe-2"></span>Aggiungi una lista
             </button>
         </div>
+
+        <div class="col-auto">
+            <button class="btn btn-secondary" href="#" type="button" id="add_user"
+                    data-bs-toggle="modal" data-bs-target="#shareModal" aria-expanded="false">
+                <i class="fa fa-user-plus" aria-hidden="true"></i> Condividi
+            </button>
+        </div>
     </div>
 
     {% include "modals/card_modal.html" %}
+    {% include "modals/share_modal.html" %}
+
     <template id="cardTemplate">
         <div class="card mx-auto text-white bg-primary mb-3" style="width: 300px">
             <div class="card-header"></div>
