@@ -13,7 +13,12 @@
 {% block settings-nav %}
     <li><a class="dropdown-item" href="#">Modifica sfondo</a></li>
     <li><a class="dropdown-item" href="#">Rinomina board</a></li>
-    <li><a class="dropdown-item" href="#">Gestisci membri</a></li>
+    <li>
+        <button class="dropdown-item" type="button" id="add_user"
+                data-bs-toggle="modal" data-bs-target="#shareModal" aria-expanded="false">
+            <i class="fa fa-user-plus" aria-hidden="true"></i> Condividi
+        </button>
+    </li>
 {% endblock %}
 
 {% block content %}
@@ -39,13 +44,6 @@
         <div class="col-auto">
             <button class="btn mt-3 btn-light cards-list">
                 <span class="fa fa-plus pe-2"></span>Aggiungi una lista
-            </button>
-        </div>
-
-        <div class="col-auto">
-            <button class="btn btn-secondary" href="#" type="button" id="add_user"
-                    data-bs-toggle="modal" data-bs-target="#shareModal" aria-expanded="false">
-                <i class="fa fa-user-plus" aria-hidden="true"></i> Condividi
             </button>
         </div>
     </div>
