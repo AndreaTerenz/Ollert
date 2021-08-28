@@ -4,7 +4,7 @@ from website.models import Notifications
 register = template.Library()
 
 
-@register.inclusion_tag('pippo/show_notifications.html', takes_context=True)
+@register.inclusion_tag('notifications.html', takes_context=True)
 def show_notifications(context):
     request_user = context['request'].user
     # ritorna solamente le notifiche che non sono viste
