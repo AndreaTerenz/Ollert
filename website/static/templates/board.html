@@ -24,6 +24,9 @@
 {% block content %}
     <div class="row my-3">
         <h2 class="fw-bold text-center">{{ board_name }}</h2>
+        {% if board_description %}
+            <p class="text-center">{{ board_description }}</p>
+        {% endif %}
     </div>
 
     <div class="row mb-5">

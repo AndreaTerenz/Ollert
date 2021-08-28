@@ -39,6 +39,10 @@ class Board(Model):
         on_delete=models.DO_NOTHING,
         null=True
     )
+    description = models.CharField(
+        max_length=300,
+        null=True
+    )
     background = RGBColorField(
         default='#222'
     )

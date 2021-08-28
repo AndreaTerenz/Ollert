@@ -11,14 +11,19 @@
 {% block modal_body %}
     <form class="row mx-3">
         <div class="mb-3">
-            <label for="cardName" class="form-label">Nome</label>
-            <input type="text" class="form-control" maxlength="20" id="cardName" aria-describedby="emailHelp">
+            <label for="cardName" class="form-label">Titolo</label>
+            <input type="text" style="color: white" class="form-control" id="boardName" aria-describedby="emailHelp">
         </div>
         <div class="mb-3">
             <label for="cardDescription" class="form-label">Descrizione</label>
             <textarea class="form-control" id="cardDescription" rows="3"
                       placeholder="Aggiungi una descrizione più dettagliata..."></textarea>
         </div>
+        <div class="mb-3">
+                <label for="imageButton" class="form-label">Immagine</label>
+                <input class="form-control" type="file" id="imageButton">
+        </div>
+
     </form>
 {% endblock %}
 

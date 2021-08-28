@@ -116,7 +116,8 @@ def board(request, name):
     user = get_authenticated_user(request)
 
     if board_obj := get_user_board(user, name):
-        data: dict = {"board_name": board_obj.name, "board_background": board_obj.background}
+        data: dict = {"board_name": board_obj.name, "board_background": board_obj.background,
+                      "board_description": board_obj.description}
 
         # Usa i dati ottenuti per generare l'html
         return render(request, 'board.html', status=200, context=data)
@@ -143,7 +144,8 @@ def create_board(request):
             ic(data["category"], category)
             category = Category.objects.get(user=user, name=data["category"])
 
-        Board.objects.create(user=user, name=data["name"], category=category, favorite=data["favorite"])
+        Board.objects.create(user=user, name=data["name"], category=category, description=data["description"],
+                             favorite=data["favorite"])
 
         messages.success(request, f"Board {data['name']} creata con successo!")
         return render(request, "profile/profile-boards-list.html", context={"boards": get_user_boards(user)})
