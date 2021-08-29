@@ -13,12 +13,16 @@
 {% block settings-nav %}
     <li><a class="dropdown-item" href="#">Modifica sfondo</a></li>
     <li><a class="dropdown-item" href="#">Rinomina board</a></li>
-    <li>
-        <button class="dropdown-item" type="button" id="add_user"
-                data-bs-toggle="modal" data-bs-target="#shareModal" aria-expanded="false">
-            <i class="fa fa-user-plus" aria-hidden="true"></i> Condividi
-        </button>
-    </li>
+
+{% endblock %}
+
+{% block sharing_settings %}
+    <div class="col-auto">
+    <button class="btn btn-info" type="button" id="add_user"
+            data-bs-toggle="modal" data-bs-target="#shareModal" aria-expanded="false">
+        <i class="fa fa-user-plus" aria-hidden="true"></i> Condividi
+    </button>
+    </div>
 {% endblock %}
 
 {% block content %}

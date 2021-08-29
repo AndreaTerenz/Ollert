@@ -3,14 +3,22 @@
 
 
 {% block modal_wrapper %}
-    {% with modalID="shareModal" object="Condividi con persone e gruppi" okFunction="ok_shareModal()" %}
+    {% with modalID="shareModal" object="Opzioni di condivisione" okFunction="ok_shareModal()" %}
         {{ block.super }}
     {% endwith %}
 {% endblock %}
 
 {% block modal_body %}
-    <form class="row mx-3">
-        <div class="mb-3 row-auto">
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" data-bs-toggle="tab" href="#persone">Condividi con persone</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#link">Copia link</a>
+        </li>
+    </ul>
+    <div id="myTabContent" class="tab-content">
+        <div class="tab-pane fade active show mt-3 row-auto" id="persone">
             <label for="cardName" class="form-label">Indirizzo email o nome</label>
             <input type="text" class="form-control" maxlength="20" id="email" aria-describedby="emailHelp">
             <div class="dropdown col-auto">
@@ -23,20 +31,22 @@
                     <li><a class="dropdown-item" href="#">Editor</a></li>
                 </ul>
             </div>
-        </div>
 
-        <div class="mb-3">
+            <div class="mt-3">
             <textarea class="form-control" id="cardDescription" rows="3"
                       placeholder="Messaggio"></textarea>
+            </div>
         </div>
-        <div class="mb-3">
-            <label for="cardName" class="form-label"><i class="fa fa-link" aria-hidden="true"></i>  Invita con link</label>
-            <p><small class="text-muted">Chiunque sia dotato di link può unirsi come membro della board</small></p>
+
+        <div class="tab-pane fade mt-3 row-auto" id="link">
+            <label for="cardName" class="form-label"><i class="fa fa-link" aria-hidden="true"></i> Invita con
+                link</label>
+            <p><small class="text-muted">Chiunque sia dotato di link può unirsi come membro della board</small>
+            </p>
             <a href="#">Copia link</a>
         </div>
+    </div>
 
-
-    </form>
 {% endblock %}
 
 {% block modal_script %}
