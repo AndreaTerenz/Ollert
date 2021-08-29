@@ -5,6 +5,7 @@ from . import views
 
 
 urlpatterns = [
+    #GET
     path('', views.homepage, name="homepage"),
     path('board/<str:name>', board, name="get-board"),
     path('register/', views.register_request, name="register"),
