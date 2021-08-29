@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.core.validators import MaxValueValidator
 from django.db import models
 from django.db.models import Model
 from colorful.fields import RGBColorField
@@ -13,8 +14,7 @@ class UserProfile(Model):
 
 class Category(Model):
     name = models.CharField(
-        max_length=128,
-        null=False
+        max_length=128
     )
     user = models.ForeignKey(
         UserProfile,
@@ -27,8 +27,7 @@ class Category(Model):
 
 class Board(Model):
     name = models.CharField(
-        max_length=128,
-        null=False
+        max_length=128
     )
     user = models.ForeignKey(
         UserProfile,
@@ -38,6 +37,13 @@ class Board(Model):
         Category,
         on_delete=models.DO_NOTHING,
         null=True
+    )
+    tags = models.JSONField(
+        default=dict
+    )
+    lists_count = models.PositiveSmallIntegerField(
+        default=0,
+        validators=[MaxValueValidator(32)]    # una board può contenere al massimo 32 liste
     )
     description = models.CharField(
         max_length=300,
@@ -62,7 +68,10 @@ class List(Model):
     )
     title = models.CharField(
         max_length=64,
-        null=False
+    )
+    cards_count = models.PositiveSmallIntegerField(
+        default=0,
+        validators=[MaxValueValidator(64)]    # una lisa può contenere al massimo 64 card
     )
 
     class Meta:
@@ -79,14 +88,19 @@ class Card(Model):
     )
     title = models.CharField(
         max_length=128,
-        null=False
     )
-    description = models.TextField(null=False)
-    date = models.DateField(auto_now_add=True)
-    image = models.ImageField()
-    checklist = models.JSONField()
-    tags = models.JSONField()
-    members = models.JSONField()
+    description = models.CharField(
+        max_length=300,
+        null=True
+    )
+    date = models.DateTimeField(
+        auto_now_add=True,
+        null=True
+    )
+    tags = models.JSONField(default=dict)
+    image = models.ImageField(null=True)
+    checklist = models.JSONField(default=dict)
+    members = models.JSONField(default=dict)
 
     class Meta:
         unique_together = ("position", "list")
