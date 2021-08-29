@@ -1,19 +1,19 @@
+import datetime
 import json
 import os
-
+from datetime import datetime
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ObjectDoesNotExist
 from django.core.files.uploadedfile import UploadedFile
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
 from django.views.decorators.http import require_http_methods
 from icecream import ic
 
-from .models import UserProfile, Board, Category
+from .models import UserProfile, Category, Card
 from .forms import NewUserForm
+from .utils import *
 
 ic.disable()
 
@@ -218,35 +218,184 @@ def edit_board(request):
 
 @login_required
 @require_http_methods(["POST"])
-def create_card(request, board):
-    body = json.loads(request.body())
+def create_board_content(request):
     user = get_authenticated_user(request)
+    data = json.loads(request.body)
+
+    """
+    Formato JSON:
+    
+    {
+        target_type: <list|card>
+        target_id: {
+            target_id_board: <nome della board>
+            [target_id_list: <id della lista>]       se bisogna creare una card
+        }
+        new_data: { 
+                list_name: <nome lista>                 se bisogna creare una lista
+
+                card_name: <nome card>                  se bisogna creare una card
+                [card_descr: <descrizione card>]
+                [card_date: <data card>]
+                [card_img: <immagine card (non so ancora come)>]
+                [card_checks: <checklist card (non so ancora come)>]
+                [card_members: <elenco utenti assegnati alla card (non so ancora come)>]
+                [card_tags: <elenco tag assegnati alla card>]
+        }
+    }
+    """
+
+    trgt_type = data["target_type"]
+    if trgt_board := get_user_board(user, data["target_id"]["target_id_board"]):
+        trgt_content: dict = data["new_data"]
+
+        if trgt_type == "list":
+            pos = trgt_board.lists_count + 1
+
+            List.objects.create(
+                board=trgt_board,
+                position=pos,
+                title=trgt_content["list_name"]
+            )
+
+            trgt_board.lists_count += 1
+            trgt_board.save()
+        elif trgt_type == "card":
+            trgt_list = List.objects.get(board=trgt_board, position=data["target_id"]["target_id_list"])
+            pos = trgt_list.cards_count + 1
+
+            Card.objects.create(
+                list=trgt_list,
+                position=pos,
+                title=trgt_content["card_name"],
+                description=trgt_content.get("card_descr", default=None),
+                date=trgt_content.get("card_date", default=None),
+                # TODO: mancano immagine, checklist e membri
+                tags=trgt_content.get("card_tags", default=None)
+            )
+
+            trgt_list.cards_count += 1
+            trgt_list.save()
+
+        return HttpResponse("Content created", status=200)
+    else:
+        return HttpResponse(f"Board {data['target_id']['target_id_board']} not found", status=406)
 
 
-def handle_form_errors(request, form, header):
-    key = list(form.errors.keys())[0]
-    error = form.errors[key][0]
+@login_required
+@require_http_methods(["POST"])
+def delete_board_content(request):
+    user = get_authenticated_user(request)
+    data = json.loads(request.body)
 
-    messages.error(request, f"{header}{error}")
+    """
+    Formato JSON:
+    
+    {
+        target_type: <list|card>
+        target_id: {
+            target_id_board: <nome della board>
+            target_id_list: <id della lista>
+            [target_id_card: <id della card>]       se bisogna eliminare una card
+        }
+    }
+    """
+
+    trgt_type = data["target_type"]
+
+    if trgt_board := get_user_board(user, data["target_id"]["target_id_board"]):
+        trgt_list = List.objects.get(board=trgt_board, position=data["target_id"]["target_id_list"])
+
+        if trgt_type == "list":
+            trgt_list.delete()
+        elif trgt_type == "card":
+            trgt_card = Card.objects.get(list=trgt_list, position=data["target_id"]["target_id_card"])
+            trgt_card.delete()
+
+        return HttpResponse("Content deleted", status=200)
+    else:
+        return HttpResponse(f"Board {data['target_id']['target_id_board']} not found", status=406)
 
 
-def get_authenticated_user(request):
-    output = request.user
-    return output.userprofile if output.is_authenticated else None
+@login_required
+@require_http_methods(["POST"])
+def edit_board_content(request):
+    user = get_authenticated_user(request)
+    data = json.loads(request.body)
 
+    """
+    Formato JSON:
+    
+    {
+        target_type: <list|card>
+        target_id: {
+            target_id_board: <nome della board>
+            target_id_list: <id della lista>
+            [target_id_card: <id della card>]       se bisogna modificare una card
+        }
+        target_field:
+            <title|position>      se bisogna modificare una lista
+            
+            <name|position|description|date|img|checks|members|tags> se bisogna modificare una card
+        new_value: <nuovo valore del target field>
+    }
+    """
 
-def get_user_board(user, name):
-    try:
-        return Board.objects.get(user=user, name=name)
-    except ObjectDoesNotExist:
-        return None
+    trgt_type = data["target_type"]
 
+    if trgt_board := get_user_board(user, data["target_id"]["target_id_board"]):
+        trgt_list = List.objects.get(board=trgt_board, position=data["target_id"]["target_id_list"])
+        trgt_field = data["target_field"]
+        new_value = data["new_value"]
 
-def get_user_boards(user):
-    try:
-        boards = []
-        for b in Board.objects.filter(user=user):
-            boards.append(b.name)
-        return boards
-    except ObjectDoesNotExist:
-        return []
+        if trgt_type == "list":
+            if trgt_field == "title":
+                trgt_list.title = new_value
+            elif trgt_field == "position":
+                # initial_pos = trgt_list.position
+                # dest_pos = new_value
+                #
+                # if initial_pos != dest_pos:
+                #     if initial_pos < dest_pos:
+                #         for l in List.objects.filter(board=trgt_board,
+                #                                      position__range=range(initial_pos + 1, dest_pos)):
+                #             l.position -= 1
+                #             l.save()
+                #     else:
+                #         for l in List.objects.filter(board=trgt_board,
+                #                                      position__range=range(dest_pos, initial_pos - 1)):
+                #             l.position += 1
+                #             l.save()
+                #
+                #
+
+                move_object(trgt_list.position, new_value, trgt_board, List)
+                trgt_list.position = new_value
+
+            trgt_list.save()
+        elif trgt_type == "card":
+            trgt_card = Card.objects.get(list=trgt_list, position=data["target_id"]["target_id_card"])
+
+            if trgt_field == "name":
+                trgt_card.title = new_value
+            elif trgt_field == "position":
+                move_object(trgt_card.position, new_value, trgt_list, Card)
+                trgt_card.position = new_value
+            elif trgt_field == "description":
+                trgt_card.description = new_value
+            elif trgt_field == "date":
+                trgt_card.date = datetime.fromtimestamp(new_value)
+            elif trgt_field == "img":
+                pass  # TODO
+            elif trgt_field == "checks":
+                pass  # TODO
+            elif trgt_field == "members":
+                pass  # TODO
+            elif trgt_field == "tags":
+                trgt_card.tags = json.loads(new_value)
+
+            trgt_card.save()
+
+        return HttpResponse("Content edited", status=200)
+    else:
+        return HttpResponse(f"Board {data['target_id']['target_id_board']} not found", status=406)
