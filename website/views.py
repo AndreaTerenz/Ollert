@@ -116,8 +116,25 @@ def board(request, name):
     user = get_authenticated_user(request)
 
     if board_obj := get_user_board(user, name):
-        data: dict = {"board_name": board_obj.name, "board_background": board_obj.background,
-                      "board_description": board_obj.description}
+        lists = []
+
+        for l_obj in List.objects.filter(board=board_obj):
+            l = {
+                "list_title": l_obj.title,
+                "list_cards": []
+            }
+            for c_obj in Card.objects.filter(list=l_obj):
+                # FIXME: Temporaneo
+                l["list_cards"].append(c_obj.title)
+
+            lists.append(l)
+
+        data: dict = {
+            "board_name": board_obj.name,
+            "board_background": board_obj.background,
+            "board_description": board_obj.description,
+            "board_lists": json.dumps(lists)
+        }
 
         # Usa i dati ottenuti per generare l'html
         return render(request, 'board.html', status=200, context=data)
