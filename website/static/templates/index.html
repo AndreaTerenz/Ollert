@@ -38,7 +38,7 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="settings-dropdown">
                 {% block settings-nav %}
-                    <li><a class="dropdown-item" href="{% url 'change_password' %}">Cambia password</a></li>
+                    <li><a class="dropdown-item" href="{% url 'edit-password' %}">Cambia password</a></li>
                     <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
                 {% endblock %}
             </ul>

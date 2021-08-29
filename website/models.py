@@ -66,7 +66,7 @@ class List(Model):
     )
 
     class Meta:
-        unique_together = ("id", "board")
+        unique_together = ("position", "board")
 
 
 class Card(Model):
@@ -89,7 +89,7 @@ class Card(Model):
     members = models.JSONField()
 
     class Meta:
-        unique_together = ("id", "list")
+        unique_together = ("position", "list")
 
 
 class Notifications(models.Model):

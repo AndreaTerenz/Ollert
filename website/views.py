@@ -184,9 +184,9 @@ def edit_board(request):
     """
     Formato JSON:
     {
-        target_field: <name|category|favorite|background>
+        target_field: <name|category|favorite|background|description>
         board: <nome board da modificare>
-        new_value: <nuovo valore>
+        new_value: <nuovo valore per il target_field>
     }
     """
 
@@ -202,8 +202,10 @@ def edit_board(request):
                 board_obj.name = new_value
             else:
                 return HttpResponse(f"Board {new_value} already exists for this user", status=406)
-        if field == "category":
-            board_obj.category = new_value
+        elif field == "category":
+            board_obj.category = Category.objects.get(user=user, name=new_value)
+        elif field == "description":
+            board_obj.description = new_value
         elif field == "favorite":
             board_obj.favorite = new_value
         elif field == "background":
