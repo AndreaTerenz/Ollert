@@ -28,14 +28,14 @@
 
     {% if user.is_authenticated %}
         <!-- tasto per le impostazioni di condivisione -->
-        {% block sharing_settings %}
+        {% block authenticated_functions %}
         {% endblock %}
         <!-- tasto per le notifiche -->
         {% show_notifications %}
 
         <div class="dropdown nav-item">
             <!-- tasto per le impostazioni -->
-            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="settings-dropdown"
+            <a class="btn btn-info dropdown-toggle" href="#" role="button" id="settings-dropdown"
                data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="fa fa-cog" aria-hidden="true"></i>
             </a>

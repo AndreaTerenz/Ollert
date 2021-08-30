@@ -59,6 +59,10 @@ class Board(Model):
 
 
 class List(Model):
+    user = models.ForeignKey(
+        UserProfile,
+        on_delete=models.CASCADE
+    )
     board = models.ForeignKey(
         Board,
         on_delete=models.CASCADE
@@ -75,10 +79,18 @@ class List(Model):
     )
 
     class Meta:
-        unique_together = ("position", "board")
+        unique_together = ("position", "board", "user")
 
 
 class Card(Model):
+    user = models.ForeignKey(
+        UserProfile,
+        on_delete=models.CASCADE
+    )
+    board = models.ForeignKey(
+        Board,
+        on_delete=models.CASCADE
+    )
     list = models.ForeignKey(
         List,
         on_delete=models.CASCADE
@@ -103,7 +115,7 @@ class Card(Model):
     members = models.JSONField(default=dict)
 
     class Meta:
-        unique_together = ("position", "list")
+        unique_together = ("position", "list", "board", "user")
 
 
 class Notifications(models.Model):

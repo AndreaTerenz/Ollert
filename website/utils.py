@@ -2,8 +2,9 @@ from typing import Union
 
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
+from icecream import ic
 
-from website.models import Board, List
+from website.models import Board, List, Card
 
 
 def handle_form_errors(request, form, header):
@@ -26,13 +27,33 @@ def get_user_board(user, name):
 
 
 def get_user_boards(user):
+    boards = []
+    for b in Board.objects.filter(user=user):
+        boards.append(b.name)
+    return boards
+
+
+def get_list_in_board(pos, parent_board: Board):
     try:
-        boards = []
-        for b in Board.objects.filter(user=user):
-            boards.append(b.name)
-        return boards
+        return List.objects.get(pos, user=parent_board.user, board=parent_board)
     except ObjectDoesNotExist:
-        return []
+        return None
+
+
+def get_lists_in_board(board: Board):
+    return List.objects.filter(user=board.user, board=board)
+
+
+def get_card_in_list(pos, parent_list: List):
+    try:
+        board = parent_list.board
+        return Card.objects.get(pos, user=board.user, board=board, list=parent_list)
+    except ObjectDoesNotExist:
+        return None
+
+
+def get_cards_in_list(parent_list: List):
+    return ic(Card.objects.filter(user=parent_list.board.user, board=parent_list.board, list=parent_list))
 
 
 def move_object(current_pos: int, new_pos: int, parent_obj: Union[Board, List], obj_type):

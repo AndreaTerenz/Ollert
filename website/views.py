@@ -15,7 +15,7 @@ from .models import UserProfile, Category, Card
 from .forms import NewUserForm
 from .utils import *
 
-ic.disable()
+#ic.disable()
 
 
 @require_http_methods(["GET", "HEAD", "POST"])
@@ -118,14 +118,20 @@ def board(request, name):
     if board_obj := get_user_board(user, name):
         lists = []
 
-        for l_obj in List.objects.filter(board=board_obj):
+        for l_obj in get_lists_in_board(board_obj):
             l = {
                 "list_title": l_obj.title,
+                "list_id": f"list_{len(lists)}",
                 "list_cards": []
             }
-            for c_obj in Card.objects.filter(list=l_obj):
+            for c_obj in get_cards_in_list(l_obj):
+                c = {
+                    "card_title": c_obj.title,
+                    "card_descr": c_obj.description
+                }
                 # FIXME: Temporaneo
-                l["list_cards"].append(c_obj.title)
+                l["list_cards"].append(c)
+                ic(l["list_cards"])
 
             lists.append(l)
 
@@ -133,7 +139,7 @@ def board(request, name):
             "board_name": board_obj.name,
             "board_background": board_obj.background,
             "board_description": board_obj.description,
-            "board_lists": json.dumps(lists)
+            "board_lists": lists
         }
 
         # Usa i dati ottenuti per generare l'html

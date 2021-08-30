@@ -10,6 +10,7 @@ django-crispy-forms = "*"
 django-colorful = "*"
 django-compressor = "*"
 django-libsass = "*"
+rcssmin = "*"
 
 [dev-packages]
 icecream = "*"

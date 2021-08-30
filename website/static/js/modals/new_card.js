@@ -11,7 +11,6 @@ function ok_newCard() {
     let list = document.getElementById(target_list);
     let template = document.getElementById('cardTemplate');
 
-    console.log(name, description);
     let clone = template.content.cloneNode(true);
     clone.querySelector(".card-header").textContent = name
     clone.querySelector(".card-body").textContent = truncate(description, 64)

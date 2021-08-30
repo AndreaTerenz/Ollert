@@ -16,12 +16,12 @@
 
 {% endblock %}
 
-{% block sharing_settings %}
+{% block authenticated_functions %}
     <div class="col-auto">
-    <button class="btn btn-info" type="button" id="add_user"
-            data-bs-toggle="modal" data-bs-target="#shareModal" aria-expanded="false">
-        <i class="fa fa-user-plus" aria-hidden="true"></i> Condividi
-    </button>
+        <button class="btn btn-info" type="button" id="add_user"
+                data-bs-toggle="modal" data-bs-target="#shareModal" aria-expanded="false">
+            <i class="fa fa-user-plus" aria-hidden="true"></i> Condividi
+        </button>
     </div>
 {% endblock %}
 
@@ -34,24 +34,38 @@
     </div>
 
     <div class="row mb-5">
-        <div class="col-auto">
-            <div id="cardsList" class="cards-list overflow-auto">
+        {% for list in board_lists %}
+            {% with id=list.list_id title=list.list_title %}
+                <div class="col-auto">
+                    <div class="card-header fw-bold fs-4 text-center">{{ title }}</div>
+                    <div id='{{ id }}' class="cards-list rounded-bottom overflow-auto pb-3 mb-3">
+                        {% for card in list.list_cards %}
+                            <div class="card mx-auto text-white bg-primary mt-3" style="width: 300px">
+                                <div class="card-header">
+                                    {% if card.card_descr %}
+                                        <i class="fa fa-align-left"></i>
+                                    {% endif %}
+                                </div>
+                                <div class="card-body">{{ card.card_title }}</div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="card me-auto">
+                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                                data-bs-target="#cardModal" data-bs-list='{{ id }}'>
+                            <span class="fa fa-plus pe-2"></span>Aggiungi una scheda
+                        </button>
+                    </div>
+                </div>
+            {% endwith %}
+        {% endfor %}
 
-            </div>
-            <!-- Bottone per aggiungere le card -->
-            <!-- quel margin-top di 3 porcamiseria dovrebbe essere tolto quando non c'è nulla della lista ma vabbè-->
-            <div class="card mt-3 text-white me-auto">
-                <button type="button" class="btn btn-light" data-bs-toggle="modal"
-                        data-bs-target="#cardModal" data-bs-list="cardsList">
-                    <span class="fa fa-plus pe-2"></span>Aggiungi una scheda
+        <div class="col-auto">
+            <div class="cards-list card me-auto mt-3">
+                <button type="button" class="btn btn-secondary">
+                    <span class="fa fa-plus pe-2"></span>Aggiungi una lista
                 </button>
             </div>
-        </div>
-
-        <div class="col-auto">
-            <button class="btn mt-3 btn-light cards-list">
-                <span class="fa fa-plus pe-2"></span>Aggiungi una lista
-            </button>
         </div>
     </div>
 
@@ -59,7 +73,7 @@
     {% include "modals/share_modal.html" %}
 
     <template id="cardTemplate">
-        <div class="card mx-auto text-white bg-primary mb-3" style="width: 300px">
+        <div class="card mx-auto text-white bg-primary mt-3" style="width: 300px">
             <div class="card-header"></div>
             <div class="card-body"></div>
         </div>
