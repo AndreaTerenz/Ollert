@@ -27,25 +27,26 @@
     <a class="navbar-brand me-auto" href="/"><strong>Ollert</strong></a>
 
     {% if user.is_authenticated %}
-        <!-- tasto per le impostazioni di condivisione -->
-        {% block authenticated_functions %}
-        {% endblock %}
         <!-- tasto per le notifiche -->
         {% show_notifications %}
 
         <div class="dropdown nav-item">
             <!-- tasto per le impostazioni -->
-            <a class="btn btn-info dropdown-toggle" href="#" role="button" id="settings-dropdown"
+            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="settings-dropdown"
                data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="fa fa-cog" aria-hidden="true"></i>
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="settings-dropdown">
                 {% block settings-nav %}
                     <li><a class="dropdown-item" href="{% url 'edit-password' %}">Cambia password</a></li>
-                    <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                    <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fa fa-sign-out-alt"></i>Logout</a></li>
                 {% endblock %}
             </ul>
         </div>
+
+        <!-- altre cose per utenti autenticati (e.g. condivisione board) -->
+        {% block authenticated_functions %}
+        {% endblock %}
     {% else %}
         <a class="btn btn-secondary nav-item" href="{% url 'login' %}" role="button">Login</a>
         <a class="btn btn-secondary nav-item" href="{% url 'register' %}" role="button">Registrati</a>

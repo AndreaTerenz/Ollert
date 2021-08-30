@@ -1,0 +1,26 @@
+{% extends "modals/base_modal.html" %}
+{% load static %}
+
+
+{% block modal_wrapper %}
+    {% with modalID="newListModal" object="Aggiungi una lista" okFunction="ok_newList()" %}
+        {{ block.super }}
+    {% endwith %}
+{% endblock %}
+
+{% block modal_body %}
+    <form class="row mx-3">
+        <div class="mb-3">
+            <label for="listTitle" class="form-label">Titolo</label>
+            <input type="text" style="color: white" class="form-control" id="listTitle" aria-describedby="emailHelp">
+        </div>
+        <div class="mb-3">
+            <label for="listPosition" class="form-label">Posizione</label>
+            <input type="number" min="1" max="32" value="1" style="color: white" class="form-control" id="listPosition" aria-describedby="emailHelp">
+        </div>
+    </form>
+{% endblock %}
+
+{% block modal_script %}
+    <script src="{% static 'js/modals/new_list.js' %}"></script>
+{% endblock %}
