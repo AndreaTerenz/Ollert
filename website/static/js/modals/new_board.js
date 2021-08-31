@@ -6,5 +6,7 @@ function ok_newBoard() {
         favorite : document.getElementById("favoriteCheck").checked
     }
 
-    make_modal_request(data, new_board_url, "list", "newBoardModal")
+    make_modal_request(data, new_board_url, "newBoardModal", (data) => {
+        insert_html('list', data)
+    })
 }

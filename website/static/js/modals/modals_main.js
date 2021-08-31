@@ -11,7 +11,12 @@ function addOnShowListener(modalID, listener) {
     document.getElementById(modalID).addEventListener("show.bs.modal", listener)
 }
 
-function make_modal_request(input_data, url, destination, modalID) {
+function insert_html(parent, html) {
+    let dest_el = document.getElementById(parent)
+    dest_el.innerHTML = html
+}
+
+function make_modal_request(input_data, url, modalID, after) {
     fetch(url, {
         method: "POST",
         credentials: 'same-origin',
@@ -27,10 +32,9 @@ function make_modal_request(input_data, url, destination, modalID) {
         return null
     }).then((data) => {
         if (data) {
-            let dest_el = document.getElementById(destination)
-            dest_el.innerHTML = data
-
-            closeModal(modalID)
+            after(data)
         }
+
+        closeModal(modalID)
     })
 }

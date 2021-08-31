@@ -17,9 +17,9 @@ urlpatterns = [
     path('delete_board', views.delete_board, name='delete-board'),
     path('edit_board', views.edit_board, name="edit-board"),
 
-    # path('create_board_content', views.create_board_content, 'create-board-content'),
-    # path('delete_board_content', views.delete_board_content, 'delete-board-content'),
-    # path('edit_board_content', views.edit_board_content, 'edit-board-content'),
+    path('create_board_content', views.create_board_content, name='create-board-content'),
+    path('delete_board_content', views.delete_board_content, name='delete-board-content'),
+    path('edit_board_content', views.edit_board_content, name='edit-board-content'),
 
     path('edit_password', views.change_password, name='edit-password')
 ]

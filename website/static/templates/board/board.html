@@ -35,32 +35,10 @@
 
     <div class="row mb-5">
         {% for list in board_lists %}
-            {% with id=list.list_id title=list.list_title %}
-                <div class="col-auto">
-                    <div class="card-header fw-bold fs-4 text-center">{{ title }}</div>
-                    <div id='{{ id }}' class="cards-list rounded-bottom overflow-auto pb-3 mb-3">
-                        {% for card in list.list_cards %}
-                            <div class="card mx-auto text-white bg-primary mt-3" style="width: 300px">
-                                <div class="card-header">
-                                    {% if card.card_descr %}
-                                        <i class="fa fa-align-left"></i>
-                                    {% endif %}
-                                </div>
-                                <div class="card-body">{{ card.card_title }}</div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                    <div class="card me-auto">
-                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                                data-bs-target="#cardModal" data-bs-list='{{ id }}'>
-                            <span class="fa fa-plus pe-2"></span>Aggiungi una scheda
-                        </button>
-                    </div>
-                </div>
-            {% endwith %}
+            {% include 'board/list.html' with id=list.list_id title=list.list_title cards=list.list_cards %}
         {% endfor %}
 
-        <div class="col-auto">
+        <div class="col-auto" id="new-list-button">
             <div class="cards-list card me-auto mt-3">
                 <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
                         data-bs-target="#newListModal">
@@ -71,7 +49,7 @@
     </div>
 
     {% include "modals/card_modal.html" %}
-    {% include "modals/new_list_modal.html" %}
+    {% include "modals/new_list_modal.html" with board=board_name %}
     {% include "modals/share_modal.html" %}
 
     <template id="cardTemplate">

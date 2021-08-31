@@ -131,7 +131,6 @@ def board(request, name):
                 }
                 # FIXME: Temporaneo
                 l["list_cards"].append(c)
-                ic(l["list_cards"])
 
             lists.append(l)
 
@@ -143,7 +142,7 @@ def board(request, name):
         }
 
         # Usa i dati ottenuti per generare l'html
-        return render(request, 'board.html', status=200, context=data)
+        return render(request, 'board/board.html', status=200, context=data)
 
     # Se non esiste, segnala un errore
     messages.warning(request, f"La board {name} non esiste per questo utente")
@@ -156,15 +155,12 @@ def create_board(request):
     user = get_authenticated_user(request)
     data = json.loads(request.body)
 
-    ic(data)
-
     if not (get_user_board(user, data["name"])):
         # Se non riesce a trovare una board T per questo utente, vuol dire che può essere creata
         category = None
 
         if data["category"] != "NaN":
             # Cerca la categoria C nel profilo dell'utente
-            ic(data["category"], category)
             category = Category.objects.get(user=user, name=data["category"])
 
         Board.objects.create(user=user, name=data["name"], category=category, description=data["description"],
@@ -184,11 +180,8 @@ def delete_board(request):
     user = get_authenticated_user(request)
     data = json.loads(request.body)
 
-    ic(data)
-
     # Cerca la board per l'utente
     if board_obj := get_user_board(user, data["name"]):
-        ic(board_obj)
         # Se esiste, la si cancella
         board_obj.delete()
         return render(request, "profile/profile-boards-list.html", context={"boards": get_user_boards(user)})
@@ -274,26 +267,39 @@ def create_board_content(request):
 
         if trgt_type == "list":
             pos = trgt_board.lists_count + 1
+            title = trgt_content["list_name"]
 
             List.objects.create(
+                user=user,
                 board=trgt_board,
-                position=pos,
-                title=trgt_content["list_name"]
+                position=ic(pos),
+                title=title
             )
 
             trgt_board.lists_count += 1
             trgt_board.save()
+
+            return render(request, 'board/list.html', context={
+                "title": title,
+                "cards": [],
+                "id": f"list_{pos}"
+            })
         elif trgt_type == "card":
             trgt_list = List.objects.get(board=trgt_board, position=data["target_id"]["target_id_list"])
             pos = trgt_list.cards_count + 1
 
             Card.objects.create(
+                user=user,
+                board=trgt_board,
                 list=trgt_list,
                 position=pos,
                 title=trgt_content["card_name"],
                 description=trgt_content.get("card_descr", default=None),
                 date=trgt_content.get("card_date", default=None),
                 # TODO: mancano immagine, checklist e membri
+                # image
+                # checklist
+                # members
                 tags=trgt_content.get("card_tags", default=None)
             )
 

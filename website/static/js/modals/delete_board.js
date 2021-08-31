@@ -18,5 +18,7 @@ function ok_delete() {
     //TODO: temporaneo ovviamente
     console.log("Eliminata board " + board)
 
-    make_modal_request({name: board}, delete_board_url, 'list', 'deleteModal')
+    make_modal_request({name: board}, delete_board_url, 'deleteModal', (data) => {
+        insert_html('list', data)
+    })
 }
