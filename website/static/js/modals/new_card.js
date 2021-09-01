@@ -11,12 +11,21 @@ function ok_newCard() {
     let list = document.getElementById(target_list);
     let template = document.getElementById('cardTemplate');
 
-    let clone = template.content.cloneNode(true);
-    clone.querySelector(".card-header").textContent = name
-    clone.querySelector(".card-body").textContent = truncate(description, 64)
-    list.appendChild(clone);
+    let data = {
+        "target_type": "card",
+        "target_id": {
+            "target_id_board": targetBoard,
+            "target_id_list": target_list.replace("list_", "")+1
+        },
+        "new_data": {
+            "card_name": name,
+            "card_descr": description
+        }
+    }
 
-    closeModal("cardModal")
+    make_modal_request(data, new_card_url, "cardModal", (data) => {
+        list.insertAdjacentHTML("beforeend", data)
+    })
 }
 
 // grazie stackoverlow

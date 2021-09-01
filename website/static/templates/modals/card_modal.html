@@ -33,5 +33,8 @@
 {% endblock %}
 
 {% block modal_script %}
+    <script>
+        const new_card_url = '{% url "create-board-content" %}'
+    </script>
     <script src="{% static 'js/modals/new_card.js' %}"></script>
 {% endblock %}

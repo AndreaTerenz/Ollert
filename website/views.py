@@ -15,7 +15,8 @@ from .models import UserProfile, Category, Card
 from .forms import NewUserForm
 from .utils import *
 
-#ic.disable()
+
+ic.disable()
 
 
 @require_http_methods(["GET", "HEAD", "POST"])
@@ -285,7 +286,7 @@ def create_board_content(request):
                 "id": f"list_{pos}"
             })
         elif trgt_type == "card":
-            trgt_list = List.objects.get(board=trgt_board, position=data["target_id"]["target_id_list"])
+            trgt_list = List.objects.get(board=ic(trgt_board), position=ic(int(data["target_id"]["target_id_list"])))
             pos = trgt_list.cards_count + 1
 
             Card.objects.create(
@@ -294,19 +295,20 @@ def create_board_content(request):
                 list=trgt_list,
                 position=pos,
                 title=trgt_content["card_name"],
-                description=trgt_content.get("card_descr", default=None),
-                date=trgt_content.get("card_date", default=None),
+                description=trgt_content.get("card_descr", None),
+                date=trgt_content.get("card_date", None),
                 # TODO: mancano immagine, checklist e membri
                 # image
                 # checklist
                 # members
-                tags=trgt_content.get("card_tags", default=None)
+                tags=trgt_content.get("card_tags", {})
             )
 
             trgt_list.cards_count += 1
             trgt_list.save()
 
-        return HttpResponse("Content created", status=200)
+        return render(request, "board/card.html",
+                      context={"title": trgt_content["card_name"], "description": trgt_content.get("card_descr", None)})
     else:
         return HttpResponse(f"Board {data['target_id']['target_id_board']} not found", status=406)
 
