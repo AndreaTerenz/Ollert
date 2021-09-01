@@ -36,6 +36,7 @@ class Board(Model):
     category = models.ForeignKey(
         Category,
         on_delete=models.DO_NOTHING,
+        blank=True,
         null=True
     )
     tags = models.JSONField(
@@ -47,6 +48,7 @@ class Board(Model):
     )
     description = models.CharField(
         max_length=300,
+        blank=True,
         null=True
     )
     background = RGBColorField(
@@ -103,14 +105,19 @@ class Card(Model):
     )
     description = models.CharField(
         max_length=300,
+        blank=True,
         null=True
     )
     date = models.DateTimeField(
         auto_now_add=True,
+        blank=True,
+        null=True
+    )
+    image = models.ImageField(
+        blank=True,
         null=True
     )
     tags = models.JSONField(default=dict)
-    image = models.ImageField(null=True)
     checklist = models.JSONField(default=dict)
     members = models.JSONField(default=dict)
 
