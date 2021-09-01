@@ -29,7 +29,10 @@ def get_user_board(user, name):
 def get_user_boards(user):
     boards = []
     for b in Board.objects.filter(user=user):
-        boards.append(b.name)
+        boards.append({
+            "name": b.name,
+            "favorite": b.favorite
+        })
     return boards
 
 

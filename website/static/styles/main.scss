@@ -13,11 +13,11 @@
 ::-webkit-scrollbar-thumb {
     background: #67a3ff;
     border-radius: 10px;
-}
 
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background: #366cba;
+    /* Handle on hover */
+    &:hover {
+        background: #366cba;
+    }
 }
 
 .nav-item {

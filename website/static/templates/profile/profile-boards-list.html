@@ -4,23 +4,27 @@
 
 {% if boards|length > 0 %}
     {% for board in boards %}
-        <li class="list-group-item fs-5 d-flex justify-content-between align-items-start">
-            <a class="me-auto" href="{% url 'get-board' name=board %}">{{ board }}</a>
-            <div class="btn-group" role="group">
-                <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle"
-                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></button>
-                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" data-popper-placement="bottom-start"
-                     style="position: absolute; inset: 0 auto auto 0; margin: 0; transform: translate(0px, 39px);">
-                    <a class="dropdown-item" href="#" data-bs-target="#editBoardModal" data-bs-toggle="modal"
-                       data-bs-board="{{ board }}"><i
-                            class="fa fa-pencil fa-fw"></i>Modifica</a>
-                    <a class="dropdown-item" href="#" data-bs-target="#deleteModal" data-bs-toggle="modal"
-                       data-bs-board="{{ board }}"><i
-                            class="fa fa-trash-o fa-fw"></i>Elimina</a>
+        {% with name=board.name favorite=board.favorite %}
+            <li class="list-group-item fs-5 d-flex justify-content-between align-items-start">
+                <a class="me-auto" href="{% url 'get-board' name=name %}">{{ name }}</a>
+                {% if favorite %}
+                    <i class="fa fa-star my-auto"></i>
+                {% endif %}
+                <div class="btn-group" role="group">
+                    <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></button>
+                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" data-popper-placement="bottom-start"
+                         style="position: absolute; inset: 0 auto auto 0; margin: 0; transform: translate(0px, 39px);">
+                        <a class="dropdown-item" href="#" data-bs-target="#editBoardModal" data-bs-toggle="modal"
+                           data-bs-board="{{ board }}"><i
+                                class="fa fa-pencil fa-fw"></i>Modifica</a>
+                        <a class="dropdown-item" href="#" data-bs-target="#deleteModal" data-bs-toggle="modal"
+                           data-bs-board="{{ board }}"><i
+                                class="fa fa-trash-o fa-fw"></i>Elimina</a>
+                    </div>
                 </div>
-            </div>
-        </li>
-
+            </li>
+        {% endwith %}
     {% endfor %}
 
 {% else %}
