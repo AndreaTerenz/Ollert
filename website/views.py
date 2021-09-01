@@ -286,7 +286,7 @@ def create_board_content(request):
                 "id": f"list_{pos}"
             })
         elif trgt_type == "card":
-            trgt_list = List.objects.get(board=ic(trgt_board), position=ic(int(data["target_id"]["target_id_list"])))
+            trgt_list = List.objects.get(board=ic(trgt_board), position=int(data["target_id"]["target_id_list"]))
             pos = trgt_list.cards_count + 1
 
             Card.objects.create(

@@ -15,7 +15,7 @@ function ok_newCard() {
         "target_type": "card",
         "target_id": {
             "target_id_board": targetBoard,
-            "target_id_list": target_list.replace("list_", "")+1
+            "target_id_list": target_list.replace("list_", "")
         },
         "new_data": {
             "card_name": name,
