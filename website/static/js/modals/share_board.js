@@ -3,5 +3,10 @@ function ok_shareModal() {
 }
 
 function getURL() {
-    alert("The URL of this page is: " + window.location.href);
+    let text = window.location.href;
+    navigator.clipboard.writeText(text).then(function () {
+        alert('Il link è stato copiato con successo!');
+    }, function (err) {
+        alert('Errore: impossibile copiare link');
+    });
 }
