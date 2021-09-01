@@ -23,29 +23,17 @@
             <label for="imageButton" class="form-label">Immagine</label>
             <input class="form-control" type="file" id="imageButton">
         </div>
-
         <div class="mb-3">
-            <div class="it-datepicker-wrapper theme-dark">
-                <label for="date1">Data</label>
-                <input class="form-control it-date-datepicker" id="date1" type="text"
-                       placeholder="Inserisci la data in formato gg/mm/aaaa">
-            </div>
+            <label for="date1">Data</label>
+            <input class="form-control" value="30/10/1999" id="date1" type="datetime-local"
+                   placeholder="Inserisci la data in formato gg/mm/aaaa">
         </div>
-
     </form>
 {% endblock %}
 
 {% block modal_script %}
     <script>
         const new_card_url = '{% url "create-board-content" %}'
-    </script>
-    <script>
-        $(document).ready(function () {
-            $('.it-date-datepicker').datepicker({
-                inputFormat: ["dd/MM/yyyy"],
-                outputFormat: 'dd/MM/yyyy',
-            });
-        });
     </script>
     <script src="{% static 'js/modals/new_card.js' %}"></script>
 {% endblock %}
