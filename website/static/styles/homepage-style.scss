@@ -1,0 +1,9 @@
+$bg-gradient : linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(23,15,115,1) 49%, rgb(155, 15, 168) 100%);
+
+body {
+  background: $bg-gradient
+}
+
+.navbar {
+  background: $bg-gradient
+}

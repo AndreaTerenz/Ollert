@@ -13,6 +13,9 @@
 
     {% compress css %}
         <link rel="stylesheet" type="text/x-scss" href="{% static 'styles/main.scss' %}">
+        {% if not user.is_authenticated %}
+            <link rel="stylesheet" type="text/x-scss" href="{% static 'styles/homepage-style.scss' %}">
+        {% endif %}
         {% block extra-style %}
         {% endblock %}
     {% endcompress %}
