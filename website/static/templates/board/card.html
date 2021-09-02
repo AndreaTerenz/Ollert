@@ -1,6 +1,9 @@
 <button class="card mx-auto text-white bg-info mt-3" data-bs-toggle="modal"
         data-bs-target="#cardModal" data-bs-card-data="{{ data|escape }}" style="width: 300px">
     <div class="card-header bg-info">
+        <script>
+            console.log("{{ data|escapejs }}")
+        </script>
         {{ data.card_title }}
     </div>
     <div class="card-body">
