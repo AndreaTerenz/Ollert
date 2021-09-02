@@ -26,14 +26,14 @@
 {% endblock %}
 
 {% block content %}
-    <div class="row my-3">
+    <div class="row my-3 flex-grow">
         <h2 class="fw-bold text-center">{{ board_name }}</h2>
         {% if board_description %}
             <p class="text-center">{{ board_description }}</p>
         {% endif %}
     </div>
 
-    <div class="row mb-5 flex-nowrap overflow-auto" id="main-row">
+    <div class="row m-auto h-100 flex-nowrap overflow-auto" id="main-row">
         {% for list in board_lists %}
             {% include 'board/list.html' with id=list.list_id title=list.list_title cards=list.list_cards %}
         {% endfor %}
