@@ -15,7 +15,8 @@ from .models import UserProfile, Category, Card
 from .forms import NewUserForm
 from .utils import *
 
-#ic.disable()
+
+# ic.disable()
 
 
 @require_http_methods(["GET", "HEAD", "POST"])
@@ -431,3 +432,22 @@ def edit_board_content(request):
         return HttpResponse("Content edited", status=200)
     else:
         return HttpResponse(f"Board {data['target_id']['target_id_board']} not found", status=406)
+
+
+@login_required
+@require_http_methods(["POST"])
+def create_category(request):
+    user, data = get_user_data(request)
+
+    """
+    Formato JSON (niente di che)
+    {
+        new_cat_name: <nome>
+    }
+    """
+
+    name = data["new_cat_name"]
+
+    Category.objects.create(user=user, name=name)
+
+    return HttpResponse("Boh non saprei come una cosa così potrebbe fallire tbh", status=200)

@@ -1,3 +1,4 @@
+import json
 from typing import Union
 
 from django.contrib import messages
@@ -72,3 +73,10 @@ def move_object(current_pos: int, new_pos: int, parent_obj: Union[Board, List], 
                                              position__range=range(new_pos, current_pos - 1)):
                 c.position += 1
                 c.save()
+
+
+def get_user_data(request) -> tuple:
+    user = get_authenticated_user(request)
+    data = json.loads(request.body)
+
+    return user, data

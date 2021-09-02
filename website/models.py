@@ -35,7 +35,7 @@ class Board(Model):
     )
     category = models.ForeignKey(
         Category,
-        on_delete=models.DO_NOTHING,
+        on_delete=models.SET_NULL,
         blank=True,
         null=True
     )

@@ -11,11 +11,14 @@
     <form class="row mx-3">
         <div class="mb-3">
             <label for="categoryName" class="form-label">Nome</label>
-            <input type="text" class="form-control" id="categoryName" aria-describedby="emailHelp">
+            <input type="text" class="form-control" id="categoryName">
         </div>
     </form>
 {% endblock %}
 
 {% block modal_script %}
+    <script>
+        const new_cat_url = "{% url 'create-category' %}"
+    </script>
     <script src="{% static 'js/modals/new_category.js' %}"></script>
 {% endblock %}
