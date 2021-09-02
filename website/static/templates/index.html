@@ -35,7 +35,7 @@
 
         <div class="dropdown nav-item">
             <!-- tasto per le impostazioni -->
-            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="settings-dropdown"
+            <a class="btn btn-secondary dropdown-toggle navbar-btn" href="#" role="button" id="settings-dropdown"
                data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="fa fa-cog" aria-hidden="true"></i>
             </a>
@@ -52,8 +52,8 @@
         {% block authenticated_functions %}
         {% endblock %}
     {% else %}
-        <a class="btn btn-secondary nav-item" href="{% url 'login' %}" role="button">Login</a>
-        <a class="btn btn-secondary nav-item" href="{% url 'register' %}" role="button">Registrati</a>
+        <a class="btn btn-secondary nav-item navbar-btn" href="{% url 'login' %}" role="button">Login</a>
+        <a class="btn btn-secondary nav-item navbar-btn" href="{% url 'register' %}" role="button">Registrati</a>
     {% endif %}
 </nav>
 

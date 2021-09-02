@@ -3,7 +3,7 @@
 
 
 {% block modal_wrapper %}
-    {% with modalID="cardModal" object="Aggiungi una scheda" okFunction="ok_newCard()" %}
+    {% with modalID="newCardModal" object="Aggiungi una scheda" okFunction="ok_newCard()" %}
         {{ block.super }}
     {% endwith %}
 {% endblock %}

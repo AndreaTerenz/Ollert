@@ -1,6 +1,6 @@
 var target_list = ""
 
-addOnShowListener("cardModal", e => {
+addOnShowListener("newCardModal", e => {
     let button = e.relatedTarget
     target_list = button.getAttribute("data-bs-list")
 })
@@ -23,7 +23,7 @@ function ok_newCard() {
         }
     }
 
-    make_modal_request(data, new_card_url, "cardModal", (data) => {
+    make_modal_request(data, new_card_url, "newCardModal", (data) => {
         list.insertAdjacentHTML("beforeend", data)
     })
 }

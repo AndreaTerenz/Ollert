@@ -1,0 +1,25 @@
+{% extends "modals/base_modal.html" %}
+{% load static %}
+
+
+{% block modal_wrapper %}
+    {% with modalID="cardModal" object="Visualizza scheda" okFunction="ok_viewCard()" %}
+        {{ block.super }}
+    {% endwith %}
+{% endblock %}
+
+{% block modal_body %}
+    <form class="row mx-3">
+        <div class="mb-3 fs-3" id="cardModalTItle"></div>
+        <div class="mb-3 py-1 px-2 bg-secondary rounded rounded-3">
+            <p class="text-muted m-2" id="cardModalDescr">Nessuna descrizione</p>
+        </div>
+    </form>
+{% endblock %}
+
+{% block modal_script %}
+    <script>
+        const edit_card_url = '{% url "edit-board-content" %}'
+    </script>
+    <script src="{% static 'js/modals/view_card.js' %}"></script>
+{% endblock %}

@@ -48,8 +48,16 @@
         </div>
     </div>
 
-    {% include "modals/card_modal.html" %}
+    {% include "modals/new_card_modal.html" %}
+    {% include "modals/view_card_modal.html" %}
     {% include "modals/new_list_modal.html" with board=board_name %}
     {% include "modals/share_modal.html" %}
 {% endblock %}
 
+{% block extra-scripts %}
+    <script>
+        function cardClicked(title) {
+            console.log(title)
+        }
+    </script>
+{% endblock %}

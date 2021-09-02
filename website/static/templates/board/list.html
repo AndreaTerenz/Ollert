@@ -2,12 +2,12 @@
     <div class="card-header fw-bold fs-4 text-center">{{ title }}</div>
     <div id='{{ id }}' class="cards-list rounded-bottom overflow-auto pb-3 mb-3">
         {% for card in cards %}
-            {% include 'board/card.html' with description=card.card_descr title=card.card_title %}
+            {% include 'board/card.html' with data=card %}
         {% endfor %}
     </div>
     <div class="card me-auto">
         <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                data-bs-target="#cardModal" data-bs-list='{{ id }}'>
+                data-bs-target="#newCardModal" data-bs-list='{{ id }}'>
             <span class="fa fa-plus pe-2"></span>Aggiungi una scheda
         </button>
     </div>
