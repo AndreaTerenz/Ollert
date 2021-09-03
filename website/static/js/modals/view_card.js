@@ -9,15 +9,15 @@ addOnShowListener("cardModal", e => {
 
     document.getElementById("cardModalTItle").innerText = card_data.card_title
 
-    let card_descr = document.getElementById("cardModalDescr")
+    let description = document.getElementById("cardModalDescr")
 
     if (card_data.card_descr !== "") {
         document.getElementById("cardModalDescr").innerText = card_data.card_descr
-        card_descr.classList.remove("text-muted")
+        description.classList.remove("text-muted")
     }
     else {
         document.getElementById("cardModalDescr").innerText = "Nessuna descrizione"
-        card_descr.classList.add("text-muted")
+        description.classList.add("text-muted")
     }
 })
 

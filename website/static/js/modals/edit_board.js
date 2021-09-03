@@ -1,10 +1,9 @@
-var board_to_edit = ""
 var initial_data
 var edit_modal
 
 addOnShowListener("editBoardModal", event => {
     let button = event.relatedTarget
-    board_to_edit = button.getAttribute("data-bs-board")
+    let board_to_edit = button.getAttribute("data-bs-board")
     initial_data = JSON.parse(document.getElementById(board_to_edit + '_json').textContent);
     edit_modal = document.getElementById("editBoardModal")
 
@@ -16,7 +15,7 @@ addOnShowListener("editBoardModal", event => {
 function ok_editBoard() {
     let edits = []
     let request_data = {
-        "board_name": board_to_edit,
+        "board_name": initial_data.name,
         "edits": []
     }
 
