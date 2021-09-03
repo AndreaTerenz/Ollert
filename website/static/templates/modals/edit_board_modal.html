@@ -32,6 +32,9 @@
 {% endblock %}
 
 {% block modal_script %}
-    <script src="{% static 'js/modals/modify_board.js' %}"></script>
+    <script>
+        const edit_board_url = "{% url 'edit-board' %}"
+    </script>
+    <script src="{% static 'js/modals/edit_board.js' %}"></script>
 {% endblock %}
 

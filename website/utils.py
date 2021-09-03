@@ -41,6 +41,16 @@ def get_user_boards(user):
     return boards
 
 
+def get_user_category(user, name):
+    if name == "NaN":
+        return None
+
+    try:
+        return Category.objects.get(user=user, name=name)
+    except ObjectDoesNotExist:
+        return None
+
+
 def get_user_categories(user):
     cats = []
     for c in Category.objects.filter(user=user):

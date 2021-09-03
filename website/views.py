@@ -16,7 +16,7 @@ from .forms import NewUserForm
 from .utils import *
 
 
-ic.disable()
+#ic.disable()
 
 
 @require_http_methods(["GET", "HEAD", "POST"])
@@ -202,34 +202,38 @@ def edit_board(request):
     """
     Formato JSON:
     {
-        target_field: <name|category|favorite|background|description>
         board: <nome board da modificare>
-        new_value: <nuovo valore per il target_field>
+        edits: <lista delle modifiche da fare alla board in formato:>
+            target_field: <name|category|favorite|background|description>
+            new_value: <nuovo valore per il target_field>
     }
     """
 
-    field = data["target_field"]
     board_name = data["board_name"]
-    new_value = data["new_value"]
 
     # FIXME: bisognerebbe capire bene cosa ritornare invece di mere HttpResponse
     if board_obj := get_user_board(user, board_name):
-        # DIO COME VOGLIO UNO SWITCH IN PYTHON
-        if field == "name":
-            if not (get_user_board(user, new_value)):
-                board_obj.name = new_value
-            else:
-                return HttpResponse(f"Board {new_value} already exists for this user", status=406)
-        elif field == "category":
-            board_obj.category = Category.objects.get(user=user, name=new_value)
-        elif field == "description":
-            board_obj.description = new_value
-        elif field == "favorite":
-            board_obj.favorite = new_value
-        elif field == "background":
-            board_obj.background = new_value
+        for edit in ic(data["edits"]):
+            field = edit["target_field"]
+            new_value = edit["new_value"]
+
+            # DIO COME VOGLIO UNO SWITCH IN PYTHON
+            if field == "name":
+                if not (get_user_board(user, new_value)):
+                    board_obj.name = new_value
+                else:
+                    return HttpResponse(f"Board {new_value} already exists for this user", status=406)
+            elif field == "category":
+                board_obj.category = get_user_category(user, new_value)
+            elif field == "description":
+                board_obj.description = new_value
+            elif field == "favorite":
+                board_obj.favorite = new_value
+            elif field == "background":
+                board_obj.background = new_value
+
         board_obj.save()
-        return HttpResponse(f"Board field '{field}' changed", status=200)
+        return render(request, "profile/profile-boards-list.html", context={"boards": get_user_boards(user)})
     else:
         return HttpResponse(f"Board {board_name} not found", status=406)
 

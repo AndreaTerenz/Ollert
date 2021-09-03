@@ -6,12 +6,15 @@
     {% for board in boards %}
         {% with name=board.name favorite=board.favorite category=board.category %}
             <li class="list-group-item fs-5 d-flex justify-content-between align-items-start">
+                {% with json_id=name|add:"_json" %}
+                    {{ board|json_script:json_id }}
+                {% endwith %}
                 <a class="me-auto" href="{% url 'get-board' name=name %}">{{ name }}</a>
                 {% if favorite %}
                     <i class="fa fa-star my-auto"></i>
                 {% endif %}
                 {% if category %}
-                    <span class="simil-icon my-auto fs-6 bg-primary p-1 rounded">{{ board.category }}</span>
+                    <span class="simil-icon my-auto fs-6 bg-primary p-1 rounded">{{ category }}</span>
                 {% endif %}
                 <div class="btn-group" role="group">
                     <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle"
