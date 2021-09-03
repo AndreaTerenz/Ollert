@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from icecream import ic
 
-from website.models import Board, List, Card
+from website.models import Board, List, Card, Category
 
 
 def handle_form_errors(request, form, header):
@@ -30,11 +30,22 @@ def get_user_board(user, name):
 def get_user_boards(user):
     boards = []
     for b in Board.objects.filter(user=user):
-        boards.append({
+        data = {
             "name": b.name,
             "favorite": b.favorite
-        })
+        }
+        if cat := b.category:
+            data.update({"category": cat.name})
+
+        boards.append(data)
     return boards
+
+
+def get_user_categories(user):
+    cats = []
+    for c in Category.objects.filter(user=user):
+        cats.append(c.name)
+    return cats
 
 
 def get_list_in_board(pos, parent_board: Board):

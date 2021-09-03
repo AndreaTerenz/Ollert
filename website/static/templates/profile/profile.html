@@ -34,7 +34,7 @@
 
     <!-- Modal -->
     {% csrf_token %}
-    {% include "modals/new_board_modal.html" %}
+    {% include "modals/new_board_modal.html" with categories=categories %}
     {% include "modals/new_category_modal.html" %}
     {% include "modals/modify_board_modal.html" %}
     {% include "modals/delete_board_modal.html" %}

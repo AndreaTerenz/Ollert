@@ -16,7 +16,7 @@ from .forms import NewUserForm
 from .utils import *
 
 
-# ic.disable()
+ic.disable()
 
 
 @require_http_methods(["GET", "HEAD", "POST"])
@@ -70,7 +70,8 @@ def profile(request):
     user = get_authenticated_user(request)
     data = {
         'propic': user.profile_pic.name,
-        "boards": get_user_boards(user)
+        "boards": get_user_boards(user),
+        "categories": get_user_categories(user)
     }
 
     return render(request, 'profile/profile.html', status=200, context=data)
