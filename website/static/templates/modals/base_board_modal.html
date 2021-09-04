@@ -1,0 +1,36 @@
+{% extends "modals/base_modal.html" %}
+{% load static %}
+
+
+{% block modal_wrapper %}
+    {% with modalID=modalID okFunction=okFunction object=object %}
+        {{ block.super }}
+    {% endwith %}
+{% endblock %}
+
+
+{% block modal_body %}
+    <form class="row mx-3">
+        <div class="mb-3">
+            <label for="boardName" class="form-label">Nome</label>
+            <input type="text" style="color: white" class="form-control" id="boardName" aria-describedby="emailHelp">
+        </div>
+        <div class="mb-3">
+            <label for="selectCategory" class="form-label">Categoria</label>
+            <select class="form-select" id="selectCategory" aria-label="Default select example">
+                <option selected value="NaN">Nessuna</option>
+                {% for cat in categories %}
+                    <option value="{{ cat }}">{{ cat }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="boardDescription" class="form-label">Descrizione</label>
+            <textarea class="form-control" id="boardDescription" rows="3"></textarea>
+        </div>
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="favoriteCheck">
+            <label class="form-check-label" for="favoriteCheck">Preferito</label>
+        </div>
+    </form>
+{% endblock %}

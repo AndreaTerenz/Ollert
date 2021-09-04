@@ -1,4 +1,4 @@
-const edit_modal = document.getElementById("editBoardModal")
+var edit_modal
 var initial_data
 
 addOnShowListener("editBoardModal", event => {
@@ -6,6 +6,7 @@ addOnShowListener("editBoardModal", event => {
     let board_to_edit = button.getAttribute("data-bs-board")
     initial_data = JSON.parse(document.getElementById(board_to_edit + '_json').textContent);
 
+    edit_modal = document.getElementById("editBoardModal")
     edit_modal.querySelector("#boardName").value = initial_data.name
     edit_modal.querySelector("#boardDescription").value = (initial_data.description) ? initial_data.description : ""
     edit_modal.querySelector("#selectCategory").value = (initial_data.category) ? initial_data.category : "NaN"

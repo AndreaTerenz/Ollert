@@ -1,9 +1,10 @@
 function ok_newBoard() {
+    let modal = document.getElementById("newBoardModal")
     let data = {
-        name : document.getElementById("boardName").value,
-        category : document.getElementById("selectCategory").value,
-        description: document.getElementById("boardDescription").value,
-        favorite : document.getElementById("favoriteCheck").checked
+        name : modal.querySelector("#boardName").value,
+        category : modal.querySelector("#selectCategory").value,
+        description: modal.querySelector("#boardDescription").value,
+        favorite : modal.querySelector("#favoriteCheck").checked
     }
 
     make_modal_request(data, new_board_url, "newBoardModal", (data) => {
