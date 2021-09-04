@@ -10,10 +10,17 @@
 
 {% block modal_body %}
     <form class="row mx-3">
-        <div class="mb-3 fs-3" id="cardModalTItle"></div>
-        <div class="mb-3 py-1 px-2 bg-secondary rounded rounded-3">
-            <p class="text-muted m-2" id="cardModalDescr">Nessuna descrizione</p>
+        <div class="mb-3">
+            <label for="cardModalTItle" class="form-label">Titolo</label>
+            <div class="form-control" aria-describedby="emailHelp" id="cardModalTItle"></div>
         </div>
+        <div class="mb-3">
+            <label for="cardModalDescr" class="form-label">Descrizione</label>
+            <div class="form-control" aria-describedby="emailHelp" id="cardModalDescr">
+                <p class="text-muted m-2" id="cardModalDescr">Nessuna descrizione</p>
+            </div>
+        </div>
+
     </form>
 {% endblock %}
 

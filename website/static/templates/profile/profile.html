@@ -25,11 +25,30 @@
                         categoria</a></li>
                 </ul>
             </div>
+
+            <div class="col dropdown">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" onclick="getValue()">
+                    <label class="form-check-label" for="flexSwitchCheckDefault">Categorie</label>
+                </div>
+
+                {% comment %}<fieldset>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" checked="false">
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Categorie</label>
+                    </div>
+                </fieldset>{% endcomment %}
+            </div>
         </div>
 
-        <ul class="row list-group" id='list'>
+
+        <ul class="row list-group" id='board-list'>
             {% include 'profile/profile-boards-list.html' with boards=boards %}
         </ul>
+        <ul class="row list-group" id='category-list' style="display:none">
+            {% include 'profile/profile-category-list.html' with category=categories %}
+        </ul>
+
     </div>
 
     <!-- Modal -->
@@ -38,4 +57,10 @@
     {% include "modals/new_category_modal.html" %}
     {% include "modals/board modals/edit_board_modal.html" %}
     {% include "modals/board modals/delete_board_modal.html" %}
+
+    <script src="{% static 'js/modals/switch_category.js' %}"></script>
+
 {% endblock %}
+
+
+

@@ -1,0 +1,9 @@
+<li class="list-group-item bg-info">
+    <h4 class="list-group-item-heading fw-bold">Le tue categorie</h4>
+</li>
+
+{% if category|length > 0 %}
+    <!-- aggiungere codice per rendere visibili le categorie -->
+{% else %}
+    <li class="list-group-item align-content-center" style="color:gray;">Nessuna categoria trovata...</li>
+{% endif %}
