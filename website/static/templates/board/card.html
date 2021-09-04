@@ -1,5 +1,6 @@
 <button class="card mx-auto text-white bg-info mt-3" data-bs-toggle="modal"
-        data-bs-target="#cardModal" data-bs-card-data="{{ data|escape }}" style="width: 300px">
+        data-bs-target="#cardModal" data-bs-card-json="{{ data.card_json_id }}" style="width: 300px">
+    {{ data|json_script:data.card_json_id }}
     <div class="card-header bg-info">
         {{ data.card_title }}
     </div>

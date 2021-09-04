@@ -126,10 +126,11 @@ def board(request, name):
                 "list_id": f"list_{len(lists) + 1}",
                 "list_cards": []
             }
-            for c_obj in get_cards_in_list(l_obj):
+            for idx, c_obj in enumerate(get_cards_in_list(l_obj)):
                 c = {
                     "card_title": c_obj.title,
-                    "card_descr": c_obj.description
+                    "card_descr": c_obj.description,
+                    "card_json_id": f"{l_obj.title}_{idx}_json"
                 }
                 # FIXME: Temporaneo
                 l["list_cards"].append(c)
