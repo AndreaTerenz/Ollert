@@ -11,3 +11,19 @@
 .col-auto {
     margin-bottom: auto;
 }
+
+.cards-list > .card {
+    background: #3498DB;
+
+    &:hover {
+        background: #105e90;
+    }
+}
+
+.show-on-hover {
+    display: none;
+
+    .card:hover &, &:checked {
+        display: inline;
+    }
+}

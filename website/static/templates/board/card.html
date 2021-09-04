@@ -1,12 +1,15 @@
-<button class="card mx-auto text-white bg-info mt-3" data-bs-toggle="modal"
-        data-bs-target="#cardModal" data-bs-card-json="{{ data.card_json_id }}" style="width: 300px">
+<div class="card mx-auto text-white mt-3" style="width: 300px">
     {{ data|json_script:data.card_json_id }}
-    <div class="card-header bg-info">
-        {{ data.card_title }}
+    <div class="card-header" style="background: rgba(0,0,0,0)">
+        <span class="m-auto" data-bs-toggle="modal"
+              data-bs-target="#cardModal" data-bs-card-json="{{ data.card_json_id }}">{{ data.card_title }}</span>
+        <input class="form-check-input card-checkbox show-on-hover float-end" type="checkbox" value=""
+               id="flexCheckDefault" onclick="diocane()">
     </div>
-    <div class="card-body">
+    <div class="card-body" data-bs-toggle="modal"
+         data-bs-target="#cardModal" data-bs-card-json="{{ data.card_json_id }}">
         {% if data.card_descr %}
             <label><i class="fa fa-align-left"></i></label>
         {% endif %}
     </div>
-</button>
+</div>
