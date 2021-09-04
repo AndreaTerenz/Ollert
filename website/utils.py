@@ -32,7 +32,8 @@ def get_user_boards(user):
     for b in Board.objects.filter(user=user):
         data = {
             "name": b.name,
-            "favorite": b.favorite
+            "favorite": b.favorite,
+            "description": b.description
         }
         if cat := b.category:
             data.update({"category": cat.name})

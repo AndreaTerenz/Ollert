@@ -24,9 +24,13 @@
                 {% endfor %}
             </select>
         </div>
-        <div class="mb-3 form-check">
+        <div class="mb-3">
+            <label for="boardDescription" class="form-label">Descrizione</label>
+            <textarea class="form-control" id="boardDescription" rows="3"></textarea>
+        </div>
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="favoriteCheck">
             <label class="form-check-label" for="favoriteCheck">Preferito</label>
-            <input type="checkbox" class="form-check-input" id="favoriteCheck">
         </div>
     </form>
 {% endblock %}
