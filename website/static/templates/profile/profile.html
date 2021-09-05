@@ -26,19 +26,42 @@
                 </ul>
             </div>
 
-            <div class="col dropdown">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" onclick="getValue()">
-                    <label class="form-check-label" for="flexSwitchCheckDefault">Categorie</label>
-                </div>
-
-                {% comment %}<fieldset>
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" checked="false">
-                        <label class="form-check-label" for="flexSwitchCheckDefault">Categorie</label>
-                    </div>
-                </fieldset>{% endcomment %}
+            <div class="col-auto">
+                <label class="toggleSwitch nolabel" onclick="getValue()">
+                    <input type="checkbox" id="flexSwitchCheckDefault"/>
+                    <a></a>
+                    <span>
+                        <span class="left-span">Board</span>
+                        <span class="right-span">Categorie</span>
+                    </span>
+                </label>
             </div>
+
+            <div class="col-auto dropdown float-end">
+                <button class="btn bg-info dropdown-toggle" type="button" id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-tasks"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
+                    <li>
+                        <a class="dropdown-item"><input type="checkbox" value="" id="flexCheckDefault">Preferiti</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item"><input type="checkbox" value="" id="flexCheckDefault">Non classificate</a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    {% for category in categories %}
+                        {% with name=category %}
+                            <li>
+                                <a class="dropdown-item"> <input type="checkbox" value="" id="flexCheckDefault">{{ name }}</a>
+                            </li>
+                        {% endwith %}
+                    {% endfor %}
+                </ul>
+            </div>
+
+
         </div>
 
 
