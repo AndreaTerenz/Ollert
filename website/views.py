@@ -130,7 +130,7 @@ def board(request, name):
                 c = {
                     "card_title": c_obj.title,
                     "card_descr": c_obj.description,
-                    "card_json_id": f"{l_obj.title}_{idx}_json"
+                    "card_unique_id": f"{l_obj.title}_{idx}"
                 }
                 # FIXME: Temporaneo
                 l["list_cards"].append(c)

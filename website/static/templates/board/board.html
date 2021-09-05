@@ -26,13 +26,26 @@
 {% endblock %}
 
 {% block content %}
-    <div class="row my-3 flex-grow">
+    <div class="row mt-3">
         <h2 class="fw-bold text-center">{{ board_name }}</h2>
         {% if board_description %}
-            <p class="text-center">{{ board_description }}</p>
+            <p class="text-center ">{{ board_description }}</p>
         {% endif %}
     </div>
-
+    <div class="row m-auto my-1 dropup">
+        <button class="col-auto btn bg-info dropdown-toggle" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="fa fa-edit fs-5"></span>
+        </button>
+        <ul class="dropdown-menu col-auto" aria-labelledby="dropdownMenuButton1">
+            <li>
+                <button class="dropdown-item disabled" id="deleteCardsBtn">Elimina</button>
+            </li>
+            <li>
+                <button class="dropdown-item disabled" id="moveCardsBtn">Sposta</button>
+            </li>
+        </ul>
+    </div>
     <div class="row m-auto h-100 flex-nowrap overflow-auto" id="main-row">
         {% for list in board_lists %}
             {% include 'board/list.html' with id=list.list_id title=list.list_title cards=list.list_cards %}
@@ -55,9 +68,5 @@
 {% endblock %}
 
 {% block extra-scripts %}
-    <script>
-    function diocane() {
-        console.log("dioboia")
-    }
-    </script>
+    <script src="{% static 'js/board.js' %}"></script>
 {% endblock %}

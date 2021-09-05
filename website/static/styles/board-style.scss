@@ -12,18 +12,22 @@
     margin-bottom: auto;
 }
 
+$card-bg: #3498DB;
+$card-hover-bg: #105e90;
+
 .cards-list > .card {
-    background: #3498DB;
+    background: $card-bg;
 
     &:hover {
-        background: #105e90;
+        background: $card-hover-bg;
     }
 }
 
 .show-on-hover {
-    display: none;
+    visibility: hidden;
 
     .card:hover &, &:checked {
-        display: inline;
+        visibility: visible;
+        box-shadow: 0 0 8px $card-bg;
     }
 }
