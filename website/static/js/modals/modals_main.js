@@ -35,6 +35,7 @@ function make_modal_request(input_data, url, modalID, after) {
             after(data)
         }
 
-        closeModal(modalID)
+        if (modalID)
+            closeModal(modalID)
     })
 }

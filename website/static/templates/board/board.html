@@ -39,7 +39,7 @@
         </button>
         <ul class="dropdown-menu col-auto" aria-labelledby="dropdownMenuButton1">
             <li>
-                <button class="dropdown-item disabled" id="deleteCardsBtn">Elimina</button>
+                <button class="dropdown-item disabled" id="deleteCardsBtn" onclick="batchDeleteCards()">Elimina</button>
             </li>
             <li>
                 <button class="dropdown-item disabled" id="moveCardsBtn">Sposta</button>
@@ -68,5 +68,10 @@
 {% endblock %}
 
 {% block extra-scripts %}
+    <script>
+        const currentBoard = "{{ board_name }}"
+        console.log(currentBoard)
+        const del_board_things_url = "{% url 'delete-board-content' %}"
+    </script>
     <script src="{% static 'js/board.js' %}"></script>
 {% endblock %}

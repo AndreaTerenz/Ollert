@@ -10,7 +10,7 @@
 
 {% block modal_body %}
     <form class="row mx-3">
-        <div class="col-sm-8">
+        <div class="col">
             <div class="mb-3 col-auto">
                 <label for="cardName" class="form-label">Titolo</label>
                 <input type="text" style="color: white" class="form-control" id="cardName" aria-describedby="emailHelp">
@@ -30,21 +30,24 @@
                 <input class="form-control" type="file" id="imageButton">
             </div>
         </div>
-        <div class="col">
+        <div class="col-4 gy-5">
             <div class="row">
-                <button type="button" class="btn btn-outline-info form-control" onclick="toggleElements('date-picker')">Data</button>
-            </div>
-
-            <div class="row">
-                <button type="button" class="btn btn-outline-info form-control" onclick="toggleElements('image-picker')">Immagine</button>
-            </div>
-
-            <div class="row">
-                <button type="button" id="buttonChecklist" class="btn btn-outline-info form-control"
-                        onclick="showChecklist()">Checklist
+                <button type="button" class="btn btn-outline-info form-control" onclick="toggleElement('date-picker')">
+                    Data
                 </button>
-                <div id="container" class="mt-2 mb-3" style="display:none">
-                </div>
+            </div>
+
+            <div class="row">
+                <button type="button" class="btn btn-outline-info form-control" onclick="toggleElement('image-picker')">
+                    Immagine
+                </button>
+            </div>
+
+            <div class="row">
+                <button type="button" id="buttonChecklist"
+                        class="btn btn-outline-info form-control" {%comment%}onclick="showChecklist()"{%endcomment%}>
+                    Checklist
+                </button>
             </div>
         </div>
     </form>

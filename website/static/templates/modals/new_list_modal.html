@@ -19,7 +19,6 @@
 
 {% block modal_script %}
     <script>
-        const targetBoard = "{{ board }}"
         const new_list_url = "{% url 'create-board-content' %}"
     </script>
     <script src="{% static 'js/modals/new_list.js' %}"></script>

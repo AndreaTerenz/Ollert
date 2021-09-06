@@ -7,25 +7,27 @@ addOnShowListener("newCardModal", e => {
 
 function ok_newCard() {
     let name = document.getElementById("cardName").value;
-    let description = document.getElementById("cardDescription").value;
-    let list = document.getElementById(target_list);
-    let template = document.getElementById('cardTemplate');
 
-    let data = {
-        "target_type": "card",
-        "target_id": {
-            "target_id_board": targetBoard,
-            "target_id_list": target_list.replace("list_", "")
-        },
-        "new_data": {
-            "card_name": name,
-            "card_descr": description
+    if (name) {
+        let description = document.getElementById("cardDescription").value;
+        let list = document.getElementById(target_list);
+
+        let data = {
+            "target_type": "card",
+            "target_id": {
+                "target_id_board": currentBoard,
+                "target_id_list": target_list.replace("list_", "")
+            },
+            "new_data": {
+                "card_name": name,
+                "card_descr": description
+            }
         }
-    }
 
-    make_modal_request(data, new_card_url, "newCardModal", (data) => {
-        list.insertAdjacentHTML("beforeend", data)
-    })
+        make_modal_request(data, new_card_url, "newCardModal", (data) => {
+            list.insertAdjacentHTML("beforeend", data)
+        })
+    }
 }
 
 // grazie stackoverlow
@@ -33,20 +35,13 @@ function truncate(str, n) {
     return (str.length > n) ? str.substr(0, n - 1) + '...' : str;
 }
 
-/*function showImage() {
-    let image_picker = document.getElementById("image-picker");
-    let visibility = image_picker.style.display;
-
-    if (visibility==='none')
-        image_picker.style.display = "block";
-    else image_picker.style.display = "none";*/
-
-function toggleElements(id_element) {
+function toggleElement(id_element) {
     let elements = document.getElementById(id_element);
     let visibility = elements.style.display;
 
-    if (visibility==='none')
+    if (visibility === 'none')
         elements.style.display = "block";
-    else elements.style.display = "none";
+    else
+        elements.style.display = "none";
 }
 

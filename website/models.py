@@ -74,6 +74,7 @@ class List(Model):
     )
     title = models.CharField(
         max_length=64,
+        blank=False
     )
     cards_count = models.PositiveSmallIntegerField(
         default=0,
@@ -102,6 +103,7 @@ class Card(Model):
     )
     title = models.CharField(
         max_length=128,
+        blank=False
     )
     description = models.CharField(
         max_length=300,

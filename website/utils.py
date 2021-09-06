@@ -61,6 +61,7 @@ def get_user_categories(user):
 
 def get_list_in_board(pos, parent_board: Board):
     try:
+        ic(parent_board.user)
         return List.objects.get(pos, user=parent_board.user, board=parent_board)
     except ObjectDoesNotExist:
         return None

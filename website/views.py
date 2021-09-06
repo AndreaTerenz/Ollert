@@ -16,7 +16,7 @@ from .forms import NewUserForm
 from .utils import *
 
 
-#ic.disable()
+# ic.disable()
 
 
 @require_http_methods(["GET", "HEAD", "POST"])
@@ -130,7 +130,8 @@ def board(request, name):
                 c = {
                     "card_title": c_obj.title,
                     "card_descr": c_obj.description,
-                    "card_unique_id": f"{l_obj.title}_{idx}"
+                    "card_unique_id": f"{l_obj.position}_{idx+1}",
+                    "card_json_id": f"{l_obj.position}_{idx+1}_json",
                 }
                 # FIXME: Temporaneo
                 l["list_cards"].append(c)
@@ -314,7 +315,11 @@ def create_board_content(request):
             trgt_list.cards_count += 1
             trgt_list.save()
 
-            data = ic({"card_title": trgt_content["card_name"], "card_descr": trgt_content.get("card_descr", None)})
+            data = {
+                "card_title": trgt_content["card_name"],
+                "card_descr": trgt_content.get("card_descr", None),
+                "card_unique_id": f"{trgt_list.position}_{pos}"
+            }
 
             return render(request, "board/card.html", context={"data": data})
     else:
@@ -331,25 +336,41 @@ def delete_board_content(request):
     Formato JSON:
     
     {
-        target_type: <list|card>
-        target_id: {
-            target_id_board: <nome della board>
-            target_id_list: <id della lista>
-            [target_id_card: <id della card>]       se bisogna eliminare una card
-        }
+        board: <nome della board>
+        targets: <lista di oggetti da eliminare nel formato:>
+            target_type: <list|card>
+            target_id: {
+                target_id_list: <id della lista>
+                [target_id_card: <id della card>]       se bisogna eliminare una card
+            }
     }
     """
+    ic(data)
+    if parent_board := get_user_board(user, data["board"]):
+        for target in data["targets"]:
+            trgt_type = target["target_type"]
+            ic(target, parent_board)
+            trgt_list = List.objects.get(position=target["target_id"]["target_id_list"], board=parent_board,
+                                         user=parent_board.user)
 
-    trgt_type = data["target_type"]
+            if trgt_type == "list":
+                trgt_list.delete()
+                for l in List.objects.filter(user=user, board=parent_board, position__gt=trgt_list.position):
+                    l.position -= 1
+                    l.save()
+                parent_board.lists_count -= 1
+            elif trgt_type == "card":
+                trgt_card = Card.objects.get(position=target["target_id"]["target_id_card"],
+                                             list=trgt_list,
+                                             board=parent_board,
+                                             user=user)
 
-    if trgt_board := get_user_board(user, data["target_id"]["target_id_board"]):
-        trgt_list = List.objects.get(board=trgt_board, position=data["target_id"]["target_id_list"])
-
-        if trgt_type == "list":
-            trgt_list.delete()
-        elif trgt_type == "card":
-            trgt_card = Card.objects.get(list=trgt_list, position=data["target_id"]["target_id_card"])
-            trgt_card.delete()
+                trgt_card.delete()
+                for c in Card.objects.filter(user=user, board=parent_board, list=trgt_list,
+                                             position__gt=trgt_card.position):
+                    c.position -= 1
+                    c.save()
+                trgt_list.cards_count -= 1
 
         return HttpResponse("Content deleted", status=200)
     else:
