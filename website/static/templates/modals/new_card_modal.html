@@ -19,15 +19,39 @@
             <textarea class="form-control" id="cardDescription" rows="3"
                       placeholder="Aggiungi una descrizione più dettagliata..."></textarea>
         </div>
-        <div class="mb-3">
-            <label for="imageButton" class="form-label">Immagine</label>
-            <input class="form-control" type="file" id="imageButton">
+        <div class="col">
+            <button type="button" class="btn btn-outline-info form-control" onclick="showImage()">Immagine</button>
+            <div class="mt-2 mb-3" id='image-picker' style="display:none">
+                <label for="imageButton" class="form-label">Immagine</label>
+                <input class="form-control" type="file" id="imageButton">
+            </div>
         </div>
-        <div class="mb-3">
-            <label for="date1">Data</label>
-            <input class="form-control" value="30/10/1999" id="date1" type="datetime-local"
-                   placeholder="Inserisci la data in formato gg/mm/aaaa">
+        <div class="row">
+            <div class="col">
+                <button type="button" class="btn btn-outline-info form-control" onclick="showData()">Data</button>
+                <div class="mt-2 mb-3" id="date-picker" style="display:none">
+                    <label for="date1" class="form-label">Data</label>
+                    <input class="form-control" value="30/10/1999" id="date1" type="datetime-local"
+                           placeholder="Inserisci la data in formato gg/mm/aaaa">
+                </div>
+            </div>
         </div>
+
+        <div class="row">
+            <div class="col">
+                <button type="button" class="btn btn-outline-info form-control">Checklist</button>
+                <div class="mt-2 mb-3" id="date-picker" style="display:none">
+                    <label for="date1" class="form-label">Data</label>
+                    <input class="form-control" value="30/10/1999" id="date1" type="datetime-local"
+                           placeholder="Inserisci la data in formato gg/mm/aaaa">
+                </div>
+
+            </div>
+        </div>
+
+
+        {% comment %}
+        {% endcomment %}
     </form>
 {% endblock %}
 

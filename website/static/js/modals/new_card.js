@@ -31,4 +31,17 @@ function ok_newCard() {
 // grazie stackoverlow
 function truncate(str, n) {
     return (str.length > n) ? str.substr(0, n - 1) + '...' : str;
+}
+
+function showImage() {
+    let image_picker = document.getElementById("image-picker");
+    image_picker.style.display = "block";
+}
+
+function showData() {
+    let date_picker = document.getElementById("date-picker")
+    date_picker.style.display = "block";
+
+
+
 };
