@@ -33,15 +33,20 @@ function truncate(str, n) {
     return (str.length > n) ? str.substr(0, n - 1) + '...' : str;
 }
 
-function showImage() {
+/*function showImage() {
     let image_picker = document.getElementById("image-picker");
-    image_picker.style.display = "block";
+    let visibility = image_picker.style.display;
+
+    if (visibility==='none')
+        image_picker.style.display = "block";
+    else image_picker.style.display = "none";*/
+
+function toggleElements(id_element) {
+    let elements = document.getElementById(id_element);
+    let visibility = elements.style.display;
+
+    if (visibility==='none')
+        elements.style.display = "block";
+    else elements.style.display = "none";
 }
 
-function showData() {
-    let date_picker = document.getElementById("date-picker")
-    date_picker.style.display = "block";
-
-
-
-};

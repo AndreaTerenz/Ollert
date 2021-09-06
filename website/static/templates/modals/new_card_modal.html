@@ -10,48 +10,43 @@
 
 {% block modal_body %}
     <form class="row mx-3">
-        <div class="mb-3">
-            <label for="cardName" class="form-label">Titolo</label>
-            <input type="text" style="color: white" class="form-control" id="cardName" aria-describedby="emailHelp">
-        </div>
-        <div class="mb-3">
-            <label for="cardDescription" class="form-label">Descrizione</label>
-            <textarea class="form-control" id="cardDescription" rows="3"
-                      placeholder="Aggiungi una descrizione più dettagliata..."></textarea>
-        </div>
-        <div class="col">
-            <button type="button" class="btn btn-outline-info form-control" onclick="showImage()">Immagine</button>
+        <div class="col-sm-8">
+            <div class="mb-3 col-auto">
+                <label for="cardName" class="form-label">Titolo</label>
+                <input type="text" style="color: white" class="form-control" id="cardName" aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3 col-auto">
+                <label for="cardDescription" class="form-label">Descrizione</label>
+                <textarea class="form-control" id="cardDescription" rows="3"
+                          placeholder="Aggiungi una descrizione più dettagliata..."></textarea>
+            </div>
+            <div class="mt-2 mb-3" id="date-picker" style="display:none">
+                <label for="date1" class="form-label">Data</label>
+                <input class="form-control" value="30/10/1999" id="date1" type="datetime-local"
+                       placeholder="Inserisci la data in formato gg/mm/aaaa">
+            </div>
             <div class="mt-2 mb-3" id='image-picker' style="display:none">
                 <label for="imageButton" class="form-label">Immagine</label>
                 <input class="form-control" type="file" id="imageButton">
             </div>
         </div>
-        <div class="row">
-            <div class="col">
-                <button type="button" class="btn btn-outline-info form-control" onclick="showData()">Data</button>
-                <div class="mt-2 mb-3" id="date-picker" style="display:none">
-                    <label for="date1" class="form-label">Data</label>
-                    <input class="form-control" value="30/10/1999" id="date1" type="datetime-local"
-                           placeholder="Inserisci la data in formato gg/mm/aaaa">
+        <div class="col">
+            <div class="row">
+                <button type="button" class="btn btn-outline-info form-control" onclick="toggleElements('date-picker')">Data</button>
+            </div>
+
+            <div class="row">
+                <button type="button" class="btn btn-outline-info form-control" onclick="toggleElements('image-picker')">Immagine</button>
+            </div>
+
+            <div class="row">
+                <button type="button" id="buttonChecklist" class="btn btn-outline-info form-control"
+                        onclick="showChecklist()">Checklist
+                </button>
+                <div id="container" class="mt-2 mb-3" style="display:none">
                 </div>
             </div>
         </div>
-
-        <div class="row">
-            <div class="col">
-                <button type="button" class="btn btn-outline-info form-control">Checklist</button>
-                <div class="mt-2 mb-3" id="date-picker" style="display:none">
-                    <label for="date1" class="form-label">Data</label>
-                    <input class="form-control" value="30/10/1999" id="date1" type="datetime-local"
-                           placeholder="Inserisci la data in formato gg/mm/aaaa">
-                </div>
-
-            </div>
-        </div>
-
-
-        {% comment %}
-        {% endcomment %}
     </form>
 {% endblock %}
 
