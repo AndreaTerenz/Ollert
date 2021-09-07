@@ -8,6 +8,6 @@ function ok_newBoard() {
     }
 
     make_modal_request(data, new_board_url, "newBoardModal", (data) => {
-        insert_html('board-list', data)
+        insert_html(boards_list_id, data)
     })
 }

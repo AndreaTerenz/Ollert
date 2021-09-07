@@ -56,7 +56,7 @@ function ok_editBoard() {
     request_data["edits"] = edits
 
     make_modal_request(request_data, edit_board_url, "editBoardModal", (data) => {
-        insert_html('board-list', data)
+        insert_html(boards_list_id, data)
     })
 
     closeModal("editBoardModal")

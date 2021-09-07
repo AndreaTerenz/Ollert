@@ -66,10 +66,10 @@
         </div>
 
 
-        <ul class="row list-group" id='board-list'>
+        <ul class="row list-group" id='boards-list'>
             {% include 'profile/profile-boards-list.html' with boards=boards %}
         </ul>
-        <ul class="row list-group" id='category-list' style="display:none">
+        <ul class="row list-group" id='categories-list' style="display:none">
             {% include 'profile/profile-category-list.html' with category=categories %}
         </ul>
 
@@ -82,6 +82,10 @@
     {% include "modals/board modals/edit_board_modal.html" %}
     {% include "modals/board modals/delete_board_modal.html" %}
 
+    <script>
+        const boards_list_id = "boards-list"
+        const categories_list_id = "categories-list"
+    </script>
     <script src="{% static 'js/modals/switch_category.js' %}"></script>
 
 {% endblock %}
