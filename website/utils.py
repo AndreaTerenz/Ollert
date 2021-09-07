@@ -79,6 +79,13 @@ def get_card_in_list(pos, parent_list: List):
         return None
 
 
+def get_card_ids(parent_list, pos):
+    id = f"{parent_list.position}_{pos}"
+    json_id = f"{parent_list.position}_{pos}_json"
+
+    return id, json_id
+
+
 def get_cards_in_list(parent_list: List):
     return ic(Card.objects.filter(user=parent_list.board.user, board=parent_list.board, list=parent_list))
 

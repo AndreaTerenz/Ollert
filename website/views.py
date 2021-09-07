@@ -123,15 +123,16 @@ def board(request, name):
         for l_obj in get_lists_in_board(board_obj):
             l = {
                 "list_title": l_obj.title,
-                "list_id": f"list_{len(lists) + 1}",
+                "list_id": f"list_{len(lists)}",
                 "list_cards": []
             }
             for idx, c_obj in enumerate(get_cards_in_list(l_obj)):
+                ids = get_card_ids(l_obj, idx+1)
                 c = {
                     "card_title": c_obj.title,
                     "card_descr": c_obj.description,
-                    "card_unique_id": f"{l_obj.position}_{idx+1}",
-                    "card_json_id": f"{l_obj.position}_{idx+1}_json",
+                    "card_unique_id": ids[0],
+                    "card_json_id": ids[1],
                 }
                 # FIXME: Temporaneo
                 l["list_cards"].append(c)
@@ -215,7 +216,7 @@ def edit_board(request):
 
     # FIXME: bisognerebbe capire bene cosa ritornare invece di mere HttpResponse
     if board_obj := get_user_board(user, board_name):
-        for edit in ic(data["edits"]):
+        for edit in data["edits"]:
             field = edit["target_field"]
             new_value = edit["new_value"]
 
@@ -274,13 +275,13 @@ def create_board_content(request):
         trgt_content: dict = data["new_data"]
 
         if trgt_type == "list":
-            pos = trgt_board.lists_count + 1
+            pos = trgt_board.lists_count
             title = trgt_content["list_name"]
 
             List.objects.create(
                 user=user,
                 board=trgt_board,
-                position=ic(pos),
+                position=pos,
                 title=title
             )
 
@@ -293,9 +294,9 @@ def create_board_content(request):
                 "id": f"list_{pos}"
             })
         elif trgt_type == "card":
-            ic(data["target_id"]["target_id_list"])
-            trgt_list = List.objects.get(board=ic(trgt_board), position=int(data["target_id"]["target_id_list"]))
-            pos = trgt_list.cards_count + 1
+            ic(data["target_id"])
+            trgt_list = List.objects.get(board=trgt_board, position=int(data["target_id"]["target_id_list"]))
+            pos = trgt_list.cards_count
 
             Card.objects.create(
                 user=user,
@@ -315,10 +316,12 @@ def create_board_content(request):
             trgt_list.cards_count += 1
             trgt_list.save()
 
+            ids = get_card_ids(trgt_list, pos)
             data = {
                 "card_title": trgt_content["card_name"],
                 "card_descr": trgt_content.get("card_descr", None),
-                "card_unique_id": f"{trgt_list.position}_{pos}"
+                "card_unique_id": ids[0],
+                "card_json_id": ids[1],
             }
 
             return render(request, "board/card.html", context={"data": data})
@@ -345,11 +348,11 @@ def delete_board_content(request):
             }
     }
     """
-    ic(data)
+
     if parent_board := get_user_board(user, data["board"]):
         for target in data["targets"]:
             trgt_type = target["target_type"]
-            ic(target, parent_board)
+
             trgt_list = List.objects.get(position=target["target_id"]["target_id_list"], board=parent_board,
                                          user=parent_board.user)
 
