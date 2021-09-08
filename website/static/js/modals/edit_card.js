@@ -65,8 +65,14 @@ function batchDeleteCards() {
         }
 
         make_modal_request(data, del_board_things_url, "", data => {
-            document.getElementById("deleteCardsBtn").classList.add("disabled")
-            document.getElementById("moveCardsBtn").classList.add("disabled")
+            document.getElementById("editCardButton").classList.add("disabled")
         })
     }
+}
+
+function ok_editCard()
+{
+    batchDeleteCards()
+    closeModal('editCardModal')
+
 }
