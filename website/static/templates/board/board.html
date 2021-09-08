@@ -13,7 +13,6 @@
 {% block settings-nav %}
     <li><a class="dropdown-item" href="#">Modifica sfondo</a></li>
     <li><a class="dropdown-item" href="#">Rinomina board</a></li>
-
 {% endblock %}
 
 {% block authenticated_functions %}
@@ -26,25 +25,18 @@
 {% endblock %}
 
 {% block content %}
-    <div class="row mt-3">
-        <h2 class="fw-bold text-center">{{ board_name }}</h2>
-        {% if board_description %}
-            <p class="text-center ">{{ board_description }}</p>
-        {% endif %}
-    </div>
-    <div class="row ms-3 my-1 dropup">
-        <button class="col-auto btn bg-info disabled" type="button" id="editCardButton"
+    <div class="row my-3 mx-auto">
+        <button class="col-auto mt-auto mb-0 ms-3 btn bg-info disable" type="button" id="editCardButton"
                 data-bs-toggle="modal" data-bs-target="#editCardModal" aria-expanded="false">
             <span class="fa fa-edit fs-5 ms-2"></span>
         </button>
-        {% comment %}<ul class="dropdown-menu col-auto" aria-labelledby="dropdownMenuButton1">
-            <li>
-                <button class="dropdown-item disabled" id="deleteCardsBtn" onclick="batchDeleteCards()">Elimina</button>
-            </li>
-            <li>
-                <button class="dropdown-item disabled" id="moveCardsBtn">Sposta</button>
-            </li>
-        </ul>{% endcomment %}
+
+        <div class="col text-center">
+            <h2 class="fw-bold">{{ board_name }}</h2>
+            {% if board_description %}
+                <p>{{ board_description }}</p>
+            {% endif %}
+        </div>
     </div>
     <div class="row m-auto h-100 flex-nowrap overflow-auto" id="main-row">
         {% include 'board/board_lists.html' with lists=board_lists %}

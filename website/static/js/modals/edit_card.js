@@ -9,7 +9,7 @@ addOnShowListener("editCardModal", event => {
     if (selected_cards.length === 1) {
         label.innerText = "Sei sicuro di voler eliminare la card '" + selected_cards[0] + "'?"
     } else
-        label.innerText = "Sei sicuro di voler eliminare '" + selected_cards.length + "' card ?"
+        label.innerText = "Sei sicuro di voler eliminare " + selected_cards.length + " card ?"
 })
 
 

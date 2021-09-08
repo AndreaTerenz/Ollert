@@ -95,6 +95,7 @@ def on_list_delete(sender, instance: List, using, **kwargs):
         l.position -= 1
         l.save()
     p_board.lists_count -= 1
+    p_board.save()
 
 
 class Card(Model):
