@@ -47,7 +47,6 @@ function batchDeleteCards() {
             })
         })
 
-        selected_cards.forEach(card => document.getElementById(card).remove())
         selected_cards = []
 
         let data = {
@@ -56,7 +55,6 @@ function batchDeleteCards() {
         }
 
         make_modal_request(data, del_board_things_url, "", data => {
-            console.log(data)
             insert_html("main-row", data)
             document.getElementById("editCardButton").classList.add("disabled")
         })

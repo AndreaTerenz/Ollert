@@ -6,6 +6,17 @@
 
 .card-header {
     min-height: 40px;
+    display: grid;
+
+    & > * {
+        grid-column-start: 1;
+        grid-row-start: 1;
+        justify-self: center;
+
+        &:last-child {
+            justify-self: right;
+        }
+    }
 }
 
 .col-auto {

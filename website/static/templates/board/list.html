@@ -1,5 +1,8 @@
 <div class="col-auto mb-auto">
-    <div class="card-header fw-bold fs-4 text-center">{{ title }}</div>
+    <div class="card-header">
+        <span class="fw-bold fs-4 text-center">{{ title }}</span>
+        <span class="bi bi-trash my-auto"></span>
+    </div>
     <div id='{{ id }}' class="cards-list rounded-bottom overflow-auto pb-3 mb-3">
         {% for card in cards %}
             {% include 'board/card.html' with data=card %}
