@@ -149,6 +149,7 @@ def on_card_delete(sender, instance: Card, using, **kwargs):
         c.position -= 1
         c.save()
     p_list.cards_count -= 1
+    p_list.save()
 
 
 class Notifications(models.Model):
