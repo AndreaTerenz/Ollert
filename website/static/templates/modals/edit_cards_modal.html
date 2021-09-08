@@ -25,18 +25,22 @@
         </div>
 
         <div class="tab-pane fade mt-3 row-auto" id="sposta">
-            <i class="fa fa-link" aria-hidden="true"></i> Invita con link
-            <p>
-                <small class="text-muted">Chiunque sia dotato di link può unirsi come membro della board</small>
-            </p>
-            <a href="#" onclick="getURL()">Copia link</a>
+            <div class="mb-3">
+                <label for="" class="form-label">Scegli la lista di destinazione</label>
+                <select class="form-select" aria-label="Default select example">
+                    <option selected>Open this select menu</option>
+                    {% for list in board_lists %}
+                            <option>{{ list.list_title }}</option>
+                    {% endfor %}
+                </select>
+            </div>
         </div>
     </div>
 
 {% endblock %}
 
 {% block modal_script %}
-     <script>
+    <script>
         const delete_card_url = "{% url 'delete-board-content' %}"
     </script>
     <script src="{% static 'js/modals/edit_card.js' %}"></script>
