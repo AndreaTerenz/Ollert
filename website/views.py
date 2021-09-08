@@ -121,23 +121,7 @@ def board(request, name):
         lists = []
 
         for l_obj in get_lists_in_board(board_obj):
-            l = {
-                "list_title": l_obj.title,
-                "list_id": f"list_{len(lists)}",
-                "list_cards": []
-            }
-            for idx, c_obj in enumerate(get_cards_in_list(l_obj)):
-                ids = get_card_ids(l_obj, idx+1)
-                c = {
-                    "card_title": c_obj.title,
-                    "card_descr": c_obj.description,
-                    "card_unique_id": ids[0],
-                    "card_json_id": ids[1],
-                }
-                # FIXME: Temporaneo
-                l["list_cards"].append(c)
-
-            lists.append(l)
+            lists.append(get_list_dict(l_obj))
 
         data: dict = {
             "board_name": board_obj.name,
@@ -352,30 +336,23 @@ def delete_board_content(request):
     if parent_board := get_user_board(user, data["board"]):
         for target in data["targets"]:
             trgt_type = target["target_type"]
+            trgt_id = target["target_id"]
 
-            trgt_list = List.objects.get(position=target["target_id"]["target_id_list"], board=parent_board,
+            trgt_list = List.objects.get(position=trgt_id["target_id_list"], board=parent_board,
                                          user=parent_board.user)
 
             if trgt_type == "list":
                 trgt_list.delete()
-                for l in List.objects.filter(user=user, board=parent_board, position__gt=trgt_list.position):
-                    l.position -= 1
-                    l.save()
-                parent_board.lists_count -= 1
             elif trgt_type == "card":
-                trgt_card = Card.objects.get(position=target["target_id"]["target_id_card"],
+                trgt_card = Card.objects.get(position=ic(trgt_id)["target_id_card"],
                                              list=trgt_list,
                                              board=parent_board,
                                              user=user)
 
                 trgt_card.delete()
-                for c in Card.objects.filter(user=user, board=parent_board, list=trgt_list,
-                                             position__gt=trgt_card.position):
-                    c.position -= 1
-                    c.save()
-                trgt_list.cards_count -= 1
 
-        return HttpResponse("Content deleted", status=200)
+        return render(request, "board/board_lists.html",
+                      context={"lists": [get_list_dict(l) for l in get_lists_in_board(parent_board)]})
     else:
         return HttpResponse(f"Board {data['target_id']['target_id_board']} not found", status=406)
 

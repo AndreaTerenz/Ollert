@@ -12,15 +12,6 @@ addOnShowListener("editCardModal", event => {
         label.innerText = "Sei sicuro di voler eliminare '" + selected_cards.length + "' card ?"
 })
 
-function ok_delete() {
-    //TODO: temporaneo ovviamente
-    console.log("Eliminata card" + card_to_delete)
-
-    make_modal_request({name: card_to_delete}, delete_card_url, 'editCardModal', (data) => {
-        insert_html(boards_list_id, data)
-    })
-}
-
 
 function selectCard(id) {
     let idx = selected_cards.indexOf(id)
@@ -46,7 +37,7 @@ function batchDeleteCards() {
             let l_i = card.split("_")
             let list = l_i[0]
             let idx = parseInt(l_i[1])
-
+            console.log(list, idx)
             targets.push({
                 "target_type": "card",
                 "target_id": {
@@ -56,8 +47,8 @@ function batchDeleteCards() {
             })
         })
 
-        selected_cards.forEach(card =>
-            document.getElementById(card).remove())
+        selected_cards.forEach(card => document.getElementById(card).remove())
+        selected_cards = []
 
         let data = {
             "board": currentBoard,
@@ -65,6 +56,8 @@ function batchDeleteCards() {
         }
 
         make_modal_request(data, del_board_things_url, "", data => {
+            console.log(data)
+            insert_html("main-row", data)
             document.getElementById("editCardButton").classList.add("disabled")
         })
     }

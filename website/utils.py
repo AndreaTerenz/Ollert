@@ -71,6 +71,25 @@ def get_lists_in_board(board: Board):
     return List.objects.filter(user=board.user, board=board)
 
 
+def get_list_dict(l_obj: List):
+    l = {
+        "list_title": l_obj.title,
+        "list_id": f"list_{l_obj.position}",
+        "list_cards": []
+    }
+    for idx, c_obj in enumerate(get_cards_in_list(l_obj)):
+        ids = get_card_ids(l_obj, idx)
+        c = {
+            "card_title": c_obj.title,
+            "card_descr": c_obj.description,
+            "card_unique_id": ids[0],
+            "card_json_id": ids[1],
+        }
+        l["list_cards"].append(c)
+
+    return l
+
+
 def get_card_in_list(pos, parent_list: List):
     try:
         board = parent_list.board

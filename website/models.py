@@ -3,6 +3,8 @@ from django.core.validators import MaxValueValidator
 from django.db import models
 from django.db.models import Model
 from colorful.fields import RGBColorField
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 from django.utils import timezone
 
 
@@ -44,7 +46,7 @@ class Board(Model):
     )
     lists_count = models.PositiveSmallIntegerField(
         default=0,
-        validators=[MaxValueValidator(32)]    # una board può contenere al massimo 32 liste
+        validators=[MaxValueValidator(32)]  # una board può contenere al massimo 32 liste
     )
     description = models.CharField(
         max_length=300,
@@ -78,11 +80,21 @@ class List(Model):
     )
     cards_count = models.PositiveSmallIntegerField(
         default=0,
-        validators=[MaxValueValidator(64)]    # una lisa può contenere al massimo 64 card
+        validators=[MaxValueValidator(64)]  # una lisa può contenere al massimo 64 card
     )
 
     class Meta:
         unique_together = ("position", "board", "user")
+
+
+@receiver(post_delete, sender=List)
+def on_list_delete(sender, instance: List, using, **kwargs):
+    p_board = instance.board
+    user = p_board.user
+    for l in List.objects.filter(user=user, board=p_board, position__gt=instance.position):
+        l.position -= 1
+        l.save()
+    p_board.lists_count -= 1
 
 
 class Card(Model):
@@ -125,6 +137,18 @@ class Card(Model):
 
     class Meta:
         unique_together = ("position", "list", "board", "user")
+
+
+@receiver(post_delete, sender=Card)
+def on_card_delete(sender, instance: Card, using, **kwargs):
+    p_list = instance.list
+    p_board = p_list.board
+    user = p_board.user
+    for c in Card.objects.filter(user=user, board=p_board, list=p_list,
+                                 position__gt=instance.position):
+        c.position -= 1
+        c.save()
+    p_list.cards_count -= 1
 
 
 class Notifications(models.Model):

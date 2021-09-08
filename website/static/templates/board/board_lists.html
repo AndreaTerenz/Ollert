@@ -1,0 +1,12 @@
+{% for list in lists %}
+    {% include 'board/list.html' with id=list.list_id title=list.list_title cards=list.list_cards %}
+{% endfor %}
+
+<div class="col-auto" id="new-list-button">
+    <div class="cards-list card me-auto mt-3">
+        <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                data-bs-target="#newListModal">
+            <span class="fa fa-plus pe-2"></span>Aggiungi una lista
+        </button>
+    </div>
+</div>
