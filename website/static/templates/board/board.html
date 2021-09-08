@@ -33,18 +33,18 @@
         {% endif %}
     </div>
     <div class="row ms-3 my-1 dropup">
-        <button class="col-auto btn bg-info dropdown-toggle" type="button"
-                data-bs-toggle="dropdown" aria-expanded="false">
-            <span class="fa fa-edit fs-5"></span>
+        <button class="col-auto btn bg-info disabled" type="button" id="editCardButton"
+                data-bs-toggle="modal" data-bs-target="#editCardModal" aria-expanded="false">
+            <span class="fa fa-edit fs-5 ms-2"></span>
         </button>
-        <ul class="dropdown-menu col-auto" aria-labelledby="dropdownMenuButton1">
+        {% comment %}<ul class="dropdown-menu col-auto" aria-labelledby="dropdownMenuButton1">
             <li>
                 <button class="dropdown-item disabled" id="deleteCardsBtn" onclick="batchDeleteCards()">Elimina</button>
             </li>
             <li>
                 <button class="dropdown-item disabled" id="moveCardsBtn">Sposta</button>
             </li>
-        </ul>
+        </ul>{% endcomment %}
     </div>
     <div class="row m-auto h-100 flex-nowrap overflow-auto" id="main-row">
         {% for list in board_lists %}
@@ -65,6 +65,7 @@
     {% include "modals/view_card_modal.html" %}
     {% include "modals/new_list_modal.html" with board=board_name %}
     {% include "modals/share_modal.html" %}
+    {% include  "modals/edit_cards_modal.html" %}
 {% endblock %}
 
 {% block extra-scripts %}
@@ -73,5 +74,4 @@
         console.log(currentBoard)
         const del_board_things_url = "{% url 'delete-board-content' %}"
     </script>
-    <script src="{% static 'js/board.js' %}"></script>
 {% endblock %}

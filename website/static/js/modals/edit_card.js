@@ -1,18 +1,38 @@
 var selected_cards = []
 
+addOnShowListener("editCardModal", event => {
+
+    // La domanda da "personalizzare" è in una label all'interno del modale, che viene selezionata
+    let modal = document.getElementById("editCardModal")
+    let label = modal.getElementsByTagName("label").item(0)
+    // si imposta il testo della label
+    if (selected_cards.length === 1) {
+        label.innerText = "Sei sicuro di voler eliminare la card '" + selected_cards[0] + "'?"
+    } else
+        label.innerText = "Sei sicuro di voler eliminare '" + selected_cards.length + "' card ?"
+})
+
+function ok_delete() {
+    //TODO: temporaneo ovviamente
+    console.log("Eliminata card" + card_to_delete)
+
+    make_modal_request({name: card_to_delete}, delete_card_url, 'editCardModal', (data) => {
+        insert_html(boards_list_id, data)
+    })
+}
+
+
 function selectCard(id) {
     let idx = selected_cards.indexOf(id)
 
     if (idx === -1) {
         selected_cards.push(id)
-        document.getElementById("deleteCardsBtn").classList.remove("disabled")
-        document.getElementById("moveCardsBtn").classList.remove("disabled")
+        document.getElementById("editCardButton").classList.remove("disabled")
     } else {
         selected_cards.splice(idx, 1)
 
         if (selected_cards.length === 0) {
-            document.getElementById("deleteCardsBtn").classList.add("disabled")
-            document.getElementById("moveCardsBtn").classList.add("disabled")
+            document.getElementById("editCardButton").classList.add("disabled")
         }
     }
 }
