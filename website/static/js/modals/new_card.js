@@ -49,8 +49,8 @@ function showChecklist() {
     document.getElementById('buttonChecklist').onclick = function () {
         let checkbox = document.createElement('input');
         let label = document.createElement('label')
-        let userInput = document.getElementById("userInput").value;
-        let text = document.createTextNode(userInput);
+        let userInput = document.getElementById("userInput");
+        let text = document.createTextNode(userInput.value);
 
         checkbox.type = 'checkbox';
         checkbox.name = 'interest';
@@ -63,6 +63,8 @@ function showChecklist() {
         let container = document.getElementById('container');
         container.appendChild(label);
         container.appendChild(br);
+
+        userInput.value = '';
     }
 }
 
