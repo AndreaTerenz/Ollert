@@ -68,33 +68,22 @@ function showChecklist() {
     }
 }
 
-function showLabels(id_element) {
+function toggleTag(id_element) {
+    let el = document.getElementById(id_element);
+    let classes = {
+        "frontend": "success",
+        "backend": "warning",
+        "feature": "info",
+        "bug": "danger",
+        "addOne": "light",
+    }
 
-    if(id_element === 'frontend')
-        if (document.getElementById(id_element).className === "btn btn-outline-success")
-            document.getElementById(id_element).className = "btn btn-success";
-        else document.getElementById(id_element).className = "btn btn-outline-success";
-
-    if (id_element === 'backend')
-         if (document.getElementById(id_element).className === "btn btn-outline-warning")
-            document.getElementById(id_element).className = "btn btn-warning";
-        else document.getElementById(id_element).className = "btn btn-outline-warning";
-
-    if (id_element === 'feature')
-         if (document.getElementById(id_element).className === "btn btn-outline-info")
-            document.getElementById(id_element).className = "btn btn-info";
-        else document.getElementById(id_element).className = "btn btn-outline-info";
-
-    if (id_element === 'bug')
-         if (document.getElementById(id_element).className === "btn btn-outline-danger")
-            document.getElementById(id_element).className = "btn btn-danger";
-        else document.getElementById(id_element).className = "btn btn-outline-danger";
-
-    if (id_element === 'addOne')
-         if (document.getElementById(id_element).className === "btn btn-outline-light")
-            document.getElementById(id_element).className = "btn btn-light";
-        else document.getElementById(id_element).className = "btn btn-outline-light";
-
+    Object.entries(classes).forEach(([k, v]) => {
+        if (id_element === k) {
+            el.classList.toggle("btn-"+v);
+            el.classList.toggle("btn-outline-"+v);
+        }
+    })
 }
 
 

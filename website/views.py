@@ -458,3 +458,45 @@ def create_category(request):
     Category.objects.create(user=user, name=name)
 
     return HttpResponse("Boh non saprei come una cosa così potrebbe fallire tbh", status=200)
+
+
+@login_required
+@require_http_methods(["POST"])
+def delete_category(request):
+    user, data = get_user_data(request)
+
+    """
+    Formato JSON (niente di che)
+    {
+        cat_name: <nome>
+    }
+    """
+
+    name = data["cat_name"]
+
+    Category.objects.get(user=user, name=name).delete()
+
+    return HttpResponse("Boh non saprei come una cosa così potrebbe fallire tbh", status=200)
+
+
+@login_required
+@require_http_methods(["POST"])
+# "rename" invece di "edit" perchè è l'unica modifica possibile
+def rename_category(request):
+    user, data = get_user_data(request)
+
+    """
+    Formato JSON (niente di che)
+    {
+        cat_name: <nome>
+        new_vale: <nuovo nome>
+    }
+    """
+
+    name = data["cat_name"]
+
+    cat = Category.objects.get(user=user, name=name)
+    cat.name = data["new_value"]
+    cat.save()
+
+    return HttpResponse("Boh non saprei come una cosa così potrebbe fallire tbh", status=200)

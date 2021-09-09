@@ -44,16 +44,16 @@
             <div class="mt-2 mb-3" id='labels-picker' style="display:none">
                 <label for="imageButton" class="form-label">Etichette</label>
                 <br>
-                <button type="button" class="btn btn-outline-success" id="frontend" onclick="showLabels('frontend')">
+                <button type="button" class="btn btn-outline-success" id="frontend" onclick="toggleTag('frontend')">
                     Frontend
                 </button>
-                <button type="button" class="btn btn-outline-warning" id="backend" onclick="showLabels('backend')">
+                <button type="button" class="btn btn-outline-warning" id="backend" onclick="toggleTag('backend')">
                     Backend
                 </button>
-                <button type="button" class="btn btn-outline-info" id="feature" onclick="showLabels('feature')">
+                <button type="button" class="btn btn-outline-info" id="feature" onclick="toggleTag('feature')">
                     Feature
                 </button>
-                <button type="button" class="btn btn-outline-danger" id="bug" onclick="showLabels('bug')">Bug</button>
+                <button type="button" class="btn btn-outline-danger" id="bug" onclick="toggleTag('bug')">Bug</button>
 
                 {% comment %}<button type="button" class="btn btn-outline-light" id="addOne" data-bs-toggle="modal" data-bs-target="#editCardModal"
                         onclick="showLabels('addOne')"><i class="fa fa-plus"></i>
