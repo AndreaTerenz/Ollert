@@ -26,7 +26,7 @@
                 </ul>
             </div>
 
-        <!-- switch per cambiare l'interfaccia categorie/board-->
+            <!-- switch per cambiare l'interfaccia categorie/board-->
             <div class="col-auto">
                 <label class="toggleSwitch nolabel" onclick="toggleLists()">
                     <input type="checkbox" id="flexSwitchCheckDefault"/>
@@ -49,16 +49,19 @@
                     <li>
                         <a class="dropdown-item"><input type="checkbox" value="" id="flexCheckDefault">Non classificate</a>
                     </li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    {% for category in categories %}
-                        {% with name=category %}
-                            <li>
-                                <a class="dropdown-item"> <input type="checkbox" value="" id="flexCheckDefault">{{ name }}</a>
-                            </li>
-                        {% endwith %}
-                    {% endfor %}
+                    {% if categories %}
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        {% for category in categories %}
+                            {% with name=category %}
+                                <li>
+                                    <a class="dropdown-item"> <input type="checkbox" value=""
+                                                                     id="flexCheckDefault">{{ name }}</a>
+                                </li>
+                            {% endwith %}
+                        {% endfor %}
+                    {% endif %}
                 </ul>
             </div>
 

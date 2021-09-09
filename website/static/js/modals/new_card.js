@@ -45,3 +45,26 @@ function toggleElement(id_element) {
         elements.style.display = "none";
 }
 
+function showChecklist() {
+    document.getElementById('buttonChecklist').onclick = function () {
+        let checkbox = document.createElement('input');
+        let label = document.createElement('label')
+        let userInput = document.getElementById("userInput").value;
+        let text = document.createTextNode(userInput);
+
+        checkbox.type = 'checkbox';
+        checkbox.name = 'interest';
+
+        label.appendChild(checkbox);
+        label.appendChild(text);
+
+        let br = document.createElement('br');
+
+        let container = document.getElementById('container');
+        container.appendChild(label);
+        container.appendChild(br);
+    }
+}
+
+
+

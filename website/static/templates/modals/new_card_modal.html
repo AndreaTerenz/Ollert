@@ -29,6 +29,20 @@
                 <label for="imageButton" class="form-label">Immagine</label>
                 <input class="form-control" type="file" id="imageButton">
             </div>
+
+            <div class="mt-2 mb-3" id='checklist-picker' style="display:none">
+                <label class="form-label">Checklist</label>
+                <div class="form-check" id="container">
+                    <label class="form-label ms-0">Inserisci testo: </label>
+                    <input type="email" class="form-control" id="userInput" aria-describedby="emailHelp">
+                    <button type="button" id="buttonChecklist"
+                            class="btn btn-outline-info form-control" onclick="showChecklist()"> Inserisci
+                    </button>
+
+                </div>
+
+            </div>
+
         </div>
         <div class="col-4 gy-5">
             <div class="row">
@@ -44,8 +58,7 @@
             </div>
 
             <div class="row">
-                <button type="button" id="buttonChecklist"
-                        class="btn btn-outline-info form-control" {%comment%}onclick="showChecklist()"{%endcomment%}>
+                <button type="button" class="btn btn-outline-info form-control" onclick="toggleElement('checklist-picker')">
                     Checklist
                 </button>
             </div>
