@@ -39,6 +39,25 @@
                         <i class="bi bi-check-lg"></i>
                     </button>
                 </div>
+            </div>
+
+            <div class="mt-2 mb-3" id='labels-picker' style="display:none">
+                <label for="imageButton" class="form-label">Etichette</label>
+                <br>
+                <button type="button" class="btn btn-outline-success" id="frontend" onclick="showLabels('frontend')">
+                    Frontend
+                </button>
+                <button type="button" class="btn btn-outline-warning" id="backend" onclick="showLabels('backend')">
+                    Backend
+                </button>
+                <button type="button" class="btn btn-outline-info" id="feature" onclick="showLabels('feature')">
+                    Feature
+                </button>
+                <button type="button" class="btn btn-outline-danger" id="bug" onclick="showLabels('bug')">Bug</button>
+
+                {% comment %}<button type="button" class="btn btn-outline-light" id="addOne" data-bs-toggle="modal" data-bs-target="#editCardModal"
+                        onclick="showLabels('addOne')"><i class="fa fa-plus"></i>
+                </button>{% endcomment %}
 
             </div>
 
@@ -62,6 +81,15 @@
                     Checklist
                 </button>
             </div>
+
+            <div class="row">
+                <button type="button" class="btn btn-outline-info form-control"
+                    onclick="toggleElement('labels-picker')">
+                    Etichette
+                </button>
+            </div>
+
+
         </div>
     </form>
 {% endblock %}
