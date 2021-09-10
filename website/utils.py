@@ -78,14 +78,7 @@ def get_list_dict(l_obj: List):
         "list_cards": []
     }
     for idx, c_obj in enumerate(get_cards_in_list(l_obj)):
-        ids = get_card_ids(l_obj, idx)
-        c = {
-            "card_title": c_obj.title,
-            "card_descr": c_obj.description,
-            "card_unique_id": ids[0],
-            "card_json_id": ids[1],
-        }
-        l["list_cards"].append(c)
+        l["list_cards"].append(get_card_dict(c_obj, l_obj, idx))
 
     return l
 
@@ -98,6 +91,21 @@ def get_card_in_list(pos, parent_list: List):
         return None
 
 
+def get_card_dict(c_obj: Card, l_obj: List, idx):
+    ids = get_card_ids(l_obj, idx)
+
+    return {
+        "card_unique_id": ids[0],
+        "card_json_id": ids[1],
+        "card_title": c_obj.title,
+        "card_date": c_obj.date.strftime("%m/%d/%Y, %H:%M:%S"),
+        # TODO: L'IMMAGINE CAZZOCULO
+        "card_descr": c_obj.description,
+        "card_members": c_obj.members,
+        "card_checks": c_obj.checklist
+    }
+
+
 def get_card_ids(parent_list, pos):
     id = f"{parent_list.position}_{pos}"
     json_id = f"{parent_list.position}_{pos}_json"
@@ -106,7 +114,7 @@ def get_card_ids(parent_list, pos):
 
 
 def get_cards_in_list(parent_list: List):
-    return ic(Card.objects.filter(user=parent_list.board.user, board=parent_list.board, list=parent_list))
+    return Card.objects.filter(user=parent_list.board.user, board=parent_list.board, list=parent_list)
 
 
 def move_object(current_pos: int, new_pos: int, parent_obj: Union[Board, List], obj_type):

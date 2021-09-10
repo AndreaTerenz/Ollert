@@ -292,8 +292,8 @@ def create_board_content(request):
                 date=trgt_content.get("card_date", None),
                 # TODO: mancano immagine, checklist e membri
                 # image
-                # checklist
-                # members
+                checklist=trgt_content.get("card_checks", None),
+                members=trgt_content.get("card_members", None),
                 tags=trgt_content.get("card_tags", {})
             )
 
@@ -375,8 +375,8 @@ def edit_board_content(request):
         }
         target_field:
             <title|position>      se bisogna modificare una lista
-            
             <name|position|description|date|img|checks|members|tags> se bisogna modificare una card
+        
         new_value: <nuovo valore del target field>
     }
     """
@@ -428,9 +428,9 @@ def edit_board_content(request):
             elif trgt_field == "img":
                 pass  # TODO
             elif trgt_field == "checks":
-                pass  # TODO
+                trgt_card.checklist = json.loads(new_value)
             elif trgt_field == "members":
-                pass  # TODO
+                trgt_card.members = json.loads(new_value)
             elif trgt_field == "tags":
                 trgt_card.tags = json.loads(new_value)
 
