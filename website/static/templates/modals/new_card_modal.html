@@ -61,6 +61,16 @@
 
             </div>
 
+            {% comment %}<div class="mt-2 mb-3" id="member-picker">
+                <label class="form-label">Membri</label>
+                <select class="form-select" aria-label="Default select example">
+                    <option selected>Cerca membri</option>
+                    {% for user in users %}
+                            <option>{{ user.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>{% endcomment %}
+
         </div>
         <div class="col-4 gy-5">
             <div class="row">
@@ -84,8 +94,15 @@
 
             <div class="row">
                 <button type="button" class="btn btn-outline-info form-control"
-                    onclick="toggleElement('labels-picker')">
+                        onclick="toggleElement('labels-picker')">
                     Etichette
+                </button>
+            </div>
+
+            <div class="row">
+                <button type="button" class="btn btn-outline-info form-control">
+                    {#                        onclick="toggleElement('labels-picker')">#}
+                    Membri
                 </button>
             </div>
 

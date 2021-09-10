@@ -17,6 +17,15 @@ addOnShowListener("cardModal", e => {
         document.getElementById("cardModalDescr").innerText = "Nessuna descrizione"
         description.classList.add("text-muted")
     }
+
+    if (card_data.card_date !== "") {
+        document.getElementById("cardModalDate").value = card_data.card_date
+        description.classList.remove("text-muted")
+    } else {
+        document.getElementById("cardModalDate").value = ""
+        description.classList.add("text-muted")
+    }
+
 })
 
 function ok_viewCard() {
