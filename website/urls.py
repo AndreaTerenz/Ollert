@@ -25,5 +25,8 @@ urlpatterns = [
     path('delete_category', views.delete_category, name='delete-category'),
     path('rename_category', views.rename_category, name='rename-category'),
 
+    path('notification/<int:notification_pk>/board/<str:board_name>', BoardNotification.as_view(), name='board-notification'),
+    path('notification/<int:notification_pk>/card/<int:card_id>', CardNotification.as_view(), name='card-notification'),
+
     path('edit_password', views.change_password, name='edit-password')
 ]

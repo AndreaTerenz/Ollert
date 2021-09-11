@@ -8,10 +8,11 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
+from django.views import View
 from django.views.decorators.http import require_http_methods
 from icecream import ic
 
-from .models import UserProfile, Category, Card
+from .models import UserProfile, Category, Card, Notification
 from .forms import NewUserForm
 from .utils import *
 
@@ -500,3 +501,27 @@ def rename_category(request):
     cat.save()
 
     return HttpResponse("Boh non saprei come una cosa così potrebbe fallire tbh", status=200)
+
+
+class BoardNotification(View):
+    def get(self, request, notification_pk, board_name, *args, **kwargs):
+        notification = Notification.objects.get(pk=notification_pk)
+
+        notification.user_has_seen = True
+        notification.save()
+
+        return redirect('get-board', name=board_name)
+
+
+class CardNotification(View):
+    def get(self, request, notification_pk, card_id, *args, **kwargs):
+        notification = Notification.objects.get(pk=notification_pk)
+
+        notification.user_has_seen = True
+        notification.save()
+
+        card = Card.objects.get(id=card_id)
+        parent_list = card.list
+        parent_board = parent_list.board
+
+        return redirect('get-board', name=parent_board.name)

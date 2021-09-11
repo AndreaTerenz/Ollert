@@ -153,10 +153,11 @@ def on_card_delete(sender, instance: Card, using, **kwargs):
     p_list.save()
 
 
-class Notifications(models.Model):
+class Notification(models.Model):
     to_user = models.ForeignKey(User, related_name='notification_to', on_delete=models.CASCADE, null=True)
     from_user = models.ForeignKey(User, related_name='notification_from', on_delete=models.CASCADE, null=True)
     board = models.ForeignKey(Board, related_name='board', on_delete=models.CASCADE, null=True)
+    card = models.ForeignKey(Card, related_name='card', on_delete=models.CASCADE, null=True)
     # rappresenta la data in cui avviene la notifica
     date = models.DateTimeField(default=timezone.now)
     # Se l'utente ha letto la notifica o meno (per evitare che venga visualizzata come nuova tutte le volte che accedi)

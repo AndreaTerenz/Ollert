@@ -1,5 +1,5 @@
 from django import template
-from website.models import Notifications
+from website.models import Notification
 
 register = template.Library()
 
@@ -8,5 +8,5 @@ register = template.Library()
 def show_notifications(context):
     request_user = context['request'].user
     # ritorna solamente le notifiche che non sono viste
-    notifications = Notifications.objects.filter(to_user=request_user).exclude(user_has_seen=True).order_by('-date')
+    notifications = Notification.objects.filter(to_user=request_user).exclude(user_has_seen=True).order_by('-date')
     return {'notifications': notifications}

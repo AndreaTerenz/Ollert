@@ -12,8 +12,16 @@
             {% if notifications|length > 0 %}
                 {% for notification in notifications %}
                     {% if notification.board %}
-                        <li><a class="dropdown-item" href="#">@{{ notification.from_user }} ti ha taggato nella board
-                            @{{ notification.board.name }}</a></li>
+                        <li><a class="dropdown-item"
+                               href="{% url 'board-notification' notification.pk notification.board.name %}">
+                            @{{ notification.from_user }} ti ha aggiunto nella board
+                            @{{ notification.board.name }}
+                        </a></li>
+                    {% elif notification.card %}
+                        <li><a class="dropdown-item" href="{% url 'card-notification' notification.pk notification.card.id %}">
+                            @{{ notification.from_user }} ti ha assegnato alla card @{{ notification.card.title }} nella
+                            board @{{ notification.board.name }}
+                        </a></li>
                     {% endif %}
                 {% endfor %}
             {% else %}
