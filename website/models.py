@@ -124,7 +124,6 @@ class Card(Model):
         null=True
     )
     date = models.DateTimeField(
-        auto_now_add=True,
         blank=True,
         null=True
     )

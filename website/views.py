@@ -259,6 +259,8 @@ def create_board_content(request):
     if trgt_board := get_user_board(user, data["target_id"]["target_id_board"]):
         trgt_content: dict = data["new_data"]
 
+        ic(trgt_content)
+
         if trgt_type == "list":
             pos = trgt_board.lists_count
             title = trgt_content["list_name"]
@@ -279,11 +281,10 @@ def create_board_content(request):
                 "id": f"list_{pos}"
             })
         elif trgt_type == "card":
-            ic(data["target_id"])
             trgt_list = List.objects.get(board=trgt_board, position=int(data["target_id"]["target_id_list"]))
             pos = trgt_list.cards_count
 
-            Card.objects.create(
+            c_obj = Card.objects.create(
                 user=user,
                 board=trgt_board,
                 list=trgt_list,
@@ -293,23 +294,17 @@ def create_board_content(request):
                 date=trgt_content.get("card_date", None),
                 # TODO: mancano immagine, checklist e membri
                 # image
-                checklist=trgt_content.get("card_checks", None),
-                members=trgt_content.get("card_members", None),
+                checklist=trgt_content.get("card_checks", {}),
+                members=trgt_content.get("card_members", {}),
                 tags=trgt_content.get("card_tags", {})
             )
 
             trgt_list.cards_count += 1
             trgt_list.save()
 
-            ids = get_card_ids(trgt_list, pos)
-            data = {
-                "card_title": trgt_content["card_name"],
-                "card_descr": trgt_content.get("card_descr", None),
-                "card_unique_id": ids[0],
-                "card_json_id": ids[1],
-            }
+            context = get_card_dict(c_obj, trgt_list, pos)
 
-            return render(request, "board/card.html", context={"data": data})
+            return render(request, "board/card.html", context={"data": context})
     else:
         return HttpResponse(f"Board {data['target_id']['target_id_board']} not found", status=406)
 

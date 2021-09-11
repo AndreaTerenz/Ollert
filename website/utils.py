@@ -94,11 +94,14 @@ def get_card_in_list(pos, parent_list: List):
 def get_card_dict(c_obj: Card, l_obj: List, idx):
     ids = get_card_ids(l_obj, idx)
 
+    date = c_obj.date
+    ic(date)
+
     return {
         "card_unique_id": ids[0],
         "card_json_id": ids[1],
         "card_title": c_obj.title,
-        "card_date": c_obj.date.strftime("%m/%d/%Y, %H:%M:%S"),
+        "card_date": date if date else None,
         # TODO: L'IMMAGINE CAZZOCULO
         "card_descr": c_obj.description,
         "card_members": c_obj.members,

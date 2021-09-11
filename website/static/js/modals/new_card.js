@@ -10,6 +10,10 @@ function ok_newCard() {
 
     if (name) {
         let description = document.getElementById("cardDescription").value;
+        let date = document.getElementById("cardDate").value;
+        if (date === "")
+            date = undefined
+
         let list = document.getElementById(target_list);
 
         let data = {
@@ -20,7 +24,8 @@ function ok_newCard() {
             },
             "new_data": {
                 "card_name": name,
-                "card_descr": description
+                "card_descr": description,
+                "card_date": date
             }
         }
 

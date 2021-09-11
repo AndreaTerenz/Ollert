@@ -11,19 +11,21 @@ addOnShowListener("cardModal", e => {
     let description = document.getElementById("cardModalDescr")
 
     if (card_data.card_descr !== "") {
-        document.getElementById("cardModalDescr").innerText = card_data.card_descr
+        description.innerText = card_data.card_descr
         description.classList.remove("text-muted")
     } else {
-        document.getElementById("cardModalDescr").innerText = "Nessuna descrizione"
+        description.innerText = "Nessuna descrizione"
         description.classList.add("text-muted")
     }
 
-    if (card_data.card_date !== "") {
-        document.getElementById("cardModalDate").value = card_data.card_date
-        description.classList.remove("text-muted")
+    let date = document.getElementById("cardModalDate")
+
+    if (card_data.card_date) {
+        date.innerText = card_data.card_date
+        date.classList.remove("text-muted")
     } else {
-        document.getElementById("cardModalDate").value = ""
-        description.classList.add("text-muted")
+        date.innerText = "Nessuna data"
+        date.classList.add("text-muted")
     }
 
 })
