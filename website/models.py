@@ -1,3 +1,5 @@
+from enum import Enum
+
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator
 from django.db import models
@@ -162,12 +164,45 @@ def on_card_delete(sender, instance: Card, using, **kwargs):
     #ic(p_list.title, p_list.cards_count)
 
 
+class NotificationType(Enum):
+    ADDED = 0
+    REMOVED = 1
+
+
 class Notification(models.Model):
-    to_user = models.ForeignKey(User, related_name='notification_to', on_delete=models.CASCADE, null=True)
-    from_user = models.ForeignKey(User, related_name='notification_from', on_delete=models.CASCADE, null=True)
-    board = models.ForeignKey(Board, related_name='board', on_delete=models.CASCADE, null=True)
-    card = models.ForeignKey(Card, related_name='card', on_delete=models.CASCADE, null=True)
+    to_user = models.ForeignKey(
+        User,
+        related_name='notification_to',
+        on_delete=models.CASCADE,
+        null=True
+    )
+    from_user = models.ForeignKey(
+        User,
+        related_name='notification_from',
+        on_delete=models.CASCADE,
+        null=True
+    )
+    board = models.ForeignKey(
+        Board,
+        related_name='board',
+        on_delete=models.CASCADE,
+        null=True
+    )
+    card = models.ForeignKey(
+        Card,
+        related_name='card',
+        on_delete=models.CASCADE,
+        null=True
+    )
     # rappresenta la data in cui avviene la notifica
-    date = models.DateTimeField(default=timezone.now)
+    date = models.DateTimeField(
+        default=timezone.now
+    )
     # Se l'utente ha letto la notifica o meno (per evitare che venga visualizzata come nuova tutte le volte che accedi)
-    user_has_seen = models.BooleanField(default=False)
+    user_has_seen = models.BooleanField(
+        default=False
+    )
+    notif_type = models.IntegerField(
+        default=NotificationType.ADDED,
+        choices=[(t, t.value) for t in NotificationType]
+    )

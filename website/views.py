@@ -2,9 +2,6 @@ import datetime
 import json
 import os
 from datetime import datetime
-from turtle import position
-
-from PIL.ImageOps import pad
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import UploadedFile
@@ -15,7 +12,7 @@ from django.contrib.auth import login, authenticate, logout, update_session_auth
 from django.views import View
 from django.views.decorators.http import require_http_methods
 
-from .models import UserProfile, Category, Card, Notification
+from .models import UserProfile, Category, Card, Notification, NotificationType
 from .forms import NewUserForm
 from .utils import *
 from icecream import ic
@@ -416,7 +413,7 @@ def rename_category(request):
     return HttpResponse("Boh non saprei come una cosa così potrebbe fallire tbh", status=200)
 
 
-class AddUserToBoard(View):
+class ManageBoardUser(View):
     def post(self, request, *args, **kwargs):
         user, data = get_user_data(request)
 
@@ -425,25 +422,33 @@ class AddUserToBoard(View):
         {
             receiver: <nome destinatario>
             board_name: <nome board>
+            action: <ADDED|REMOVED>
         }
         """
 
         receiver = data["receiver"]
-        receiver_obj = User.objects.get(username=receiver)
         board_name = data["board_name"]
+        action = NotificationType[data["action"]]
 
+        receiver_obj = User.objects.get(username=receiver)
         board_obj = Board.objects.get(user=user, name=board_name)
-        board_obj.members += receiver
+
+        if action == NotificationType.ADDED:
+            board_obj.members += receiver
+        elif action == NotificationType.REMOVED:
+            board_obj.members.remove(receiver)
+
         board_obj.save()
 
         Notification.objects.create(
             from_user=user,
             to_user=receiver_obj,
-            board=board_obj
+            board=board_obj,
+            notif_type=action
         )
 
 
-class AssignCardToUser(View):
+class ManageCardAssignee(View):
     def post(self, request, *args, **kwargs):
         user, data = get_user_data(request)
 
@@ -454,23 +459,30 @@ class AssignCardToUser(View):
             board_name: <nome board>
             list_id: <pos lista>
             card_id: <pos card>
+            action: <ADDED|REMOVED>
         }
         """
 
         receiver = data["receiver"]
-        receiver_obj = User.objects.get(username=receiver)
-
         board_obj = Board.objects.get(user=user, name=data["board_name"])
         list_obj = List.objects.get(board=board_obj, position=data["list_id"])
         card_obj = Card.objects.get(list=list_obj, position=data["card_id"])
+        action = NotificationType[data["action"]]
 
-        card_obj.members += receiver
+        receiver_obj = User.objects.get(username=receiver)
+
+        if action == NotificationType.ADDED:
+            card_obj.members += receiver
+        elif action == NotificationType.REMOVED:
+            card_obj.members.remove(receiver)
+
         card_obj.save()
 
         Notification.objects.create(
             from_user=user,
             to_user=receiver_obj,
-            card=card_obj
+            card=card_obj,
+            notif_type=action
         )
 
 

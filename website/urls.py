@@ -1,16 +1,17 @@
 from django.urls import path
-
-from website.views import *
-from . import views
+from website import views
 
 urlpatterns = [
     # GET
     path('', views.homepage, name="homepage"),
-    path('board/<str:name>', board, name="get-board"),
+    path('board/<str:name>', views.board, name="get-board"),
     path('register', views.register_request, name="register"),
     path('login', views.login_request, name="login"),
     path('profile', views.profile, name="profile"),
     path('logout', views.logout_request, name="logout"),
+
+    path('notification/<int:notification_pk>/board/<str:board_name>', views.BoardNotification.as_view(), name='board-notification'),
+    path('notification/<int:notification_pk>/card/<int:card_id>', views.CardNotification.as_view(), name='card-notification'),
 
     # POST
     path('create_board', views.create_board, name='make-board'),
@@ -25,8 +26,7 @@ urlpatterns = [
     path('delete_category', views.delete_category, name='delete-category'),
     path('rename_category', views.rename_category, name='rename-category'),
 
-    path('notification/<int:notification_pk>/board/<str:board_name>', BoardNotification.as_view(), name='board-notification'),
-    path('notification/<int:notification_pk>/card/<int:card_id>', CardNotification.as_view(), name='card-notification'),
-
-    path('edit_password', views.change_password, name='edit-password')
+    path('edit_password', views.change_password, name='edit-password'),
+    path('manage_board_user', views.ManageBoardUser.as_view(), name="manage-board-user"),
+    path('manage_card_assignee', views.ManageCardAssignee.as_view(), name="manage-card-asignee")
 ]
