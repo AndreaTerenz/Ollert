@@ -147,7 +147,6 @@ class Card(Model):
 
 @receiver(post_delete, sender=Card)
 def on_card_delete(sender, instance: Card, using, **kwargs):
-    # ic("DIOBOIAAAAAAAAAAAAAAAAAAAAAA")
     p_list = instance.list
     p_board = p_list.board
     user = p_board.user
@@ -201,5 +200,6 @@ class Notification(models.Model):
         default=False
     )
     notif_type = models.IntegerField(
-        default=NotificationType.ADDED
+        default=NotificationType.ADDED,
+        choices=[(t, t.value) for t in NotificationType]
     )
