@@ -1,0 +1,24 @@
+{% extends "modals/base_modal.html" %}
+{% load static %}
+
+
+{% block modal_wrapper %}
+    {% with modalID="deleteCategoryModal" okFunction="ok_delete()" object="Eliminazione di una categoria" %}
+        {{ block.super }}
+    {% endwith %}
+{% endblock %}
+
+
+{% block modal_body %}
+    <div class="mb-3">
+        <label for="categoryName" class="form-label"></label>
+    </div>
+{% endblock %}
+
+{% block modal_script %}
+    <script>
+        const delete_category_url = "{% url 'delete-category' %}"
+    </script>
+    <script src="{% static 'js/modals/board/delete_category.js' %}"></script>
+{% endblock %}
+

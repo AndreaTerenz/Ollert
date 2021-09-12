@@ -130,7 +130,7 @@ def board(request, name):
             "board_background": board_obj.background,
             "board_description": board_obj.description,
             "board_lists": lists,
-            "board_members": board_obj.members
+            "board_members": ic(board_obj.members)
         }
 
         # Usa i dati ottenuti per generare l'html
@@ -383,7 +383,7 @@ def create_category(request):
 
     Category.objects.create(user=user, name=name)
 
-    return HttpResponse("Boh non saprei come una cosa così potrebbe fallire tbh", status=200)
+    return render(request, "profile/profile-category-list.html", context={"categories": get_user_categories(user)})
 
 
 @login_required
@@ -395,7 +395,8 @@ def delete_category(request):
 
     Category.objects.get(user=user, name=name).delete()
 
-    return HttpResponse("Boh non saprei come una cosa così potrebbe fallire tbh", status=200)
+    return render(request, "profile/profile-category-list.html", context={"categories": get_user_categories(user)})
+
 
 
 @login_required

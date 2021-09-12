@@ -3,7 +3,7 @@
 
 
 {% block modal_wrapper %}
-    {% with modalID="deleteModal" okFunction="ok_delete()" object="Eliminazione di una board" %}
+    {% with modalID="deleteBoardModal" okFunction="ok_delete()" object="Eliminazione di una board" %}
         {{ block.super }}
     {% endwith %}
 {% endblock %}

@@ -3,7 +3,7 @@ function ok_newCategory() {
 
     make_modal_request({"new_cat_name": name}, new_cat_url, "newCatModal", (data) => {
         console.log(data)
-        //TODO: aggiornare lista categorie
+        insert_html(categories_list_id, data)
     })
 
     closeModal("newCatModal")
