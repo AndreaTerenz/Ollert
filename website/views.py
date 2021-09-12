@@ -441,11 +441,13 @@ class ManageBoardUser(View):
         board_obj.save()
 
         Notification.objects.create(
-            from_user=user,
+            from_user=request.user,
             to_user=receiver_obj,
             board=board_obj,
-            notif_type=action
+            notif_type=NotificationType.ADDED.value
         )
+
+        return HttpResponse("ok")
 
 
 class ManageCardAssignee(View):
@@ -484,6 +486,8 @@ class ManageCardAssignee(View):
             card=card_obj,
             notif_type=action
         )
+
+        return HttpResponse("ok")
 
 
 class BoardNotification(View):

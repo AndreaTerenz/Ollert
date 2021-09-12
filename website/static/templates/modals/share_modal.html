@@ -35,8 +35,8 @@
 
     <div class="tab-pane fade mt-3 row-auto" id="persone">
         <div class="mb-3">
-            <label for="email" class="form-label">Indirizzo email o nome</label>
-            <input type="text" class="form-control" maxlength="20" id="email">
+            <label for="username" class="form-label">Indirizzo email o nome</label>
+            <input type="text" class="form-control" maxlength="20" id="username">
         </div>
         <div class="col-auto">
             <label for="selectAccess" class="form-label">Permessi</label>
@@ -64,5 +64,8 @@
 {% endblock %}
 
 {% block modal_script %}
+    <script>
+        const share_board_url = "{% url 'manage-board-user' %}"
+    </script>
     <script src="{% static 'js/modals/board/share_board.js' %}"></script>
 {% endblock %}

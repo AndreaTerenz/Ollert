@@ -203,6 +203,5 @@ class Notification(models.Model):
         default=False
     )
     notif_type = models.IntegerField(
-        default=NotificationType.ADDED,
-        choices=[(t, t.value) for t in NotificationType]
+        default=0
     )

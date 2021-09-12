@@ -28,5 +28,5 @@ urlpatterns = [
 
     path('edit_password', views.change_password, name='edit-password'),
     path('manage_board_user', views.ManageBoardUser.as_view(), name="manage-board-user"),
-    path('manage_card_assignee', views.ManageCardAssignee.as_view(), name="manage-card-asignee")
+    path('manage_card_assignee', views.ManageCardAssignee.as_view(), name="manage-card-assignee")
 ]
