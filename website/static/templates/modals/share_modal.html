@@ -3,48 +3,63 @@
 
 
 {% block modal_wrapper %}
-    {% with modalID="shareModal" object="Condividi board" okFunction="ok_shareModal()" %}
+    {% with modalID="shareModal" object="Condividi board" okFunction="ok_shareModal()" size="modal-lg" %}
         {{ block.super }}
     {% endwith %}
 {% endblock %}
 
 {% block modal_body %}
     <ul class="nav nav-tabs">
+        <li class="nav-item active">
+            <a class="nav-link active" data-bs-toggle="tab" href="#membri">Membri attuali</a>
+        </li>
         <li class="nav-item">
-            <a class="nav-link active" data-bs-toggle="tab" href="#persone">Condividi con alti utenti</a>
+            <a class="nav-link" data-bs-toggle="tab" href="#persone">Condividi con alti utenti</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" data-bs-toggle="tab" href="#link">Condividi via link</a>
         </li>
     </ul>
+
     <div id="myTabContent" class="tab-content">
-        <div class="tab-pane fade active show mt-3 row-auto" id="persone">
-            <div class="mb-3">
-                <label for="email" class="form-label">Indirizzo email o nome</label>
-                <input type="text" class="form-control" maxlength="20" id="email">
-            </div>
-            <div class="col-auto">
-                <label for="selectAccess" class="form-label">Permessi</label>
-                <select class="form-select" id="selectAccess">
-                    <option selected value="view">Visualizza</option>
-                    <option value="edit">Modifica</option>
-                </select>
-            </div>
-
-            <div class="mt-3">
-                <label class="form-label" for="shareMessage">Messaggio</label>
-                <textarea class="form-control" id="shareMessage" rows="3"></textarea>
-            </div>
-        </div>
-
-        <div class="tab-pane fade mt-3 row-auto" id="link">
-            <i class="fa fa-link" aria-hidden="true"></i> Invita con link
-            <p>
-                <small class="text-muted">Chiunque sia dotato di link può unirsi come membro della board</small>
-            </p>
-            <a href="#" onclick="getURL()">Copia link</a>
+    <div class="tab-pane fade show active mt-3 row-auto" id="membri">
+        <div class="mb-3">
+            <ul class="list-group">
+                <li class="list-group-item"> {{ user.username }}</li>
+                {% for member in members %}
+                    <li class="list-group-item"> {{ member.name }}</li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
+
+    <div class="tab-pane fade mt-3 row-auto" id="persone">
+        <div class="mb-3">
+            <label for="email" class="form-label">Indirizzo email o nome</label>
+            <input type="text" class="form-control" maxlength="20" id="email">
+        </div>
+        <div class="col-auto">
+            <label for="selectAccess" class="form-label">Permessi</label>
+            <select class="form-select" id="selectAccess">
+                <option selected value="view">Visualizza</option>
+                <option value="edit">Modifica</option>
+            </select>
+        </div>
+
+        <div class="mt-3">
+            <label class="form-label" for="shareMessage">Messaggio</label>
+            <textarea class="form-control" id="shareMessage" rows="3"></textarea>
+        </div>
+    </div>
+
+    <div class="tab-pane fade mt-3 row-auto" id="link">
+        <i class="fa fa-link" aria-hidden="true"></i> Invita con link
+        <p>
+            <small class="text-muted">Chiunque sia dotato di link può unirsi come membro della board</small>
+        </p>
+        <a href="#" onclick="getURL()">Copia link</a>
+    </div>
+
 
 {% endblock %}
 

@@ -132,7 +132,8 @@ def board(request, name):
             "board_name": board_obj.name,
             "board_background": board_obj.background,
             "board_description": board_obj.description,
-            "board_lists": lists
+            "board_lists": lists,
+            "board_members": board_obj.members
         }
 
         # Usa i dati ottenuti per generare l'html
