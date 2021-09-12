@@ -153,6 +153,29 @@ Rinomina una categoria
 ```
 <br>
 
+### Gestione utenti Board/Card
+Il campo `action` deve contenere una di due stringhe possibili, `ADDED` o `REMOVED` 
+
+#### Board
+```
+{
+    receiver: <nome destinatario>
+    board_name: <nome board>
+    action: <ADDED|REMOVED>
+}
+```
+
+#### Card
+```
+{
+    receiver: <nome destinatario>
+    board_name: <nome board>
+    list_id: <pos lista>
+    card_id: <pos card>
+    action: <ADDED|REMOVED>
+}
+```
+
 ### Formattare dati particolari
 
 #### Checklist

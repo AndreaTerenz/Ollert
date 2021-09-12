@@ -133,6 +133,8 @@ def board(request, name):
             "board_members": ic(board_obj.members)
         }
 
+        ic(data["board_members"])
+
         # Usa i dati ottenuti per generare l'html
         return render(request, 'board/board.html', status=200, context=data)
 
@@ -435,7 +437,7 @@ class ManageBoardUser(View):
         board_obj = Board.objects.get(user=user, name=board_name)
 
         if action == NotificationType.ADDED:
-            board_obj.members += receiver
+            board_obj.members += [receiver]
         elif action == NotificationType.REMOVED:
             board_obj.members.remove(receiver)
 
@@ -475,7 +477,7 @@ class ManageCardAssignee(View):
         receiver_obj = User.objects.get(username=receiver)
 
         if action == NotificationType.ADDED:
-            card_obj.members += receiver
+            card_obj.members.append(receiver)
         elif action == NotificationType.REMOVED:
             card_obj.members.remove(receiver)
 
