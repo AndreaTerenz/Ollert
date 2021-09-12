@@ -9,6 +9,9 @@ from django.utils import timezone
 
 
 # "estende" il modello User fornito da django admin
+from icecream import ic
+
+
 class UserProfile(Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_pic = models.ImageField(upload_to='propics', default='propics/default_propic.png')
@@ -144,15 +147,19 @@ class Card(Model):
 
 @receiver(post_delete, sender=Card)
 def on_card_delete(sender, instance: Card, using, **kwargs):
+    #ic("DIOBOIAAAAAAAAAAAAAAAAAAAAAA")
     p_list = instance.list
     p_board = p_list.board
     user = p_board.user
     for c in Card.objects.filter(user=user, board=p_board, list=p_list,
                                  position__gt=instance.position):
-        c.position -= 1
-        c.save()
-    p_list.cards_count -= 1
+        pass
+        #c.position -= 1
+        #c.save()
+    #p_list.cards_count -= 1
     p_list.save()
+
+    #ic(p_list.title, p_list.cards_count)
 
 
 class Notification(models.Model):

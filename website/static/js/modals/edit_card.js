@@ -35,7 +35,7 @@ function batchDeleteCards() {
 
         selected_cards.forEach(card => {
             let l_i = card.split("_")
-            let list = l_i[0]
+            let list = parseInt(l_i[0])
             let idx = parseInt(l_i[1])
             console.log(list, idx)
             targets.push({

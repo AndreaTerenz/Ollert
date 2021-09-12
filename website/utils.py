@@ -8,6 +8,7 @@ from icecream import ic
 from website.models import Board, List, Card, Category
 
 
+
 def handle_form_errors(request, form, header):
     key = list(form.errors.keys())[0]
     error = form.errors[key][0]
@@ -77,8 +78,8 @@ def get_list_dict(l_obj: List):
         "list_id": f"list_{l_obj.position}",
         "list_cards": []
     }
-    for idx, c_obj in enumerate(get_cards_in_list(l_obj)):
-        l["list_cards"].append(get_card_dict(c_obj, l_obj, idx))
+    for c_obj in get_cards_in_list(l_obj):
+        l["list_cards"].append(get_card_dict(c_obj, l_obj))
 
     return l
 
@@ -91,8 +92,8 @@ def get_card_in_list(pos, parent_list: List):
         return None
 
 
-def get_card_dict(c_obj: Card, l_obj: List, idx):
-    ids = get_card_ids(l_obj, idx)
+def get_card_dict(c_obj: Card, l_obj: List):
+    ids = get_card_ids(l_obj, c_obj.position)
 
     date = c_obj.date
     ic(date)

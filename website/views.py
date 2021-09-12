@@ -2,6 +2,9 @@ import datetime
 import json
 import os
 from datetime import datetime
+from turtle import position
+
+from PIL.ImageOps import pad
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import UploadedFile
@@ -11,11 +14,11 @@ from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
 from django.views import View
 from django.views.decorators.http import require_http_methods
-from icecream import ic
 
 from .models import UserProfile, Category, Card, Notification
 from .forms import NewUserForm
 from .utils import *
+from icecream import ic
 
 
 # ic.disable()
@@ -270,7 +273,7 @@ def create_board_content(request):
             trgt_list.cards_count += 1
             trgt_list.save()
 
-            context = get_card_dict(c_obj, trgt_list, pos)
+            context = get_card_dict(c_obj, trgt_list)
 
             return render(request, "board/card.html", context={"data": context})
     else:
@@ -294,7 +297,7 @@ def delete_board_content(request):
             if trgt_type == "list":
                 trgt_list.delete()
             elif trgt_type == "card":
-                trgt_card = Card.objects.get(position=ic(trgt_id)["target_id_card"],
+                trgt_card = Card.objects.get(position=trgt_id["target_id_card"],
                                              list=trgt_list,
                                              board=parent_board,
                                              user=user)
