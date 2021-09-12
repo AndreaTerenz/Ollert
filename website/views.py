@@ -3,6 +3,7 @@ import json
 import os
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.core.files.uploadedfile import UploadedFile
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -187,16 +188,6 @@ def edit_board(request):
     user = get_authenticated_user(request)
     data = json.loads(request.body)
 
-    """
-    Formato JSON:
-    {
-        board: <nome board da modificare>
-        edits: <lista delle modifiche da fare alla board in formato:>
-            target_field: <name|category|favorite|background|description>
-            new_value: <nuovo valore per il target_field>
-    }
-    """
-
     board_name = data["board_name"]
 
     # FIXME: bisognerebbe capire bene cosa ritornare invece di mere HttpResponse
@@ -231,29 +222,6 @@ def edit_board(request):
 def create_board_content(request):
     user = get_authenticated_user(request)
     data = json.loads(request.body)
-
-    """
-    Formato JSON:
-    
-    {
-        target_type: <list|card>
-        target_id: {
-            target_id_board: <nome della board>
-            [target_id_list: <id della lista>]       se bisogna creare una card
-        }
-        new_data: { 
-                list_name: <nome lista>                 se bisogna creare una lista
-
-                card_name: <nome card>                  se bisogna creare una card
-                [card_descr: <descrizione card>]
-                [card_date: <data card>]
-                [card_img: <immagine card (non so ancora come)>]
-                [card_checks: <checklist card (non so ancora come)>]
-                [card_members: <elenco utenti assegnati alla card (non so ancora come)>]
-                [card_tags: <elenco tag assegnati alla card>]
-        }
-    }
-    """
 
     trgt_type = data["target_type"]
     if trgt_board := get_user_board(user, data["target_id"]["target_id_board"]):
@@ -315,20 +283,6 @@ def delete_board_content(request):
     user = get_authenticated_user(request)
     data = json.loads(request.body)
 
-    """
-    Formato JSON:
-    
-    {
-        board: <nome della board>
-        targets: <lista di oggetti da eliminare nel formato:>
-            target_type: <list|card>
-            target_id: {
-                target_id_list: <id della lista>
-                [target_id_card: <id della card>]       se bisogna eliminare una card
-            }
-    }
-    """
-
     if parent_board := get_user_board(user, data["board"]):
         for target in data["targets"]:
             trgt_type = target["target_type"]
@@ -358,24 +312,6 @@ def delete_board_content(request):
 def edit_board_content(request):
     user = get_authenticated_user(request)
     data = json.loads(request.body)
-
-    """
-    Formato JSON:
-    
-    {
-        target_type: <list|card>
-        target_id: {
-            target_id_board: <nome della board>
-            target_id_list: <id della lista>
-            [target_id_card: <id della card>]       se bisogna modificare una card
-        }
-        target_field:
-            <title|position>      se bisogna modificare una lista
-            <name|position|description|date|img|checks|members|tags> se bisogna modificare una card
-        
-        new_value: <nuovo valore del target field>
-    }
-    """
 
     trgt_type = data["target_type"]
 
@@ -442,13 +378,6 @@ def edit_board_content(request):
 def create_category(request):
     user, data = get_user_data(request)
 
-    """
-    Formato JSON (niente di che)
-    {
-        new_cat_name: <nome>
-    }
-    """
-
     name = data["new_cat_name"]
 
     Category.objects.create(user=user, name=name)
@@ -460,13 +389,6 @@ def create_category(request):
 @require_http_methods(["POST"])
 def delete_category(request):
     user, data = get_user_data(request)
-
-    """
-    Formato JSON (niente di che)
-    {
-        cat_name: <nome>
-    }
-    """
 
     name = data["cat_name"]
 
@@ -481,14 +403,6 @@ def delete_category(request):
 def rename_category(request):
     user, data = get_user_data(request)
 
-    """
-    Formato JSON (niente di che)
-    {
-        cat_name: <nome>
-        new_vale: <nuovo nome>
-    }
-    """
-
     name = data["cat_name"]
 
     cat = Category.objects.get(user=user, name=name)
@@ -496,6 +410,64 @@ def rename_category(request):
     cat.save()
 
     return HttpResponse("Boh non saprei come una cosa così potrebbe fallire tbh", status=200)
+
+
+class AddUserToBoard(View):
+    def post(self, request, *args, **kwargs):
+        user, data = get_user_data(request)
+
+        """
+        Formato JSON:
+        {
+            receiver: <nome destinatario>
+            board_name: <nome board>
+        }
+        """
+
+        receiver = data["receiver"]
+        receiver_obj = User.objects.get(username=receiver)
+        board_name = data["board_name"]
+
+        board_obj = Board.objects.get(user=user, name=board_name)
+        board_obj.members += receiver
+        board_obj.save()
+
+        Notification.objects.create(
+            from_user=user,
+            to_user=receiver_obj,
+            board=board_obj
+        )
+
+
+class AssignCardToUser(View):
+    def post(self, request, *args, **kwargs):
+        user, data = get_user_data(request)
+
+        """
+        Formato JSON:
+        {
+            receiver: <nome destinatario>
+            board_name: <nome board>
+            list_id: <pos lista>
+            card_id: <pos card>
+        }
+        """
+
+        receiver = data["receiver"]
+        receiver_obj = User.objects.get(username=receiver)
+
+        board_obj = Board.objects.get(user=user, name=data["board_name"])
+        list_obj = List.objects.get(board=board_obj, position=data["list_id"])
+        card_obj = Card.objects.get(list=list_obj, position=data["card_id"])
+
+        card_obj.members += receiver
+        card_obj.save()
+
+        Notification.objects.create(
+            from_user=user,
+            to_user=receiver_obj,
+            card=card_obj
+        )
 
 
 class BoardNotification(View):

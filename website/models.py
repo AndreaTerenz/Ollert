@@ -56,6 +56,9 @@ class Board(Model):
     background = RGBColorField(
         default='#222'
     )
+    members = models.JSONField(
+        default=list
+    )
     favorite = models.BooleanField(default=False)
 
     class Meta:

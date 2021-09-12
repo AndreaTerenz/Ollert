@@ -8,27 +8,21 @@ addOnShowListener("cardModal", e => {
 
     document.getElementById("cardModalTItle").innerText = card_data.card_title
 
-    let description = document.getElementById("cardModalDescr")
-
-    if (card_data.card_descr !== "") {
-        description.innerText = card_data.card_descr
-        description.classList.remove("text-muted")
-    } else {
-        description.innerText = "Nessuna descrizione"
-        description.classList.add("text-muted")
-    }
-
-    let date = document.getElementById("cardModalDate")
-
-    if (card_data.card_date) {
-        date.innerText = card_data.card_date
-        date.classList.remove("text-muted")
-    } else {
-        date.innerText = "Nessuna data"
-        date.classList.add("text-muted")
-    }
-
+    set_card_field("cardModalDescr", card_data.card_descr, "Nessuna descrizione")
+    set_card_field("cardModalDate", card_data.card_date, "Nessuna data")
 })
+
+function set_card_field(el_id, value, no_value_text) {
+    let element = document.getElementById(el_id)
+
+    if (value) {
+        element.innerText = value
+        element.classList.remove("text-muted")
+    } else {
+        element.innerText = no_value_text
+        element.classList.add("text-muted")
+    }
+}
 
 function ok_viewCard() {
     closeModal("cardModal")
