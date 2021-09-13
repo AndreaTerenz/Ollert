@@ -14,11 +14,13 @@ addOnShowListener("deleteCategoryModal", event => {
     label.innerText = "Sei sicuro di voler eliminare la categoria '" + category_to_delete + "'?"
 })
 
-function ok_delete() {
+function ok_deleteCategory() {
     //TODO: temporaneo ovviamente
     console.log("Eliminata categoria " + category_to_delete)
 
     make_modal_request({"cat_name": category_to_delete}, delete_category_url, 'deleteCategoryModal', (data) => {
         insert_html(categories_list_id, data)
     })
+
+    closeModal("deleteCategoryModal")
 }

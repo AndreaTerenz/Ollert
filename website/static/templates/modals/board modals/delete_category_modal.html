@@ -3,7 +3,7 @@
 
 
 {% block modal_wrapper %}
-    {% with modalID="deleteCategoryModal" okFunction="ok_delete()" object="Eliminazione di una categoria" %}
+    {% with modalID="deleteCategoryModal" okFunction="ok_deleteCategory()" object="Eliminazione di una categoria" %}
         {{ block.super }}
     {% endwith %}
 {% endblock %}

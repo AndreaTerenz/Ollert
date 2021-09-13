@@ -14,11 +14,13 @@ addOnShowListener("deleteBoardModal", event => {
     label.innerText = "Sei sicuro di voler eliminare la board '" + board_to_delete + "'?"
 })
 
-function ok_delete() {
+function ok_deleteBoard() {
     //TODO: temporaneo ovviamente
     console.log("Eliminata board " + board_to_delete)
 
     make_modal_request({name: board_to_delete}, delete_board_url, 'deleteBoardModal', (data) => {
         insert_html(boards_list_id, data)
     })
+
+    closeModal("deleteBoardModal")
 }
