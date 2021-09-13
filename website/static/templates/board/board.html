@@ -16,12 +16,14 @@
 {% endblock %}
 
 {% block authenticated_functions %}
-    <div class="nav-item">
-        <button class="btn btn-info" type="button" id="add_user"
-                data-bs-toggle="modal" data-bs-target="#shareModal" aria-expanded="false">
-            <i class="fa fa-user-plus" aria-hidden="true"></i> Condividi
-        </button>
-    </div>
+    {% if is_owner %}
+        <div class="nav-item">
+            <button class="btn btn-info" type="button" id="add_user"
+                    data-bs-toggle="modal" data-bs-target="#shareModal" aria-expanded="false">
+                <i class="fa fa-user-plus" aria-hidden="true"></i> Condividi
+            </button>
+        </div>
+    {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -47,7 +49,9 @@
     {% include "modals/new_card_modal.html" %}
     {% include "modals/view_card_modal.html" %}
     {% include "modals/new_list_modal.html" with board=board_name %}
-    {% include "modals/share_modal.html" with members=board_members%}
+    {% if is_owner %}
+        {% include "modals/share_modal.html" with members=board_members %}
+    {% endif %}
 {% endblock %}
 
 {% block extra-scripts %}

@@ -120,23 +120,17 @@ def board(request, name):
     user = get_authenticated_user(request)
 
     if board_obj := get_user_board(user, name):
-        lists = []
-
-        for l_obj in get_lists_in_board(board_obj):
-            lists.append(get_list_dict(l_obj))
-
-        data: dict = {
-            "board_name": board_obj.name,
-            "board_background": board_obj.background,
-            "board_description": board_obj.description,
-            "board_lists": lists,
-            "board_members": ic(board_obj.members)
-        }
-
-        ic(data["board_members"])
+        data = get_board_dictionary(board_obj)
 
         # Usa i dati ottenuti per generare l'html
         return render(request, 'board/board.html', status=200, context=data)
+    else:
+        for b in Board.objects.filter(name=name):
+            if request.user.username in b.members:
+                data = get_board_dictionary(b, user=b.user)
+
+                # Usa i dati ottenuti per generare l'html
+                return render(request, 'board/board.html', status=200, context=data)
 
     # Se non esiste, segnala un errore
     messages.warning(request, f"La board {name} non esiste per questo utente")

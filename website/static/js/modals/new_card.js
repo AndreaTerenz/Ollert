@@ -17,7 +17,6 @@ function ok_newCard() {
         let list = document.getElementById(target_list);
         let members = document.getElementById('selectMember').value;
 
-
         let data = {
             "target_type": "card",
             "target_id": {

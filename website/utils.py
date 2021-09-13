@@ -8,7 +8,6 @@ from icecream import ic
 from website.models import Board, List, Card, Category
 
 
-
 def handle_form_errors(request, form, header):
     key = list(form.errors.keys())[0]
     error = form.errors[key][0]
@@ -43,6 +42,28 @@ def get_user_boards(user):
     return boards
 
 
+def get_board_dictionary(board_obj: Board, user=None):
+    lists = []
+
+    for l_obj in get_lists_in_board(board_obj, user=user):
+        lists.append(get_list_dict(l_obj))
+
+    output: dict = {
+        "board_name": board_obj.name,
+        "board_background": board_obj.background,
+        "board_description": board_obj.description,
+        "board_lists": lists,
+        "is_owner": not user
+    }
+
+    if not user:
+        output.update({
+            "board_members": board_obj.members,
+        })
+
+    return output
+
+
 def get_user_category(user, name):
     if name == "NaN":
         return None
@@ -68,8 +89,10 @@ def get_list_in_board(pos, parent_board: Board):
         return None
 
 
-def get_lists_in_board(board: Board):
-    return List.objects.filter(user=board.user, board=board)
+def get_lists_in_board(board: Board, user=None):
+    if not user:
+        user = board.user
+    return List.objects.filter(user=user, board=board)
 
 
 def get_list_dict(l_obj: List):
