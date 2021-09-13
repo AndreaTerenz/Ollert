@@ -1,0 +1,21 @@
+{% extends "modals/board modals/base_board_modal.html" %}
+{% load static %}
+
+
+{% block modal_wrapper %}
+    {% with modalID="chooseColorModal" okFunction="ok_chooseColor()" object="Scegli il colore di sfondo" %}
+        {{ block.super }}
+    {% endwith %}
+{% endblock %}
+
+{% block modal_body %}
+    <label for="colorpicker">Colore:</label>
+    <input type="color" id="colorpicker" value="#0000ff">
+{% endblock %}
+
+{% block modal_script %}
+    <script>
+        const edit_board_url = "{% url 'edit-board' %}"
+    </script>
+    <script src="{% static 'js/modals/board/change_color.js' %}"></script>
+{% endblock %}

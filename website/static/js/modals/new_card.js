@@ -15,6 +15,8 @@ function ok_newCard() {
             date = undefined
 
         let list = document.getElementById(target_list);
+        let members = document.getElementById('selectMember').value;
+
 
         let data = {
             "target_type": "card",
@@ -25,7 +27,8 @@ function ok_newCard() {
             "new_data": {
                 "card_name": name,
                 "card_descr": description,
-                "card_date": date
+                "card_date": date,
+                "card_members": members
             }
         }
 
@@ -85,8 +88,8 @@ function toggleTag(id_element) {
 
     Object.entries(classes).forEach(([k, v]) => {
         if (id_element === k) {
-            el.classList.toggle("btn-"+v);
-            el.classList.toggle("btn-outline-"+v);
+            el.classList.toggle("btn-" + v);
+            el.classList.toggle("btn-outline-" + v);
         }
     })
 }

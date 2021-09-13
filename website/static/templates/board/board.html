@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block settings-nav %}
-    <li><a class="dropdown-item" href="#">Modifica sfondo</a></li>
+    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#chooseColorModal" aria-expanded="false">Modifica sfondo</a></li>
     <li><a class="dropdown-item" href="#">Rinomina board</a></li>
 {% endblock %}
 
@@ -42,6 +42,7 @@
         {% include 'board/board_lists.html' with lists=board_lists %}
     </div>
 
+    {% include "modals/board modals/choose_color_modal.html" %}
     {% include "modals/edit_cards_modal.html" %}
     {% include "modals/new_card_modal.html" %}
     {% include "modals/view_card_modal.html" %}

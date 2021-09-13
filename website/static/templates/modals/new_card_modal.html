@@ -9,106 +9,105 @@
 {% endblock %}
 
 {% block modal_body %}
-    <form class="row mx-3">
-        <div class="col">
-            <div class="mb-3 col-auto">
-                <label for="cardName" class="form-label">Titolo</label>
-                <input type="text" class="form-control" id="cardName" aria-describedby="emailHelp">
-            </div>
-            <div class="mb-3 col-auto">
-                <label for="cardDescription" class="form-label">Descrizione</label>
-                <textarea class="form-control" id="cardDescription" rows="3"
-                          placeholder="Aggiungi una descrizione più dettagliata..."></textarea>
-            </div>
-            <div class="mt-2 mb-3" id="date-picker" style="display:none">
-                <label for="cardDate" class="form-label">Data</label>
-                <input class="form-control" value="30/10/1999" id="cardDate" type="datetime-local"
-                       placeholder="Inserisci la data in formato gg/mm/aaaa">
-            </div>
-            <div class="mt-2 mb-3" id='image-picker' style="display:none">
-                <label for="imageButton" class="form-label">Immagine</label>
-                <input class="form-control" type="file" id="imageButton">
-            </div>
+<form class="row mx-3">
+    <div class="col">
+        <div class="mb-3 col-auto">
+            <label for="cardName" class="form-label">Titolo</label>
+            <input type="text" class="form-control" id="cardName" aria-describedby="emailHelp">
+        </div>
+        <div class="mb-3 col-auto">
+            <label for="cardDescription" class="form-label">Descrizione</label>
+            <textarea class="form-control" id="cardDescription" rows="3"
+                      placeholder="Aggiungi una descrizione più dettagliata..."></textarea>
+        </div>
+        <div class="mt-2 mb-3" id="date-picker" style="display:none">
+            <label for="cardDate" class="form-label">Data</label>
+            <input class="form-control" value="30/10/1999" id="cardDate" type="datetime-local"
+                   placeholder="Inserisci la data in formato gg/mm/aaaa">
+        </div>
+        <div class="mt-2 mb-3" id='image-picker' style="display:none">
+            <label for="imageButton" class="form-label">Immagine</label>
+            <input class="form-control" type="file" id="imageButton">
+        </div>
 
-            <div class="mt-2 mb-3" id='checklist-picker' style="display:none">
-                <label class="form-label">Checklist</label>
-                <div class="row m-auto" id="container">
-                    <input type="text" class="col form-control" id="userInput" placeholder="Inserisci testo...">
-                    <button type="button" id="buttonChecklist"
-                            class="btn btn-outline-success col-auto" onclick="showChecklist()">
-                        <i class="bi bi-check-lg"></i>
-                    </button>
-                </div>
+        <div class="mt-2 mb-3" id='checklist-picker' style="display:none">
+            <label class="form-label">Checklist</label>
+            <div class="row m-auto" id="container">
+                <input type="text" class="col form-control" id="userInput" placeholder="Inserisci testo...">
+                <button type="button" id="buttonChecklist"
+                        class="btn btn-outline-success col-auto" onclick="showChecklist()">
+                    <i class="bi bi-check-lg"></i>
+                </button>
             </div>
+        </div>
 
-            <div class="mt-2 mb-3" id='labels-picker' style="display:none">
-                <label for="imageButton" class="form-label">Etichette</label>
-                <br>
-                <button type="button" class="btn btn-outline-success" id="frontend" onclick="toggleTag('frontend')">
-                    Frontend
-                </button>
-                <button type="button" class="btn btn-outline-warning" id="backend" onclick="toggleTag('backend')">
-                    Backend
-                </button>
-                <button type="button" class="btn btn-outline-info" id="feature" onclick="toggleTag('feature')">
-                    Feature
-                </button>
-                <button type="button" class="btn btn-outline-danger" id="bug" onclick="toggleTag('bug')">Bug</button>
+        <div class="mt-2 mb-3" id='labels-picker' style="display:none">
+            <label for="imageButton" class="form-label">Etichette</label>
+            <br>
+            <button type="button" class="btn btn-outline-success" id="frontend" onclick="toggleTag('frontend')">
+                Frontend
+            </button>
+            <button type="button" class="btn btn-outline-warning" id="backend" onclick="toggleTag('backend')">
+                Backend
+            </button>
+            <button type="button" class="btn btn-outline-info" id="feature" onclick="toggleTag('feature')">
+                Feature
+            </button>
+            <button type="button" class="btn btn-outline-danger" id="bug" onclick="toggleTag('bug')">Bug</button>
 
-                {% comment %}<button type="button" class="btn btn-outline-light" id="addOne" data-bs-toggle="modal" data-bs-target="#editCardModal"
+            {% comment %}<button type="button" class="btn btn-outline-light" id="addOne" data-bs-toggle="modal" data-bs-target="#editCardModal"
                         onclick="showLabels('addOne')"><i class="fa fa-plus"></i>
                 </button>{% endcomment %}
 
-            </div>
-
-            {% comment %}<div class="mt-2 mb-3" id="member-picker">
-                <label class="form-label">Membri</label>
-                <select class="form-select" aria-label="Default select example">
-                    <option selected>Cerca membri</option>
-                    {% for user in users %}
-                            <option>{{ user.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>{% endcomment %}
-
         </div>
-        <div class="col-4 gy-5">
-            <div class="row">
-                <button type="button" class="btn btn-outline-info form-control" onclick="toggleElement('date-picker')">
-                    Data
-                </button>
-            </div>
 
-            <div class="row">
-                <button type="button" class="btn btn-outline-info form-control" onclick="toggleElement('image-picker')">
-                    Immagine
-                </button>
-            </div>
-
-            <div class="row">
-                <button type="button" class="btn btn-outline-info form-control"
-                        onclick="toggleElement('checklist-picker')">
-                    Checklist
-                </button>
-            </div>
-
-            <div class="row">
-                <button type="button" class="btn btn-outline-info form-control"
-                        onclick="toggleElement('labels-picker')">
-                    Etichette
-                </button>
-            </div>
-
-            <div class="row">
-                <button type="button" class="btn btn-outline-info form-control">
-                    {#                        onclick="toggleElement('labels-picker')">#}
-                    Membri
-                </button>
-            </div>
-
-
+        <div class="mt-2 mb-3" id="member-picker">
+            <label for="selectMember" class="form-label">Membri</label>
+            <select class="form-select" id="selectMember">
+                {% for member in members %}
+                    <option value="member">{{ member }} </option>
+                {% endfor %}
+            </select>
         </div>
-    </form>
+
+    </div>
+    <div class="col-4 gy-5">
+        <div class="row">
+            <button type="button" class="btn btn-outline-info form-control" onclick="toggleElement('date-picker')">
+                Data
+            </button>
+        </div>
+
+        <div class="row">
+            <button type="button" class="btn btn-outline-info form-control" onclick="toggleElement('image-picker')">
+                Immagine
+            </button>
+        </div>
+
+        <div class="row">
+            <button type="button" class="btn btn-outline-info form-control"
+                    onclick="toggleElement('checklist-picker')">
+                Checklist
+            </button>
+        </div>
+
+        <div class="row">
+            <button type="button" class="btn btn-outline-info form-control"
+                    onclick="toggleElement('labels-picker')">
+                Etichette
+            </button>
+        </div>
+
+        <div class="row">
+            <button type="button" class="btn btn-outline-info form-control">
+                {#                        onclick="toggleElement('labels-picker')">#}
+                Membri
+            </button>
+        </div>
+
+
+    </div>
+</form>
 {% endblock %}
 
 {% block modal_script %}
