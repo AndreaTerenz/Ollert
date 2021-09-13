@@ -116,21 +116,27 @@ def homepage(request):
 
 @login_required
 @require_http_methods(["GET", "HEAD"])
-def board(request, name):
+def board(request, name, owner=None):
     user = get_authenticated_user(request)
+    owner_obj = get_user_from_username(owner)
+    board_obj = None
 
-    if board_obj := get_user_board(user, name):
-        data = get_board_dictionary(board_obj)
+    if owner_obj:
+        # owner != None --> la board appartiene ad un altro utente
+        board_obj = get_user_board(owner_obj, name)
+
+        if board_obj and not (request.user.username in board_obj.members):
+            messages.warning(request, f"La board {name} non è accessibile per questo utente")
+            return redirect("profile")
+    else:
+        # owner == None --> la board appartiene all'utente corrente
+        board_obj = get_user_board(user, name)
+
+    if board_obj:
+        data = get_board_dictionary(board_obj, other_user=owner_obj)
 
         # Usa i dati ottenuti per generare l'html
         return render(request, 'board/board.html', status=200, context=data)
-    else:
-        for b in Board.objects.filter(name=name):
-            if request.user.username in b.members:
-                data = get_board_dictionary(b, user=b.user)
-
-                # Usa i dati ottenuti per generare l'html
-                return render(request, 'board/board.html', status=200, context=data)
 
     # Se non esiste, segnala un errore
     messages.warning(request, f"La board {name} non esiste per questo utente")
@@ -394,7 +400,6 @@ def delete_category(request):
     return render(request, "profile/profile-category-list.html", context={"categories": get_user_categories(user)})
 
 
-
 @login_required
 @require_http_methods(["POST"])
 # "rename" invece di "edit" perchè è l'unica modifica possibile
@@ -494,7 +499,7 @@ class BoardNotification(View):
         notification.user_has_seen = True
         notification.save()
 
-        return redirect('get-board', name=board_name)
+        return redirect('get-board', name=board_name, owner=notification.from_user.username)
 
 
 class CardNotification(View):

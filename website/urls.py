@@ -5,6 +5,7 @@ urlpatterns = [
     # GET
     path('', views.homepage, name="homepage"),
     path('board/<str:name>', views.board, name="get-board"),
+    path('board/<str:name>/<str:owner>', views.board, name="get-board"),
     path('register', views.register_request, name="register"),
     path('login', views.login_request, name="login"),
     path('profile', views.profile, name="profile"),

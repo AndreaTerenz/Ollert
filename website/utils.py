@@ -2,6 +2,7 @@ import json
 from typing import Union
 
 from django.contrib import messages
+from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from icecream import ic
 
@@ -18,6 +19,11 @@ def handle_form_errors(request, form, header):
 def get_authenticated_user(request):
     output = request.user
     return output.userprofile if output.is_authenticated else None
+
+
+def get_user_from_username(name):
+    obj = User.objects.get(username=name)
+    return obj.userprofile if obj else None
 
 
 def get_user_board(user, name):
@@ -42,10 +48,10 @@ def get_user_boards(user):
     return boards
 
 
-def get_board_dictionary(board_obj: Board, user=None):
+def get_board_dictionary(board_obj: Board, other_user=None):
     lists = []
 
-    for l_obj in get_lists_in_board(board_obj, user=user):
+    for l_obj in get_lists_in_board(board_obj, user=other_user):
         lists.append(get_list_dict(l_obj))
 
     output: dict = {
@@ -53,10 +59,9 @@ def get_board_dictionary(board_obj: Board, user=None):
         "board_background": board_obj.background,
         "board_description": board_obj.description,
         "board_lists": lists,
-        "is_owner": not user
     }
 
-    if not user:
+    if not other_user:
         output.update({
             "board_members": board_obj.members,
         })

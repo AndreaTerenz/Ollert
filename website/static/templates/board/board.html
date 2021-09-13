@@ -16,7 +16,7 @@
 {% endblock %}
 
 {% block authenticated_functions %}
-    {% if is_owner %}
+    {% if board_members %}
         <div class="nav-item">
             <button class="btn btn-info" type="button" id="add_user"
                     data-bs-toggle="modal" data-bs-target="#shareModal" aria-expanded="false">
@@ -49,7 +49,7 @@
     {% include "modals/new_card_modal.html" %}
     {% include "modals/view_card_modal.html" %}
     {% include "modals/new_list_modal.html" with board=board_name %}
-    {% if is_owner %}
+    {% if board_members %}
         {% include "modals/share_modal.html" with members=board_members %}
     {% endif %}
 {% endblock %}
