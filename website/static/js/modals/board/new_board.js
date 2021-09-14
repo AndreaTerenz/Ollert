@@ -7,7 +7,7 @@ function ok_newBoard() {
         favorite: modal.querySelector("#favoriteCheck").checked
     }
 
-    if (name != '') {
+    if (data["name"] !== '') {
         make_modal_request(data, new_board_url, "newBoardModal", (data) => {
             insert_html(boards_list_id, data)
         })
