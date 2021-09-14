@@ -61,9 +61,50 @@ function batchDeleteCards() {
     }
 }
 
-function ok_editCard()
-{
-    batchDeleteCards()
-    closeModal('editCardModal')
+function ok_editCard() {
+    let tab_delete = document.querySelector("a[href='#elimina']")
+    let tab_sposta = document.querySelector("a[href='#sposta']")
+    let destination_list = document.getElementById("select_list").value
 
+    if (tab_delete.classList.contains('active')) {
+        batchDeleteCards()
+        closeModal('editCardModal')
+    } else if (tab_sposta.classList.contains('active')) {
+        let targets = []
+
+        selected_cards.forEach(card => {
+            let l_i = card.split("_")
+            let list = parseInt(l_i[0])
+            let idx = parseInt(l_i[1])
+
+            let new_list = document.getElementById(destination_list)
+            new_list.appendChild(card)
+
+            console.log(list, idx)
+            targets.push({
+                "target_type": "card",
+                "target_id": {
+                    "target_id_board": currentBoard,
+                    "target_id_list": destination_list,
+                    "target_id_card": idx
+                }
+            })
+            console.log(destination_list, idx);
+        })
+
+        l
+
+
+        /* selected_cards = []
+
+         let data = {
+             "board": currentBoard,
+             "targets": targets
+         }
+
+         make_modal_request(data, del_board_things_url, "", data => {
+             insert_html("main-row", data)
+             document.getElementById("editCardButton").classList.add("disabled")
+         })*/
+    }
 }
