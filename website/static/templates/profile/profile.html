@@ -75,6 +75,12 @@
         <ul class="row list-group" id='categories-list' style="display:none">
             {% include 'profile/profile-category-list.html' with category=categories %}
         </ul>
+        {% if shared_boards %}
+            <ul class="row list-group" id='boards-list'>
+                {% include 'profile/profile-board-shared.html' with boards=shared_boards %}
+            </ul>
+        {% endif %}
+
 
     </div>
 

@@ -50,6 +50,24 @@ def get_user_boards(user):
     return boards
 
 
+def get_shared_boards(user):
+    boards = []
+    for b in Board.objects.filter():
+        user_dj = User.objects.get(userprofile=user)
+        if (user_dj.username in b.members):
+            data = {
+                "name": b.name,
+                "favorite": b.favorite,
+                "description": b.description,
+                "owner": User.objects.get(userprofile=b.user).username
+            }
+            if cat := b.category:
+                data.update({"category": cat.name})
+
+            boards.append(data)
+    return boards
+
+
 def get_board_dictionary(board_obj: Board, other_user=None):
     lists = []
 

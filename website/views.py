@@ -73,7 +73,8 @@ def profile(request):
     data = {
         'propic': user.profile_pic.name,
         "boards": get_user_boards(user),
-        "categories": get_user_categories(user)
+        "categories": get_user_categories(user),
+        "shared_boards": get_shared_boards(user)
     }
 
     return render(request, 'profile/profile.html', status=200, context=data)
