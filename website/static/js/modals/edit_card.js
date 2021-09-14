@@ -29,82 +29,71 @@ function selectCard(id) {
 }
 
 function batchDeleteCards() {
-    //tecnicamente impossibile arrivare qui senza card selezionate ma vabbè
-    if (selected_cards.length > 0) {
-        let targets = []
+    let targets = []
 
-        selected_cards.forEach(card => {
-            let l_i = card.split("_")
-            let list = parseInt(l_i[0])
-            let idx = parseInt(l_i[1])
-            console.log(list, idx)
-            targets.push({
-                "target_type": "card",
-                "target_id": {
-                    "target_id_list": list,
-                    "target_id_card": idx
-                }
-            })
+    selected_cards.forEach(card => {
+        let l_i = card.split("_")
+        let list = parseInt(l_i[0])
+        let idx = parseInt(l_i[1])
+        console.log(list, idx)
+        targets.push({
+            "target_type": "card",
+            "target_id": {
+                "target_id_list": list,
+                "target_id_card": idx
+            }
         })
+    })
 
-        selected_cards = []
-
-        let data = {
-            "board": currentBoard,
-            "targets": targets
-        }
-
-        make_modal_request(data, del_board_things_url, "", data => {
-            insert_html("main-row", data)
-            document.getElementById("editCardButton").classList.add("disabled")
-        })
+    let data = {
+        "board": currentBoard,
+        "targets": targets
     }
+
+    make_modal_request(data, del_board_things_url, "editCardModal", data => {
+        insert_html("main-row", data)
+        document.getElementById("editCardButton").classList.add("disabled")
+    })
+}
+
+function batchMoveCards() {
+    let destination_list = document.getElementById("select_list").value
+    let targets = []
+    let data = {
+        "board": currentBoard,
+        "dest_list": destination_list.replace("list_", ""),
+        "targets": []
+    }
+
+    selected_cards.forEach(card => {
+        let l_i = card.split("_")
+        let list = parseInt(l_i[0])
+        let idx = parseInt(l_i[1])
+
+        console.log(list, idx)
+        targets.push({
+            "origin_list": list,
+            "card_id": idx
+        })
+    })
+
+    data["targets"] = targets
+
+    make_modal_request(data, move_card_url, "editCardModal", data => {
+        insert_html("main-row", data)
+        document.getElementById("editCardButton").classList.add("disabled")
+    })
 }
 
 function ok_editCard() {
     let tab_delete = document.querySelector("a[href='#elimina']")
     let tab_sposta = document.querySelector("a[href='#sposta']")
-    let destination_list = document.getElementById("select_list").value
 
     if (tab_delete.classList.contains('active')) {
         batchDeleteCards()
-        closeModal('editCardModal')
     } else if (tab_sposta.classList.contains('active')) {
-        let targets = []
-
-        selected_cards.forEach(card => {
-            let l_i = card.split("_")
-            let list = parseInt(l_i[0])
-            let idx = parseInt(l_i[1])
-
-            let new_list = document.getElementById(destination_list)
-            new_list.appendChild(card)
-
-            console.log(list, idx)
-            targets.push({
-                "target_type": "card",
-                "target_id": {
-                    "target_id_board": currentBoard,
-                    "target_id_list": destination_list,
-                    "target_id_card": idx
-                }
-            })
-            console.log(destination_list, idx);
-        })
-
-        l
-
-
-        /* selected_cards = []
-
-         let data = {
-             "board": currentBoard,
-             "targets": targets
-         }
-
-         make_modal_request(data, del_board_things_url, "", data => {
-             insert_html("main-row", data)
-             document.getElementById("editCardButton").classList.add("disabled")
-         })*/
+        batchMoveCards()
     }
+
+    selected_cards = []
 }

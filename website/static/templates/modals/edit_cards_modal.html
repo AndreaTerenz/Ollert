@@ -28,7 +28,6 @@
             <div class="mb-3">
                 <label for="" class="form-label">Scegli la lista di destinazione</label>
                 <select class="form-select" id="select_list">
-                    <option selected></option>
                     {% for list in board_lists %}
                             <option value="{{ list.list_id }}">{{ list.list_title }}</option>
                     {% endfor %}
@@ -42,6 +41,7 @@
 {% block modal_script %}
     <script>
         const delete_card_url = "{% url 'delete-board-content' %}"
+        const move_card_url = "{% url 'move-cards' %}"
     </script>
     <script src="{% static 'js/modals/edit_card.js' %}"></script>
 {% endblock %}

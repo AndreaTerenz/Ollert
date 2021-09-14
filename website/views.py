@@ -331,9 +331,6 @@ def edit_board_content(request):
 
             if trgt_field == "name":
                 trgt_card.title = new_value
-            elif trgt_field == "position":
-                move_object(trgt_card.position, new_value, trgt_list, Card)
-                trgt_card.position = new_value
             elif trgt_field == "description":
                 trgt_card.description = new_value
             elif trgt_field == "date":
@@ -353,6 +350,50 @@ def edit_board_content(request):
     else:
         return HttpResponse(f"Board {data['target_id']['target_id_board']} not found", status=406)
 
+
+@login_required
+@require_http_methods(["POST"])
+def move_cards(request):
+    user, data = get_user_data(request)
+
+    """
+    Formato JSON
+    {
+        board: <nome board>
+        dest_list: <id lista di destinazione>
+        targets:
+        [...<lista card da spostare>
+            {
+                origin_list: <id lista di origine>
+                card_id: <id card da spostare>
+            }
+        ...]
+    }
+    """
+
+    board_obj = get_user_board(user, data["board"])
+    dest_list = get_list_in_board(data["dest_list"], board_obj)
+    targets = data["targets"]
+
+    pos = dest_list.cards_count
+
+    for target in targets:
+        origin_list = get_list_in_board(target["origin_list"], board_obj)
+        card_id = target["card_id"]
+
+        card_obj = get_card_in_list(card_id, origin_list)
+
+        card_obj.list = dest_list
+        card_obj.position = pos
+        card_obj.save()
+
+        pos += 1
+
+    dest_list.cards_count += len(targets)
+    dest_list.save()
+
+    return render(request, "board/board_lists.html",
+                  context={"lists": [get_list_dict(l) for l in get_lists_in_board(board_obj)]})
 
 @login_required
 @require_http_methods(["POST"])

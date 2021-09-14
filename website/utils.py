@@ -90,8 +90,8 @@ def get_user_categories(user):
 
 def get_list_in_board(pos, parent_board: Board):
     try:
-        ic(parent_board.user)
-        return List.objects.get(pos, user=parent_board.user, board=parent_board)
+        ic(parent_board.user, parent_board, pos)
+        return List.objects.get(position=pos, user=parent_board.user, board=parent_board)
     except ObjectDoesNotExist:
         return None
 
@@ -117,7 +117,7 @@ def get_list_dict(l_obj: List):
 def get_card_in_list(pos, parent_list: List):
     try:
         board = parent_list.board
-        return Card.objects.get(pos, user=board.user, board=board, list=parent_list)
+        return Card.objects.get(position=pos, user=board.user, board=board, list=parent_list)
     except ObjectDoesNotExist:
         return None
 

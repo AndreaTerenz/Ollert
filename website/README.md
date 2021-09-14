@@ -116,7 +116,7 @@ Modifica un campo di una lista o card. Anche in questo caso, si hanno due format
         target_id_list: <id della lista>
         target_id_card: <id della card>
     }
-    target_field: <name|position|description|date|img|checks|members|tags>
+    target_field: <name|description|date|img|checks|members|tags>
     new_value: <nuovo valore del target field>
 }
 ```
