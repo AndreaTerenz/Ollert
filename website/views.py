@@ -193,7 +193,6 @@ def edit_board(request):
 
     board_name = data["board_name"]
 
-    # FIXME: bisognerebbe capire bene cosa ritornare invece di mere HttpResponse
     if board_obj := get_user_board(user, board_name):
         for edit in data["edits"]:
             field = edit["target_field"]
@@ -217,7 +216,8 @@ def edit_board(request):
         board_obj.save()
         return render(request, "profile/profile-boards-list.html", context={"boards": get_user_boards(user)})
     else:
-        return HttpResponse(f"Board {board_name} not found", status=406)
+        messages.error(request, f"La board {board_name} non esiste per questo utente")
+        return redirect("profile")
 
 
 @login_required
@@ -320,35 +320,13 @@ def edit_board_content(request):
 
     if trgt_board := get_user_board(user, data["target_id"]["target_id_board"]):
         trgt_list = List.objects.get(board=trgt_board, position=data["target_id"]["target_id_list"])
-        trgt_field = data["target_field"]
         new_value = data["new_value"]
 
         if trgt_type == "list":
-            if trgt_field == "title":
-                trgt_list.title = new_value
-            elif trgt_field == "position":
-                # initial_pos = trgt_list.position
-                # dest_pos = new_value
-                #
-                # if initial_pos != dest_pos:
-                #     if initial_pos < dest_pos:
-                #         for l in List.objects.filter(board=trgt_board,
-                #                                      position__range=range(initial_pos + 1, dest_pos)):
-                #             l.position -= 1
-                #             l.save()
-                #     else:
-                #         for l in List.objects.filter(board=trgt_board,
-                #                                      position__range=range(dest_pos, initial_pos - 1)):
-                #             l.position += 1
-                #             l.save()
-                #
-                #
-
-                move_object(trgt_list.position, new_value, trgt_board, List)
-                trgt_list.position = new_value
-
+            trgt_list.title = new_value
             trgt_list.save()
         elif trgt_type == "card":
+            trgt_field = data["target_field"]
             trgt_card = Card.objects.get(list=trgt_list, position=data["target_id"]["target_id_card"])
 
             if trgt_field == "name":

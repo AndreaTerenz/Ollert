@@ -97,7 +97,7 @@ Elimina uno o più oggetti
 <br>
 
 #### `edit-board-content`
-Modifica uno o più campi di una lista o card. Anche in questo caso, si hanno due formati JSON
+Modifica un campo di una lista o card. Anche in questo caso, si hanno due formati JSON
 ```
 {
     target_type: <list>
@@ -105,7 +105,6 @@ Modifica uno o più campi di una lista o card. Anche in questo caso, si hanno du
         target_id_board: <nome della board>
         target_id_list: <id della lista>
     }
-    target_field: <title|position> 
     new_value: <nuovo valore del target field>
 }
 ```
@@ -121,6 +120,7 @@ Modifica uno o più campi di una lista o card. Anche in questo caso, si hanno du
     new_value: <nuovo valore del target field>
 }
 ```
+Da notare che `target_field` non sia necessario per una lista in quanto solo il titolo è modificabile
 <br>
 
 ### Categorie
