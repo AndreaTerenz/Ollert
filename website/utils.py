@@ -22,8 +22,10 @@ def get_authenticated_user(request):
 
 
 def get_user_from_username(name):
-    obj = User.objects.get(username=name)
-    return obj.userprofile if obj else None
+    try:
+        return User.objects.get(username=name)
+    except ObjectDoesNotExist:
+        return None
 
 
 def get_user_board(user, name):
