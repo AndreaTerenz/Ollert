@@ -23,7 +23,7 @@ def get_authenticated_user(request):
 
 def get_user_from_username(name):
     try:
-        return User.objects.get(username=name)
+        return User.objects.get(username=name).userprofile
     except ObjectDoesNotExist:
         return None
 
@@ -61,6 +61,7 @@ def get_board_dictionary(board_obj: Board, other_user=None):
         "board_background": board_obj.background,
         "board_description": board_obj.description,
         "board_lists": lists,
+        "is_owner": not other_user
     }
 
     if not other_user:

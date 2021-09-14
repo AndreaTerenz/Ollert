@@ -132,8 +132,11 @@ def board(request, name, owner=None):
         # owner == None --> la board appartiene all'utente corrente
         board_obj = get_user_board(user, name)
 
+    ic(user, name, board_obj, owner_obj)
+
     if board_obj:
         data = get_board_dictionary(board_obj, other_user=owner_obj)
+        ic(data)
 
         # Usa i dati ottenuti per generare l'html
         return render(request, 'board/board.html', status=200, context=data)
