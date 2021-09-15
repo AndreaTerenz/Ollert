@@ -60,7 +60,7 @@ class Board(Model):
         default='#222'
     )
     members = models.JSONField(
-        default=list
+        default=dict
     )
     favorite = models.BooleanField(default=False)
 

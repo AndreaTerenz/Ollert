@@ -11,15 +11,18 @@ function ok_shareModal() {
     {
         let username = document.getElementById('username').value
         let message = document.getElementById('shareMessage').value
-        let permission = document.getElementById('selectAccess').value
+        let permission = document.getElementById('selectAccess').value.toUpperCase()
 
-        console.log(username, message, permission)
+        console.log(username, message, permission, "AAAAAAAAAAAAAAAAAAa")
 
         let data = {
             'receiver': username,
+            'permissions': permission,
             'board_name': currentBoard,
             'action': 'ADDED'
         }
+
+        console.log(data)
 
         make_modal_request(data, share_board_url, "shareModal", (data) => {
             console.log(data);

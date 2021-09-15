@@ -1,12 +1,20 @@
 {% for list in lists %}
-    {% include 'board/list.html' with id=list.list_id title=list.list_title cards=list.list_cards %}
+    {% include 'board/list.html' with id=list.list_id title=list.list_title cards=list.list_cards can_edit=can_edit %}
 {% endfor %}
 
-<div class="col-auto" id="new-list-button">
-    <div class="cards-list card me-auto mt-0">
-        <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                data-bs-target="#newListModal">
-            <span class="fa fa-plus pe-2"></span>Aggiungi una lista
-        </button>
+{% if can_edit %}
+    <div class="col-auto" id="new-list-button">
+        <div class="cards-list card me-auto mt-0">
+            <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                    data-bs-target="#newListModal">
+                <span class="fa fa-plus pe-2"></span>Aggiungi una lista
+            </button>
+        </div>
     </div>
-</div>
+{% else %}
+    <div class="col-auto" id="new-list-button">
+        <div class="cards-list card me-auto mt-0 bg-disabled py-2 text-center text-muted" disabled="true">
+            Nessuna lista
+        </div>
+    </div>
+{% endif %}

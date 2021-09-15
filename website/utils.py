@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from icecream import ic
 
-from website.models import Board, List, Card, Category
+from website.models import Board, List, Card, Category, UserProfile
 
 
 def handle_form_errors(request, form, header):
@@ -28,6 +28,13 @@ def get_user_from_username(name):
         return None
 
 
+def get_username(user: UserProfile):
+    try:
+        return User.objects.get(userprofile=user).username
+    except ObjectDoesNotExist:
+        return ""
+
+
 def get_user_board(user, name):
     try:
         return Board.objects.get(user=user, name=name)
@@ -36,51 +43,58 @@ def get_user_board(user, name):
 
 
 def get_user_boards(user):
-    boards = []
-    for b in Board.objects.filter(user=user):
-        data = {
-            "name": b.name,
-            "favorite": b.favorite,
-            "description": b.description
-        }
-        if cat := b.category:
-            data.update({"category": cat.name})
+    return [get_board_short_dict(b) for b in Board.objects.filter(user=user)]
 
-        boards.append(data)
-    return boards
+
+def is_board_member(b: Board, user: UserProfile):
+    return get_username(user) in b.members.keys()
+
+
+def get_user_permission(b: Board, user: UserProfile):
+    if is_board_member(b, user):
+        return b.members[get_username(user)]
+
+    return None
 
 
 def get_shared_boards(user):
     boards = []
     for b in Board.objects.filter():
-        user_dj = User.objects.get(userprofile=user)
-        if (user_dj.username in b.members):
-            data = {
-                "name": b.name,
-                "favorite": b.favorite,
-                "description": b.description,
-                "owner": User.objects.get(userprofile=b.user).username
-            }
-            if cat := b.category:
-                data.update({"category": cat.name})
-
-            boards.append(data)
+        if is_board_member(b, user):
+            boards.append(get_board_short_dict(b, include_owner=True))
     return boards
 
 
-def get_board_dictionary(board_obj: Board, other_user=None):
-    lists = []
+def get_board_short_dict(board_obj: Board, include_owner=False):
+    data = {
+        "name": board_obj.name,
+        "favorite": board_obj.favorite,
+        "description": board_obj.description
+    }
+    if cat := board_obj.category:
+        data.update({"category": cat.name})
 
-    for l_obj in get_lists_in_board(board_obj, user=other_user):
-        lists.append(get_list_dict(l_obj))
+    if include_owner:
+        data.update({
+            "owner": get_username(board_obj.user)
+        })
 
+    return data
+
+
+def get_board_dictionary(board_obj: Board, other_user=None, can_edit=True):
     output: dict = {
         "board_name": board_obj.name,
         "board_background": board_obj.background,
         "board_description": board_obj.description,
-        "board_lists": lists,
-        "is_owner": not other_user
+        "is_owner": not other_user,
+        "can_edit": can_edit
     }
+
+    lists = [get_list_dict(l_obj) for l_obj in get_lists_in_board(board_obj, user=other_user)]
+    output.update({
+        "board_lists": lists
+    })
 
     if not other_user:
         output.update({
@@ -168,21 +182,6 @@ def get_card_ids(parent_list, pos):
 
 def get_cards_in_list(parent_list: List):
     return Card.objects.filter(user=parent_list.board.user, board=parent_list.board, list=parent_list)
-
-
-def move_object(current_pos: int, new_pos: int, parent_obj: Union[Board, List], obj_type):
-    if current_pos != new_pos:
-        # FIXME: MADRE DE DIOS CHE ROBA INEFFICENTE
-        if current_pos < new_pos:
-            for c in obj_type.objects.filter(parent_obj,
-                                             position__range=range(current_pos + 1, new_pos)):
-                c.position -= 1
-                c.save()
-        else:
-            for c in obj_type.objects.filter(parent_obj,
-                                             position__range=range(new_pos, current_pos - 1)):
-                c.position += 1
-                c.save()
 
 
 def get_user_data(request) -> tuple:

@@ -11,7 +11,8 @@
 {% endblock %}
 
 {% block settings-nav %}
-    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#chooseColorModal" aria-expanded="false">Modifica sfondo</a></li>
+    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#chooseColorModal"
+           aria-expanded="false">Modifica sfondo</a></li>
     <li><a class="dropdown-item" href="#">Rinomina board</a></li>
 {% endblock %}
 
@@ -28,10 +29,12 @@
 
 {% block content %}
     <div class="row my-3 mx-auto">
-        <button class="col-auto mt-auto mb-0 ms-3 btn bg-info disabled" type="button" id="editCardButton"
-                data-bs-toggle="modal" data-bs-target="#editCardModal" aria-expanded="false">
-            <span class="fa fa-edit fs-5 ms-2"></span>
-        </button>
+        {% if can_edit %}
+            <button class="col-auto mt-auto mb-0 ms-3 btn bg-info disabled" type="button" id="editCardButton"
+                    data-bs-toggle="modal" data-bs-target="#editCardModal" aria-expanded="false">
+                <span class="fa fa-edit fs-5 ms-2"></span>
+            </button>
+        {% endif %}
 
         <div class="col text-center">
             <h2 class="fw-bold">{{ board_name }}</h2>
@@ -41,15 +44,17 @@
         </div>
     </div>
     <div class="row m-auto h-100 flex-nowrap overflow-auto" id="main-row">
-        {% include 'board/board_lists.html' with lists=board_lists %}
+        {% include 'board/board_lists.html' with lists=board_lists can_edit=can_edit %}
     </div>
 
-    {% include "modals/board modals/choose_color_modal.html" %}
-    {% include "modals/edit_cards_modal.html" %}
-    {% include "modals/new_card_modal.html" %}
     {% include "modals/view_card_modal.html" %}
-    {% include "modals/new_list_modal.html" with board=board_name %}
-    {% include "modals/board modals/delete_list_modal.html" %}
+    {% if can_edit %}
+        {% include "modals/board modals/choose_color_modal.html" %}
+        {% include "modals/edit_cards_modal.html" %}
+        {% include "modals/new_card_modal.html" %}
+        {% include "modals/new_list_modal.html" with board=board_name %}
+        {% include "modals/board modals/delete_list_modal.html" %}
+    {% endif %}
     {% if is_owner %}
         {% include "modals/share_modal.html" with members=board_members %}
     {% endif %}
@@ -58,6 +63,8 @@
 {% block extra-scripts %}
     <script>
         const currentBoard = "{{ board_name }}"
-        const del_board_things_url = "{% url 'delete-board-content' %}"
+        {% if can_edit %}
+            const del_board_things_url = "{% url 'delete-board-content' %}"
+        {% endif %}
     </script>
 {% endblock %}

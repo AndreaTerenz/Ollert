@@ -120,24 +120,24 @@ def homepage(request):
 def board(request, name, owner=None):
     user = get_authenticated_user(request)
     owner_obj = get_user_from_username(owner)
-    board_obj = None
+    can_edit = True
 
     if owner_obj:
         # owner != None --> la board appartiene ad un altro utente
         board_obj = get_user_board(owner_obj, name)
+        perm = get_user_permission(board_obj, user)
 
-        if board_obj and not (request.user.username in board_obj.members):
+        if board_obj and not perm:
             messages.warning(request, f"La board {name} non è accessibile per questo utente")
             return redirect("profile")
+
+        can_edit = (perm == "EDIT")
     else:
         # owner == None --> la board appartiene all'utente corrente
         board_obj = get_user_board(user, name)
 
-    ic(user, name, board_obj, owner_obj)
-
     if board_obj:
-        data = get_board_dictionary(board_obj, other_user=owner_obj)
-        ic(data)
+        data = get_board_dictionary(board_obj, other_user=owner_obj, can_edit=can_edit)
 
         # Usa i dati ottenuti per generare l'html
         return render(request, 'board/board.html', status=200, context=data)
@@ -150,8 +150,7 @@ def board(request, name, owner=None):
 @login_required
 @require_http_methods(["POST"])
 def create_board(request):
-    user = get_authenticated_user(request)
-    data = json.loads(request.body)
+    user, data = get_user_data(request)
 
     if not (get_user_board(user, data["name"])):
         # Se non riesce a trovare una board T per questo utente, vuol dire che può essere creata
@@ -399,6 +398,7 @@ def move_cards(request):
     return render(request, "board/board_lists.html",
                   context={"lists": [get_list_dict(l) for l in get_lists_in_board(board_obj)]})
 
+
 @login_required
 @require_http_methods(["POST"])
 def create_category(request):
@@ -447,9 +447,12 @@ class ManageBoardUser(View):
         {
             receiver: <nome destinatario>
             board_name: <nome board>
+            permissions: <EDIT|VIEW>
             action: <ADDED|REMOVED>
         }
         """
+
+        ic(data)
 
         receiver = data["receiver"]
         board_name = data["board_name"]
@@ -459,9 +462,11 @@ class ManageBoardUser(View):
         board_obj = Board.objects.get(user=user, name=board_name)
 
         if action == NotificationType.ADDED:
-            board_obj.members += [receiver]
+            board_obj.members.update({
+                receiver: data["permissions"]
+            })
         elif action == NotificationType.REMOVED:
-            board_obj.members.remove(receiver)
+            board_obj.members.pop(receiver)
 
         board_obj.save()
 
