@@ -11,8 +11,10 @@ urlpatterns = [
     path('profile', views.profile, name="profile"),
     path('logout', views.logout_request, name="logout"),
 
-    path('notification/<int:notification_pk>/board/<str:board_name>', views.BoardNotification.as_view(), name='board-notification'),
-    path('notification/<int:notification_pk>/card/<int:card_id>', views.CardNotification.as_view(), name='card-notification'),
+    path('notification/<int:notification_pk>/board/<str:board_name>', views.BoardNotification.as_view(),
+         name='board-notification'),
+    path('notification/<int:notification_pk>/card/<int:card_id>', views.CardNotification.as_view(),
+         name='card-notification'),
 
     # POST
     path('create_board', views.create_board, name='make-board'),

@@ -16,18 +16,6 @@
                 {% if category %}
                     <span class="simil-icon my-auto fs-6 bg-primary p-1 rounded">{{ category }}</span>
                 {% endif %}
-                <div class="btn-group" role="group">
-                    <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle"
-                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></button>
-                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" data-popper-placement="bottom-start">
-                        <a class="dropdown-item" href="#" data-bs-target="#editBoardModal" data-bs-toggle="modal"
-                           data-bs-board="{{ name }}"><i
-                                class="fa fa-pencil fa-fw"></i>Modifica</a>
-                        <a class="dropdown-item" href="#" data-bs-target="#deleteBoardModal" data-bs-toggle="modal"
-                           data-bs-board="{{ name }}"><i
-                                class="fa fa-trash-o fa-fw"></i>Elimina</a>
-                    </div>
-                </div>
             </li>
         {% endwith %}
     {% endfor %}

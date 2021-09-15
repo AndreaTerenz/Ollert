@@ -72,14 +72,12 @@
         <ul class="row list-group" id='boards-list'>
             {% include 'profile/profile-boards-list.html' with boards=boards %}
         </ul>
+        <ul class="row list-group mt-4" id="shared-boards-list">
+            {% include 'profile/profile-boards-shared.html' with boards=shared_boards %}
+        </ul>
         <ul class="row list-group" id='categories-list' style="display:none">
             {% include 'profile/profile-category-list.html' with category=categories %}
         </ul>
-        {% if shared_boards %}
-            <ul class="row list-group" id='boards-list'>
-                {% include 'profile/profile-board-shared.html' with boards=shared_boards %}
-            </ul>
-        {% endif %}
 
 
     </div>
@@ -95,6 +93,7 @@
     <script>
         const boards_list_id = "boards-list"
         const categories_list_id = "categories-list"
+        const shared_boards = "shared-boards-list"
     </script>
     <script src="{% static 'js/modals/switch_category.js' %}"></script>
 
