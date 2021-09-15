@@ -49,6 +49,7 @@
     {% include "modals/new_card_modal.html" %}
     {% include "modals/view_card_modal.html" %}
     {% include "modals/new_list_modal.html" with board=board_name %}
+    {% include "modals/board modals/delete_list_modal.html" %}
     {% if is_owner %}
         {% include "modals/share_modal.html" with members=board_members %}
     {% endif %}
@@ -57,7 +58,6 @@
 {% block extra-scripts %}
     <script>
         const currentBoard = "{{ board_name }}"
-        console.log(currentBoard)
         const del_board_things_url = "{% url 'delete-board-content' %}"
     </script>
 {% endblock %}
