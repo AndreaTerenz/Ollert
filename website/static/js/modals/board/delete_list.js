@@ -28,8 +28,7 @@ function ok_deleteList() {
         }]
     }
 
-
     make_modal_request(data, delete_list_url, 'deleteListModal', (data) => {
-        insert_html("main-row", data)
+        insert_html(main_row_id, data)
     })
 }

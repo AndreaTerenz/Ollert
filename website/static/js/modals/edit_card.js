@@ -51,7 +51,7 @@ function batchDeleteCards() {
     }
 
     make_modal_request(data, del_board_things_url, "editCardModal", data => {
-        insert_html("main-row", data)
+        insert_html(main_row_id, data)
         document.getElementById("editCardButton").classList.add("disabled")
     })
 }
@@ -80,7 +80,7 @@ function batchMoveCards() {
     data["targets"] = targets
 
     make_modal_request(data, move_card_url, "editCardModal", data => {
-        insert_html("main-row", data)
+        insert_html(main_row_id, data)
         document.getElementById("editCardButton").classList.add("disabled")
     })
 }

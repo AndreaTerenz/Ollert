@@ -63,6 +63,7 @@
 {% block extra-scripts %}
     <script>
         const currentBoard = "{{ board_name }}"
+        const main_row_id = "main-row"
         {% if can_edit %}
             const del_board_things_url = "{% url 'delete-board-content' %}"
         {% endif %}

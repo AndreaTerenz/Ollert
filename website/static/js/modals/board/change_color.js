@@ -1,6 +1,14 @@
 function ok_chooseColor() {
-    let color = document.getElementById('colorpicker')
-    document.body.style.background = color.value
+    let selected_input = document.querySelector(`input[type="radio"]:checked`).value
+    console.log(selected_input)
+
+    let color = ""
+    if (selected_input === "DEFAULT") {
+        color = "#222222"
+    }
+    else if (selected_input === "CUSTOM") {
+        color = document.getElementById('colorpicker')
+    }
 
     let request_data = {
         "board_name": currentBoard,
@@ -11,7 +19,6 @@ function ok_chooseColor() {
     }
 
     make_modal_request(request_data, edit_board_url, 'chooseColorModal', (data) => {
-
+        document.body.style.background = color.value
     })
-    closeModal('chooseColorModal')
 }

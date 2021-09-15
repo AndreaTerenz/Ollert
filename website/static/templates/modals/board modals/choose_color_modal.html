@@ -1,21 +1,44 @@
-{% extends "modals/board modals/base_board_modal.html" %}
+{% extends "modals/base_modal.html" %}
 {% load static %}
 
 
 {% block modal_wrapper %}
-    {% with modalID="chooseColorModal" okFunction="ok_chooseColor()" object="Scegli il colore di sfondo" %}
+    {% with modalID="chooseColorModal" okFunction="ok_chooseColor()" object="Scegli il colore di sfondo" size="modal-sm"%}
         {{ block.super }}
     {% endwith %}
 {% endblock %}
 
 {% block modal_body %}
-    <label for="colorpicker">Colore:</label>
-    <input type="color" id="colorpicker" value="#0000ff">
+    <div class="form-check my-2">
+        <input class="form-check-input" type="radio" name="colorRadio" value="DEFAULT" id="defaultColorRadio" checked
+            onclick="useDefault()">
+        <label class="form-check-label" for="defaultColorRadio">
+            Usa default
+        </label>
+    </div>
+    <div class="form-check my-2">
+        <input class="form-check-input" type="radio" name="colorRadio" value="CUSTOM" id="customColorRadio"
+            onclick="useCustom()">
+        <label class="form-check-label" for="customColorRadio">
+            Personalizza
+        </label>
+    </div>
+    <div class="row my-1 mx-2">
+        <input type="color" id="colorpicker" disabled value="#5454CF">
+    </div>
+
 {% endblock %}
 
 {% block modal_script %}
     <script>
         const edit_board_url = "{% url 'edit-board' %}"
+        function useDefault() {
+            document.getElementById("colorpicker").disabled = true
+        }
+        function useCustom() {
+            document.getElementById("colorpicker").disabled = false
+        }
+
     </script>
     <script src="{% static 'js/modals/board/change_color.js' %}"></script>
 {% endblock %}
