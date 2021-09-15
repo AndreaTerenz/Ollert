@@ -195,7 +195,7 @@ def edit_board(request):
     data = json.loads(request.body)
 
     board_name = data["board_name"]
-
+    ic(data)
     if board_obj := get_user_board(user, board_name):
         for edit in data["edits"]:
             field = edit["target_field"]
