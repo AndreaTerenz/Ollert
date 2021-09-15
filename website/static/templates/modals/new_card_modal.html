@@ -22,7 +22,7 @@
         </div>
         <div class="mt-2 mb-3" id="date-picker" style="display:none">
             <label for="cardDate" class="form-label">Data</label>
-            <input class="form-control" value="30/10/1999" id="cardDate" type="datetime-local"
+            <input class="form-control" id="cardDate" type="datetime-local"
                    placeholder="Inserisci la data in formato gg/mm/aaaa">
         </div>
         <div class="mt-2 mb-3" id='image-picker' style="display:none">
@@ -30,12 +30,12 @@
             <input class="form-control" type="file" id="imageButton">
         </div>
 
-        <div class="mt-2 mb-3" id='checklist-picker' style="display:none">
+        <div class="mt-2 mb-3" id="checklist" style="display:none">
             <label class="form-label">Checklist</label>
-            <div class="row m-auto" id="container">
-                <input type="text" class="col form-control" id="userInput" placeholder="Inserisci testo...">
+            <div class="row m-auto" id="checklistCont">
+                <input type="text" class="col form-control" id="checklistInput" placeholder="Inserisci testo...">
                 <button type="button" id="buttonChecklist"
-                        class="btn btn-outline-success col-auto" onclick="showChecklist()">
+                        class="btn btn-outline-success col-auto" onclick="addToChecklist()">
                     <i class="bi bi-check-lg"></i>
                 </button>
             </div>
@@ -86,7 +86,7 @@
 
         <div class="row">
             <button type="button" class="btn btn-outline-info form-control"
-                    onclick="toggleElement('checklist-picker')">
+                    onclick="toggleElement('checklist')">
                 Checklist
             </button>
         </div>

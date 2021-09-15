@@ -1,4 +1,5 @@
 var target_list = ""
+var checks = {}
 
 addOnShowListener("newCardModal", e => {
     let button = e.relatedTarget
@@ -27,7 +28,8 @@ function ok_newCard() {
                 "card_name": name,
                 "card_descr": description,
                 "card_date": date,
-                "card_members": members
+                "card_members": members,
+                "card_checks": checks
             }
         }
 
@@ -52,24 +54,25 @@ function toggleElement(id_element) {
         elements.style.display = "none";
 }
 
-function showChecklist() {
-    document.getElementById('buttonChecklist').onclick = function () {
+function addToChecklist() {
+    let userInput = document.getElementById("checklistInput");
+    let val = userInput.value
+
+    if (val !== "") {
         let checkbox = document.createElement('input');
         let label = document.createElement('label')
-        let userInput = document.getElementById("userInput");
-        let text = document.createTextNode(userInput.value);
+        let checkText = document.createTextNode(val);
 
         checkbox.type = 'checkbox';
-        checkbox.name = 'interest';
 
         label.appendChild(checkbox);
-        label.appendChild(text);
+        label.appendChild(checkText);
+        label.classList.add("mb-2")
 
-        let br = document.createElement('br');
+        checks[val] = false
 
-        let container = document.getElementById('container');
+        let container = document.getElementById('checklistCont');
         container.appendChild(label);
-        container.appendChild(br);
 
         userInput.value = '';
     }

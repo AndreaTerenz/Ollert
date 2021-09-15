@@ -1,23 +1,23 @@
-<div class="col-auto mb-auto">
+<div class="col-auto mb-auto" id="{{ list.id|add:"_parent" }}">
     <div class="card-header">
-        <span class="fw-bold fs-4 text-center">{{ title }}</span>
-        {% if can_edit %}
+        <span class="fw-bold fs-4 text-center">{{ list.title }}</span>
+        {% if list.can_edit %}
             <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                    data-bs-target="#deleteListModal" data-bs-list='{{ list.list_title }}'>
+                    data-bs-target="#deleteListModal" data-bs-list='{{ list.id }}'
+                    data-bs-list-title="'{{ list.title }}">
                 <i class="bi bi-trash my-auto"></i>
             </button>
         {% endif %}
-
     </div>
-    <div id='{{ id }}' class="cards-list rounded-bottom overflow-auto pb-3 mb-3">
-        {% for card in cards %}
+    <div id='{{ list.id }}' class="cards-list rounded-bottom overflow-auto pb-3 mb-3">
+        {% for card in list.cards %}
             {% include 'board/card.html' with data=card %}
         {% endfor %}
     </div>
-    {% if can_edit %}
+    {% if list.can_edit %}
         <div class="card me-auto">
             <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                    data-bs-target="#newCardModal" data-bs-list='{{ id }}'>
+                    data-bs-target="#newCardModal" data-bs-list='{{ list.id }}'>
                 <span class="fa fa-plus pe-2"></span>Aggiungi una scheda
             </button>
         </div>

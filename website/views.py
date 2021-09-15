@@ -239,7 +239,7 @@ def create_board_content(request):
             pos = trgt_board.lists_count
             title = trgt_content["list_name"]
 
-            List.objects.create(
+            new_list = List.objects.create(
                 user=user,
                 board=trgt_board,
                 position=pos,
@@ -249,16 +249,12 @@ def create_board_content(request):
             trgt_board.lists_count += 1
             trgt_board.save()
 
-            return render(request, 'board/list.html', context={
-                "title": title,
-                "cards": [],
-                "id": f"list_{pos}"
-            })
+            return render(request, 'board/list.html', context={"list": get_list_dict(new_list, can_edit=True)})
         elif trgt_type == "card":
             trgt_list = List.objects.get(board=trgt_board, position=int(data["target_id"]["target_id_list"]))
             pos = trgt_list.cards_count
 
-            c_obj = Card.objects.create(
+            new_card = Card.objects.create(
                 user=user,
                 board=trgt_board,
                 list=trgt_list,
@@ -276,7 +272,7 @@ def create_board_content(request):
             trgt_list.cards_count += 1
             trgt_list.save()
 
-            context = get_card_dict(c_obj, trgt_list)
+            context = get_card_dict(new_card, trgt_list)
 
             return render(request, "board/card.html", context={"data": context})
     else:
@@ -307,8 +303,12 @@ def delete_board_content(request):
 
                 trgt_card.delete()
 
+        context = {
+            "lists": [get_list_dict(l) for l in get_lists_in_board(parent_board)],
+            "can_edit": True
+        }
         return render(request, "board/board_lists.html",
-                      context={"lists": [get_list_dict(l) for l in get_lists_in_board(parent_board)]})
+                      context=context)
     else:
         return HttpResponse(f"Board {data['target_id']['target_id_board']} not found", status=406)
 

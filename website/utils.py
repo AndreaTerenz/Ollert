@@ -123,7 +123,6 @@ def get_user_categories(user):
 
 def get_list_in_board(pos, parent_board: Board):
     try:
-        ic(parent_board.user, parent_board, pos)
         return List.objects.get(position=pos, user=parent_board.user, board=parent_board)
     except ObjectDoesNotExist:
         return None
@@ -135,14 +134,15 @@ def get_lists_in_board(board: Board, user=None):
     return List.objects.filter(user=user, board=board)
 
 
-def get_list_dict(l_obj: List):
+def get_list_dict(l_obj: List, can_edit=True):
     l = {
-        "list_title": l_obj.title,
-        "list_id": f"list_{l_obj.position}",
-        "list_cards": []
+        "title": l_obj.title,
+        "id": f"list_{l_obj.position}",
+        "cards": [],
+        "can_edit": can_edit
     }
     for c_obj in get_cards_in_list(l_obj):
-        l["list_cards"].append(get_card_dict(c_obj, l_obj))
+        l["cards"].append(get_card_dict(c_obj, l_obj))
 
     return l
 
