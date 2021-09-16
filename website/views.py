@@ -262,12 +262,20 @@ def create_board_content(request):
                 title=trgt_content["card_name"],
                 description=trgt_content.get("card_descr", None),
                 date=trgt_content.get("card_date", None),
-                # TODO: mancano immagine, checklist e membri
+                # TODO: mancano immagine
                 # image
                 checklist=trgt_content.get("card_checks", {}),
                 members=trgt_content.get("card_members", {}),
                 tags=trgt_content.get("card_tags", {})
             )
+
+            for member in new_card.members:
+                Notification.objects.create(
+                    from_user=userprofile_to_user(user),
+                    to_user=User.objects.get(username=member),
+                    card=new_card,
+                    notif_type=NotificationType.ADDED.value
+                )
 
             trgt_list.cards_count += 1
             trgt_list.save()
@@ -541,4 +549,6 @@ class CardNotification(View):
         parent_list = card.list
         parent_board = parent_list.board
 
-        return redirect('get-board', name=parent_board.name)
+        ic(card_id, parent_list, parent_board, parent_board.name)
+
+        return redirect('get-board', name=parent_board.name, owner=notification.from_user.username)

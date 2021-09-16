@@ -21,6 +21,13 @@ def get_authenticated_user(request):
     return output.userprofile if output.is_authenticated else None
 
 
+def userprofile_to_user(user_p: UserProfile):
+    try:
+        return User.objects.get(userprofile=user_p)
+    except ObjectDoesNotExist:
+        return None
+
+
 def get_user_from_username(name):
     try:
         return User.objects.get(username=name).userprofile

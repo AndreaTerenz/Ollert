@@ -1,6 +1,5 @@
 function ok_chooseColor() {
     let selected_input = document.querySelector(`input[type="radio"]:checked`).value
-    console.log(selected_input)
 
     let color = ""
     if (selected_input === "DEFAULT") {

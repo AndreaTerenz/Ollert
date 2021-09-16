@@ -16,7 +16,17 @@ function ok_newCard() {
             date = undefined
 
         let list = document.getElementById(target_list);
-        let members = document.getElementById('selectMember').value;
+
+        let card_content = {
+            "card_name": name,
+            "card_descr": description,
+            "card_date": date,
+            "card_checks": checks
+        }
+
+        let member = document.getElementById('selectMember').value;
+        if (member !== "")
+            card_content["card_members"] = [member]
 
         let data = {
             "target_type": "card",
@@ -24,14 +34,11 @@ function ok_newCard() {
                 "target_id_board": currentBoard,
                 "target_id_list": target_list.replace("list_", "")
             },
-            "new_data": {
-                "card_name": name,
-                "card_descr": description,
-                "card_date": date,
-                "card_members": members,
-                "card_checks": checks
-            }
+            "new_data": card_content
         }
+
+
+        console.log(data)
 
         make_modal_request(data, new_card_url, "newCardModal", (data) => {
             list.insertAdjacentHTML("beforeend", data)
