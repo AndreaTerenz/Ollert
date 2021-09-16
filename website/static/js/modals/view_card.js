@@ -20,6 +20,7 @@ addOnShowListener("cardModal", e => {
         let checkText = document.createTextNode(check);
 
         checkbox.type = 'checkbox';
+        checkbox.checked = card_data.card_checks[check]
 
         label.appendChild(checkbox);
         label.appendChild(checkText);

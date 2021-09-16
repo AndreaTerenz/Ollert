@@ -72,6 +72,9 @@ function addToChecklist() {
         let checkText = document.createTextNode(val);
 
         checkbox.type = 'checkbox';
+        checkbox.addEventListener("click", () => {
+            checks[val] = !checks[val]
+        })
 
         label.appendChild(checkbox);
         label.appendChild(checkText);
