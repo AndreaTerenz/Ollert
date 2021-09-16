@@ -37,6 +37,7 @@ function ok_newCard() {
             list.insertAdjacentHTML("beforeend", data)
         })
     }
+
 }
 
 // grazie stackoverlow
