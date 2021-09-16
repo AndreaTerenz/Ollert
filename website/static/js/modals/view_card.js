@@ -10,6 +10,7 @@ addOnShowListener("cardModal", e => {
 
     set_card_field("cardModalDescr", card_data.card_descr, "Nessuna descrizione")
     set_card_field("cardModalDate", card_data.card_date, "Nessuna data")
+    set_card_field('cardModalMember', card_data.card_members, 'Nessun membro assegnato')
 
     let container = document.getElementById('cardModalCheck')
     container.innerText= ""
@@ -21,7 +22,7 @@ addOnShowListener("cardModal", e => {
 
         checkbox.type = 'checkbox';
         checkbox.checked = card_data.card_checks[check]
-
+        
         label.appendChild(checkbox);
         label.appendChild(checkText);
         label.classList.add("mb-2")
