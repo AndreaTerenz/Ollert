@@ -269,8 +269,8 @@ def create_board_content(request):
 
             for member in new_card.members:
                 Notification.objects.create(
-                    from_user=userprofile_to_user(user),
-                    to_user=User.objects.get(username=member),
+                    from_user=user,
+                    to_user=get_user_from_username(member),
                     card=new_card,
                     notif_type=NotificationType.ADDED.value
                 )
@@ -446,10 +446,11 @@ def rename_category(request):
 
 class JoinBoard(View):
     def get(self, request, name, owner, *args, **kwargs):
-        owner_obj = User.objects.get(username=owner)
-        board_obj = get_user_board(owner_obj.userprofile, name)
+        user = get_authenticated_user(request)
+        owner_obj = get_user_from_username(owner)
+        board_obj = get_user_board(owner_obj, name)
 
-        manage_user(board_obj, owner_obj, request.user, "VIEW", NotificationType.ADDED, send_notif=False)
+        manage_user(board_obj, owner_obj, user, "VIEW", NotificationType.ADDED, send_notif=False)
 
         return redirect("get-board", name=name, owner=owner)
 
@@ -468,27 +469,29 @@ class ManageBoardUser(View):
         }
         """
 
-        ic(data)
-
         receiver = data["receiver"]
-        board_name = data["board_name"]
-        action = NotificationType[data["action"]]
 
-        receiver_obj = User.objects.get(username=receiver)
-        board_obj = Board.objects.get(user=user, name=board_name)
+        try:
+            receiver_obj = get_user_from_username(receiver)
+            board_name = data["board_name"]
+            try:
+                board_obj = get_user_board(user, board_name)
+                action = NotificationType[data["action"]]
+                manage_user(board_obj, user, receiver_obj, data["permissions"], action)
+                return HttpResponse("ok")
+            except ObjectDoesNotExist:
+                return HttpResponse("Board not found", status=406)
+        except ObjectDoesNotExist:
+            return HttpResponse("Receiver not found", status=406)
 
-        manage_user(board_obj, request.user, receiver_obj, data["permissions"], action)
 
-        return HttpResponse("ok")
-
-
-def manage_user(board_obj: Board, owner: User, receiver: User, permission, action, send_notif=True):
+def manage_user(board_obj: Board, owner: UserProfile, receiver: UserProfile, permission, action, send_notif=True):
     if action == NotificationType.ADDED:
         board_obj.members.update({
-            receiver.username: permission
+            get_username(receiver): permission
         })
     elif action == NotificationType.REMOVED:
-        board_obj.members.pop(receiver.username)
+        board_obj.members.pop(get_username(receiver))
 
     board_obj.save()
 
@@ -522,7 +525,7 @@ class ManageCardAssignee(View):
         card_obj = Card.objects.get(list=list_obj, position=data["card_id"])
         action = NotificationType[data["action"]]
 
-        receiver_obj = User.objects.get(username=receiver)
+        receiver_obj = get_user_from_username(receiver)
 
         if action == NotificationType.ADDED:
             card_obj.members.append(receiver)
@@ -548,7 +551,7 @@ class BoardNotification(View):
         notification.user_has_seen = True
         notification.save()
 
-        return redirect('get-board', name=board_name, owner=notification.from_user.username)
+        return redirect('get-board', name=board_name, owner=get_username(notification.from_user))
 
 
 class CardNotification(View):
@@ -562,6 +565,4 @@ class CardNotification(View):
         parent_list = card.list
         parent_board = parent_list.board
 
-        ic(card_id, parent_list, parent_board, parent_board.name)
-
-        return redirect('get-board', name=parent_board.name, owner=notification.from_user.username)
+        return redirect('get-board', name=parent_board.name, owner=get_username(notification.from_user))

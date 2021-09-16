@@ -26,9 +26,14 @@ function ok_shareModal() {
 
         console.log(data)
 
-        make_modal_request(data, share_board_url, "shareModal", (data) => {
-            console.log(data);
-        })
+        make_modal_request(data, share_board_url, "shareModal",
+            (data) => {
+                console.log(data);
+            },
+            (err) => {
+                console.log("AAAAAAAAAAAAAOOOOOOOOOOOOOOOOO")
+            }
+        )
     }
     else if (tab_link.classList.contains('active'))
     {

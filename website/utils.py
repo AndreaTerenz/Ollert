@@ -21,13 +21,6 @@ def get_authenticated_user(request):
     return output.userprofile if output.is_authenticated else None
 
 
-def userprofile_to_user(user_p: UserProfile):
-    try:
-        return User.objects.get(userprofile=user_p)
-    except ObjectDoesNotExist:
-        return None
-
-
 def get_user_from_username(name):
     try:
         return User.objects.get(username=name).userprofile
@@ -42,14 +35,14 @@ def get_username(user: UserProfile):
         return ""
 
 
-def get_user_board(user, name):
+def get_user_board(user: UserProfile, name):
     try:
         return Board.objects.get(user=user, name=name)
     except ObjectDoesNotExist:
         return None
 
 
-def get_user_boards(user):
+def get_user_boards(user: UserProfile):
     return [get_board_short_dict(b) for b in Board.objects.filter(user=user)]
 
 
@@ -64,7 +57,7 @@ def get_user_permission(b: Board, user: UserProfile):
     return None
 
 
-def get_shared_boards(user):
+def get_shared_boards(user: UserProfile):
     boards = []
     for b in Board.objects.filter():
         if is_board_member(b, user):

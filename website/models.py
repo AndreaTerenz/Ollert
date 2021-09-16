@@ -168,13 +168,13 @@ class NotificationType(Enum):
 
 class Notification(models.Model):
     to_user = models.ForeignKey(
-        User,
+        UserProfile,
         related_name='notification_to',
         on_delete=models.CASCADE,
         null=True
     )
     from_user = models.ForeignKey(
-        User,
+        UserProfile,
         related_name='notification_from',
         on_delete=models.CASCADE,
         null=True

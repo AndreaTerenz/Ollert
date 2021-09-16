@@ -16,7 +16,7 @@ function insert_html(parent, html) {
     dest_el.innerHTML = html
 }
 
-function make_modal_request(input_data, url, modalID, after) {
+function make_modal_request(input_data, url, modalID, after, on_error = (err)=>{console.log(err)}) {
     fetch(url, {
         method: "POST",
         credentials: 'same-origin',
@@ -26,13 +26,16 @@ function make_modal_request(input_data, url, modalID, after) {
         },
         body: JSON.stringify(input_data)
     }).then((r) => {
-        if (r.status === 200) {
-            return r.text()
+        return {
+            "text": r.text(),
+            "status": r.status
         }
-        return null
     }).then((data) => {
-        if (data) {
+        if (data["text"]) {
             after(data)
+        }
+        else {
+            on_error(data["status"])
         }
 
         if (modalID)
