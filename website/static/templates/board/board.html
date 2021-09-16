@@ -63,6 +63,7 @@
 {% block extra-scripts %}
     <script>
         const currentBoard = "{{ board_name }}"
+        const share_link_url = "{% url 'join-board' name=board_name owner=user.username %}"
         const main_row_id = "main-row"
         {% if can_edit %}
             const del_board_things_url = "{% url 'delete-board-content' %}"

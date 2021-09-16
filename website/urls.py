@@ -16,6 +16,8 @@ urlpatterns = [
     path('notification/<int:notification_pk>/card/<int:card_id>', views.CardNotification.as_view(),
          name='card-notification'),
 
+    path('join-board/<str:name>/<str:owner>', views.JoinBoard.as_view(), name='join-board'),
+
     # POST
     path('create_board', views.create_board, name='make-board'),
     path('delete_board', views.delete_board, name='delete-board'),

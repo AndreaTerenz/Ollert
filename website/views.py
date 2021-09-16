@@ -1,5 +1,4 @@
 import datetime
-import json
 import os
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
@@ -195,13 +194,12 @@ def edit_board(request):
     data = json.loads(request.body)
 
     board_name = data["board_name"]
-    ic(data)
+
     if board_obj := get_user_board(user, board_name):
         for edit in data["edits"]:
             field = edit["target_field"]
             new_value = edit["new_value"]
 
-            # DIO COME VOGLIO UNO SWITCH IN PYTHON
             if field == "name":
                 if not (get_user_board(user, new_value)):
                     board_obj.name = new_value
@@ -446,6 +444,16 @@ def rename_category(request):
     return HttpResponse("Boh non saprei come una cosa così potrebbe fallire tbh", status=200)
 
 
+class JoinBoard(View):
+    def get(self, request, name, owner, *args, **kwargs):
+        owner_obj = User.objects.get(username=owner)
+        board_obj = get_user_board(owner_obj.userprofile, name)
+
+        manage_user(board_obj, owner_obj, request.user, "VIEW", NotificationType.ADDED, send_notif=False)
+
+        return redirect("get-board", name=name, owner=owner)
+
+
 class ManageBoardUser(View):
     def post(self, request, *args, **kwargs):
         user, data = get_user_data(request)
@@ -469,23 +477,28 @@ class ManageBoardUser(View):
         receiver_obj = User.objects.get(username=receiver)
         board_obj = Board.objects.get(user=user, name=board_name)
 
-        if action == NotificationType.ADDED:
-            board_obj.members.update({
-                receiver: data["permissions"]
-            })
-        elif action == NotificationType.REMOVED:
-            board_obj.members.pop(receiver)
+        manage_user(board_obj, request.user, receiver_obj, data["permissions"], action)
 
-        board_obj.save()
+        return HttpResponse("ok")
 
+
+def manage_user(board_obj: Board, owner: User, receiver: User, permission, action, send_notif=True):
+    if action == NotificationType.ADDED:
+        board_obj.members.update({
+            receiver.username: permission
+        })
+    elif action == NotificationType.REMOVED:
+        board_obj.members.pop(receiver.username)
+
+    board_obj.save()
+
+    if send_notif:
         Notification.objects.create(
-            from_user=request.user,
-            to_user=receiver_obj,
+            from_user=owner,
+            to_user=receiver,
             board=board_obj,
             notif_type=NotificationType.ADDED.value
         )
-
-        return HttpResponse("ok")
 
 
 class ManageCardAssignee(View):

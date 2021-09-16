@@ -1,3 +1,5 @@
+
+
 function ok_shareModal() {
     let tab_membri = document.querySelector("a[href='#membri']")
     let tab_persone = document.querySelector("a[href='#persone']")
@@ -32,12 +34,10 @@ function ok_shareModal() {
     {
 
     }
-
 }
 
 function getURL() {
-    let text = window.location.href;
-    navigator.clipboard.writeText(text).then(function () {
+    navigator.clipboard.writeText(share_link_url).then(function () {
         alert('Il link è stato copiato con successo!');
     }, function (err) {
         alert('Errore: impossibile copiare link');
