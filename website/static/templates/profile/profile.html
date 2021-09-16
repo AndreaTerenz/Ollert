@@ -44,10 +44,10 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
                     <li>
-                        <a class="dropdown-item"><input type="checkbox" value="" id="flexCheckDefault">Preferiti</a>
+                        <a class="dropdown-item"><input type="checkbox" value="" id="preferiti" onclick="filter_boards()">Preferiti</a>
                     </li>
                     <li>
-                        <a class="dropdown-item"><input type="checkbox" value="" id="flexCheckDefault">Non classificate</a>
+                        <a class="dropdown-item"><input type="checkbox" value="" id="non_classificate">Non classificate</a>
                     </li>
                     {% if categories %}
                         <li>
@@ -56,8 +56,8 @@
                         {% for category in categories %}
                             {% with name=category %}
                                 <li>
-                                    <a class="dropdown-item"> <input type="checkbox" value=""
-                                                                     id="flexCheckDefault">{{ name }}</a>
+                                    <a class="dropdown-item"> <input type="checkbox" value="" class="category-check"
+                                                                     id="{{ name }}">{{ name }}</a>
                                 </li>
                             {% endwith %}
                         {% endfor %}
@@ -96,6 +96,8 @@
         const shared_boards = "shared-boards-list"
     </script>
     <script src="{% static 'js/modals/switch_category.js' %}"></script>
+    <script src="{% static 'js/modals/filter_boards.js' %}"></script>
+
 
 {% endblock %}
 
