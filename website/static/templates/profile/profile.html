@@ -44,10 +44,16 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
                     <li>
-                        <a class="dropdown-item"><input type="checkbox" value="" id="preferiti" onclick="filter_boards()">Preferiti</a>
+                        <a class="dropdown-item">
+                            <input type="checkbox" value="__preferiti__" id="preferiti" checked onclick="filter_boards('preferiti')">
+                            Preferiti
+                        </a>
                     </li>
                     <li>
-                        <a class="dropdown-item"><input type="checkbox" value="" id="non_classificate">Non classificate</a>
+                        <a class="dropdown-item">
+                            <input type="checkbox" value="__nonclass__" id="non_classificate" checked onclick="filter_boards('non_classificate')">
+                            Non classificate
+                        </a>
                     </li>
                     {% if categories %}
                         <li>
@@ -56,8 +62,11 @@
                         {% for category in categories %}
                             {% with name=category %}
                                 <li>
-                                    <a class="dropdown-item"> <input type="checkbox" value="" class="category-check"
-                                                                     id="{{ name }}">{{ name }}</a>
+                                    <a class="dropdown-item">
+                                        <input type="checkbox" value="{{ name }}" class="category-check" id="{{ name }}"
+                                                checked onclick="filter_boards('{{ name }}')">
+                                        {{ name }}
+                                    </a>
                                 </li>
                             {% endwith %}
                         {% endfor %}

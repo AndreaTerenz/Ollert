@@ -1,32 +1,26 @@
-function filter_boards() {
-    let preferiti = document.getElementById("preferiti").checked;
-    let non_classificate = document.getElementById('non_classificate').checked;
+var not_checked = []
 
-    let category_checks = document.querySelectorAll()
+function filter_boards(check_id) {
+    let to_toggle = []
 
-    let board_list = document.getElementById(boards_list_id);
-
-    if (preferiti) {
-        for (const boardListKey in board_list) {
-            if (board_name.favorite)
-                board_name.style.display = "block";
-            else board_name.style.display = "none";
+    let check = document.getElementById(check_id)
+    console.log(check.value, check.id, check.checked)
+    document.querySelectorAll("li." + check.value).forEach(el => {
+        if (!to_toggle.find(e => e === el.id)) {
+            to_toggle.push(el.id)
         }
-    }
+    })
+
+    to_toggle.forEach(el => {
+        toggleElement(el)
+    })
 }
 
-/*
+function toggleElement(id_element, keep_hidden = false) {
+    let elements = document.getElementById(id_element);
 
-
-    board_list.style.display = "none";
-    shared_board.style.display = "none";
-    category_list.style.display = "block";
-
-
-else
-{
-    category_list.style.display = "none";
-    board_list.style.display = "block";
-    shared_board.style.display = "block";
+    if (elements.style.getPropertyValue("display") === 'none')
+        elements.style.setProperty("display", "flex", "important")
+    else
+        elements.style.setProperty("display", "none", "important")
 }
-}*/

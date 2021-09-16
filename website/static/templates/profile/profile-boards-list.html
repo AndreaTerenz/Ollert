@@ -5,11 +5,17 @@
 {% if boards|length > 0 %}
     {% for board in boards %}
         {% with name=board.name favorite=board.favorite category=board.category %}
-            <li class="list-group-item fs-5 d-flex justify-content-between align-items-start" id=" {{ name }}">
+            <li class="list-group-item fs-5 d-flex justify-content-between align-items-start
+                    {% if not category and not favorite %}
+                        __nonclass__
+                    {% else %}
+                        {% if category %}{{ category }}{% endif %}
+                        {% if favorite %}__preferiti__{% endif %}
+                    {% endif %}" id="{{ name }}" style="display: flex;">
                 {% with json_id=name|add:"_json" %}
                     {{ board|json_script:json_id }}
                 {% endwith %}
-                <a class="me-auto"  href="{% url 'get-board' name=name %}">{{ name }}</a>
+                <a class="me-auto" href="{% url 'get-board' name=name %}">{{ name }}</a>
                 {% if favorite %}
                     <i class="fa fa-star my-auto"></i>
                 {% endif %}
