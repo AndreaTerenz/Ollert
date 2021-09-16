@@ -61,9 +61,10 @@
 
         </div>
 
-        <div class="mt-2 mb-3" id="member-picker">
+        <div class="mt-2 mb-3" id="member" style="display:none">
             <label for="selectMember" class="form-label">Membri</label>
             <select class="form-select" id="selectMember">
+                <option value=""></option>
                 {% for member in members %}
                     <option value="member">{{ member }} </option>
                 {% endfor %}
@@ -99,8 +100,8 @@
         </div>
 
         <div class="row">
-            <button type="button" class="btn btn-outline-info form-control">
-                {#                        onclick="toggleElement('labels-picker')">#}
+            <button type="button" class="btn btn-outline-info form-control"
+                                   onclick="toggleElement('member')">
                 Membri
             </button>
         </div>

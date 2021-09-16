@@ -310,7 +310,7 @@ def delete_board_content(request):
         return render(request, "board/board_lists.html",
                       context=context)
     else:
-        return HttpResponse(f"Board {data['target_id']['target_id_board']} not found", status=406)
+        return HttpResponse(f"Board not found", status=406)
 
 
 @login_required
