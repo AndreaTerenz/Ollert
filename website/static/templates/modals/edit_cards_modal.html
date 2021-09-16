@@ -29,7 +29,10 @@
                 <label for="" class="form-label">Scegli la lista di destinazione</label>
                 <select class="form-select" id="select_list">
                     {% for list in board_lists %}
-                            <option value="{{ list.list_id }}">{{ list.list_title }}</option>
+                        <script>
+                        console.log("{{ list }}")
+                        </script>
+                            <option value="{{ list.id }}">{{ list.title }}</option>
                     {% endfor %}
                 </select>
             </div>
