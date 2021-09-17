@@ -30,6 +30,7 @@ function ok_newCard() {
 
         let data = {
             "target_type": "card",
+            "owner": boardOwner,
             "target_id": {
                 "target_id_board": currentBoard,
                 "target_id_list": target_list.replace("list_", "")

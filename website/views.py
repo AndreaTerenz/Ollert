@@ -123,7 +123,7 @@ def board(request, name, owner=None):
 
     if owner_obj:
         # owner != None --> la board appartiene ad un altro utente
-        board_obj = get_user_board(owner_obj, name)
+        board_obj = get_board(owner_obj, name)
         perm = get_user_permission(board_obj, user)
 
         if board_obj and not perm:
@@ -133,10 +133,10 @@ def board(request, name, owner=None):
         can_edit = (perm == "EDIT")
     else:
         # owner == None --> la board appartiene all'utente corrente
-        board_obj = get_user_board(user, name)
+        board_obj = get_board(user, name)
 
     if board_obj:
-        data = get_board_dictionary(board_obj, other_user=owner_obj, can_edit=can_edit)
+        data = get_board_dictionary(board_obj, is_owner=not owner_obj, can_edit=can_edit)
 
         # Usa i dati ottenuti per generare l'html
         return render(request, 'board/board.html', status=200, context=data)
@@ -151,7 +151,7 @@ def board(request, name, owner=None):
 def create_board(request):
     user, data = get_user_data(request)
 
-    if not (get_user_board(user, data["name"])):
+    if not (get_board(user, data["name"])):
         # Se non riesce a trovare una board T per questo utente, vuol dire che può essere creata
         category = None
 
@@ -177,7 +177,7 @@ def delete_board(request):
     data = json.loads(request.body)
 
     # Cerca la board per l'utente
-    if board_obj := get_user_board(user, data["name"]):
+    if board_obj := get_board(user, data["name"]):
         # Se esiste, la si cancella
         board_obj.delete()
         return render(request, "profile/profile-boards-list.html", context={"boards": get_user_boards(user)})
@@ -195,13 +195,13 @@ def edit_board(request):
 
     board_name = data["board_name"]
 
-    if board_obj := get_user_board(user, board_name):
+    if board_obj := get_board(user, board_name):
         for edit in data["edits"]:
             field = edit["target_field"]
             new_value = edit["new_value"]
 
             if field == "name":
-                if not (get_user_board(user, new_value)):
+                if not (get_board(user, new_value)):
                     board_obj.name = new_value
                 else:
                     return HttpResponse(f"Board {new_value} already exists for this user", status=406)
@@ -224,11 +224,13 @@ def edit_board(request):
 @login_required
 @require_http_methods(["POST"])
 def create_board_content(request):
-    user = get_authenticated_user(request)
-    data = json.loads(request.body)
+    user, data = get_user_data(request)
 
     trgt_type = data["target_type"]
-    if trgt_board := get_user_board(user, data["target_id"]["target_id_board"]):
+    owner = get_user_from_username(data.get("owner", None))
+
+    if trgt_board := get_board(user, data["target_id"]["target_id_board"], owner=owner):
+        actual_user = user if not owner else owner
         trgt_content: dict = data["new_data"]
 
         ic(trgt_content)
@@ -238,7 +240,7 @@ def create_board_content(request):
             title = trgt_content["list_name"]
 
             new_list = List.objects.create(
-                user=user,
+                user=actual_user,
                 board=trgt_board,
                 position=pos,
                 title=title
@@ -253,7 +255,7 @@ def create_board_content(request):
             pos = trgt_list.cards_count
 
             new_card = Card.objects.create(
-                user=user,
+                user=actual_user,
                 board=trgt_board,
                 list=trgt_list,
                 position=pos,
@@ -269,7 +271,7 @@ def create_board_content(request):
 
             for member in new_card.members:
                 Notification.objects.create(
-                    from_user=user,
+                    from_user=actual_user,
                     to_user=get_user_from_username(member),
                     card=new_card,
                     notif_type=NotificationType.ADDED.value
@@ -291,7 +293,7 @@ def delete_board_content(request):
     user = get_authenticated_user(request)
     data = json.loads(request.body)
 
-    if parent_board := get_user_board(user, data["board"]):
+    if parent_board := get_board(user, data["board"]):
         for target in data["targets"]:
             trgt_type = target["target_type"]
             trgt_id = target["target_id"]
@@ -327,7 +329,7 @@ def edit_board_content(request):
 
     trgt_type = data["target_type"]
 
-    if trgt_board := get_user_board(user, data["target_id"]["target_id_board"]):
+    if trgt_board := get_board(user, data["target_id"]["target_id_board"]):
         trgt_list = List.objects.get(board=trgt_board, position=data["target_id"]["target_id_list"])
         new_value = data["new_value"]
 
@@ -380,7 +382,7 @@ def move_cards(request):
     }
     """
 
-    board_obj = get_user_board(user, data["board"])
+    board_obj = get_board(user, data["board"])
     dest_list = get_list_in_board(data["dest_list"], board_obj)
     targets = data["targets"]
 
@@ -448,7 +450,7 @@ class JoinBoard(View):
     def get(self, request, name, owner, *args, **kwargs):
         user = get_authenticated_user(request)
         owner_obj = get_user_from_username(owner)
-        board_obj = get_user_board(owner_obj, name)
+        board_obj = get_board(owner_obj, name)
 
         manage_user(board_obj, owner_obj, user, "VIEW", NotificationType.ADDED, send_notif=False)
 
@@ -476,7 +478,7 @@ class ManageBoardUser(View):
             receiver_obj = get_user_from_username(receiver)
             board_name = data["board_name"]
             try:
-                board_obj = get_user_board(user, board_name)
+                board_obj = get_board(user, board_name)
                 action = NotificationType[data["action"]]
                 manage_user(board_obj, user, receiver_obj, perm, action)
                 return HttpResponse("ok")

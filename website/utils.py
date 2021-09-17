@@ -35,11 +35,15 @@ def get_username(user: UserProfile):
         return ""
 
 
-def get_user_board(user: UserProfile, name):
-    try:
+def get_board(user: UserProfile, name, owner: UserProfile = None):
+    if not owner:
         return Board.objects.get(user=user, name=name)
-    except ObjectDoesNotExist:
-        return None
+    else:
+        output = Board.objects.get(user=owner, name=name)
+        if is_board_member(output, user):
+            return output
+
+    return None
 
 
 def get_user_boards(user: UserProfile):
@@ -82,21 +86,22 @@ def get_board_short_dict(board_obj: Board, include_owner=False):
     return data
 
 
-def get_board_dictionary(board_obj: Board, other_user=None, can_edit=True):
+def get_board_dictionary(board_obj: Board, is_owner=True, can_edit=True):
     output: dict = {
         "board_name": board_obj.name,
+        "board_owner": get_username(board_obj.user),
         "board_background": board_obj.background,
         "board_description": board_obj.description,
-        "is_owner": not other_user,
+        "is_owner": is_owner,
         "can_edit": can_edit
     }
 
-    lists = [get_list_dict(l_obj) for l_obj in get_lists_in_board(board_obj, user=other_user)]
+    lists = [get_list_dict(l_obj, can_edit=can_edit) for l_obj in get_lists_in_board(board_obj)]
     output.update({
         "board_lists": lists
     })
 
-    if not other_user:
+    if not is_owner:
         output.update({
             "board_members": board_obj.members,
         })
@@ -128,10 +133,8 @@ def get_list_in_board(pos, parent_board: Board):
         return None
 
 
-def get_lists_in_board(board: Board, user=None):
-    if not user:
-        user = board.user
-    return List.objects.filter(user=user, board=board)
+def get_lists_in_board(board: Board):
+    return List.objects.filter(user=board.user, board=board)
 
 
 def get_list_dict(l_obj: List, can_edit=True):

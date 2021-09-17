@@ -45,6 +45,7 @@ Crea Lista/Card. Si hanno due formati del JSON, uno per quando l'azione è esegu
 ```
 {
     target_type: list
+    owner: <username utente modificante>
     target_id:
     {
         target_id_board: <nome della board>
@@ -58,6 +59,7 @@ Crea Lista/Card. Si hanno due formati del JSON, uno per quando l'azione è esegu
 ```
 {
     target_type: card
+    owner: <username utente modificante>
     target_id:
     {
         target_id_board: <nome della board>

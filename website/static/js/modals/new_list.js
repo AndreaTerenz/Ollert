@@ -6,6 +6,7 @@ function ok_newList() {
     if (title) {
         let data = {
             "target_type": "list",
+            "owner": boardOwner,
             "target_id": {
                 "target_id_board": currentBoard
             },
