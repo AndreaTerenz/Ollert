@@ -47,6 +47,7 @@ function batchDeleteCards() {
 
     let data = {
         "board": currentBoard,
+        "owner": boardOwner,
         "targets": targets
     }
 

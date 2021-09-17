@@ -20,6 +20,7 @@ function ok_deleteList() {
 
     let data = {
         "board": currentBoard,
+        "owner": boardOwner,
         "targets": [{
             "target_type": "list",
             "target_id": {

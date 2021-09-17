@@ -36,7 +36,7 @@ def get_username(user: UserProfile):
 
 
 def get_board(user: UserProfile, name, owner: UserProfile = None):
-    if not owner:
+    if not owner or owner == user:
         return Board.objects.get(user=user, name=name)
     else:
         output = Board.objects.get(user=owner, name=name)

@@ -50,7 +50,7 @@
     {% include "modals/view_card_modal.html" %}
     {% if can_edit %}
         {% include "modals/board modals/choose_color_modal.html" %}
-        {% include "modals/edit_cards_modal.html" with board_lists=board_lists%}
+        {% include "modals/edit_cards_modal.html" with board_lists=board_lists %}
         {% include "modals/new_card_modal.html" with members=board_members %}
         {% include "modals/new_list_modal.html" with board=board_name %}
         {% include "modals/board modals/delete_list_modal.html" %}

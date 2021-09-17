@@ -290,16 +290,16 @@ def create_board_content(request):
 @login_required
 @require_http_methods(["POST"])
 def delete_board_content(request):
-    user = get_authenticated_user(request)
-    data = json.loads(request.body)
+    user, data = get_user_data(request)
 
-    if parent_board := get_board(user, data["board"]):
+    owner = get_user_from_username(data.get("owner", None))
+
+    if parent_board := get_board(user, data["board"], owner=owner):
         for target in data["targets"]:
             trgt_type = target["target_type"]
             trgt_id = target["target_id"]
 
-            trgt_list = List.objects.get(position=trgt_id["target_id_list"], board=parent_board,
-                                         user=parent_board.user)
+            trgt_list = get_list_in_board(trgt_id["target_id_list"], parent_board)
 
             if trgt_type == "list":
                 trgt_list.delete()
@@ -307,7 +307,7 @@ def delete_board_content(request):
                 trgt_card = Card.objects.get(position=trgt_id["target_id_card"],
                                              list=trgt_list,
                                              board=parent_board,
-                                             user=user)
+                                             user=parent_board.user)
 
                 trgt_card.delete()
 
