@@ -65,11 +65,16 @@ def get_shared_boards(user: UserProfile):
     boards = []
     for b in Board.objects.filter():
         if is_board_member(b, user):
-            boards.append(get_board_short_dict(b, include_owner=True))
+            data = get_board_short_dict(b)
+            data.update({
+                "owner": get_username(b.user),
+                "permission": get_user_permission(b, user)
+            })
+            boards.append(data)
     return boards
 
 
-def get_board_short_dict(board_obj: Board, include_owner=False):
+def get_board_short_dict(board_obj: Board):
     data = {
         "name": board_obj.name,
         "favorite": board_obj.favorite,
@@ -77,11 +82,6 @@ def get_board_short_dict(board_obj: Board, include_owner=False):
     }
     if cat := board_obj.category:
         data.update({"category": cat.name})
-
-    if include_owner:
-        data.update({
-            "owner": get_username(board_obj.user)
-        })
 
     return data
 

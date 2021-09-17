@@ -4,14 +4,17 @@
 
 {% if boards|length > 0 %}
     {% for board in boards %}
-        {% with name=board.name favorite=board.favorite category=board.category %}
-            <li class="list-group-item fs-5 d-flex justify-content-between align-items-start">
-                {% with json_id=name|add:"_json" %}
-                    {{ board|json_script:json_id }}
-                {% endwith %}
-                <a class="me-auto" href="{% url 'get-other-board' name=name owner=board.owner %}">{{ name }}</a>
-            </li>
-        {% endwith %}
+        <li class="list-group-item fs-5 d-flex justify-content-between align-items-start">
+            {% with json_id=board.name|add:"_json" %}
+                {{ board|json_script:json_id }}
+            {% endwith %}
+            <a class="me-auto" href="{% url 'get-other-board' name=board.name owner=board.owner %}">{{ board.name }}</a>
+            {% if board.permission == "EDIT" %}
+                <i class="bi bi-pencil-fill my-auto"></i>
+            {% else %}
+                <i class="bi bi-eye-fill my-auto"></i>
+            {% endif %}
+        </li>
     {% endfor %}
 
 {% else %}
