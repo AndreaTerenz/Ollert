@@ -40,6 +40,7 @@ class Board(Model):
     )
     category = models.ForeignKey(
         Category,
+        default=None,
         on_delete=models.SET_NULL,
         blank=True,
         null=True
