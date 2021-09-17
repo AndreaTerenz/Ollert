@@ -25,7 +25,7 @@ urlpatterns = [
 
     path('create_board_content', views.create_board_content, name='create-board-content'),
     path('delete_board_content', views.delete_board_content, name='delete-board-content'),
-    path('edit_board_content', views.edit_board_content, name='edit-board-content'),
+    # path('edit_board_content', views.edit_board_content, name='edit-board-content'),
     path('move_cards', views.move_cards, name='move-cards'),
 
     path('create_category', views.create_category, name='create-category'),

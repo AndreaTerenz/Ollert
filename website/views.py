@@ -321,51 +321,53 @@ def delete_board_content(request):
         return HttpResponse(f"Board not found", status=406)
 
 
-@login_required
-@require_http_methods(["POST"])
-def edit_board_content(request):
-    user = get_authenticated_user(request)
-    data = json.loads(request.body)
-
-    trgt_type = data["target_type"]
-
-    if trgt_board := get_board(user, data["target_id"]["target_id_board"]):
-        trgt_list = List.objects.get(board=trgt_board, position=data["target_id"]["target_id_list"])
-        new_value = data["new_value"]
-
-        if trgt_type == "list":
-            trgt_list.title = new_value
-            trgt_list.save()
-        elif trgt_type == "card":
-            trgt_field = data["target_field"]
-            trgt_card = Card.objects.get(list=trgt_list, position=data["target_id"]["target_id_card"])
-
-            if trgt_field == "name":
-                trgt_card.title = new_value
-            elif trgt_field == "description":
-                trgt_card.description = new_value
-            elif trgt_field == "date":
-                trgt_card.date = datetime.fromtimestamp(new_value)
-            elif trgt_field == "img":
-                pass  # TODO
-            elif trgt_field == "checks":
-                trgt_card.checklist = json.loads(new_value)
-            elif trgt_field == "members":
-                trgt_card.members = json.loads(new_value)
-            elif trgt_field == "tags":
-                trgt_card.tags = json.loads(new_value)
-
-            trgt_card.save()
-
-        return HttpResponse("Content edited", status=200)
-    else:
-        return HttpResponse(f"Board {data['target_id']['target_id_board']} not found", status=406)
+# @login_required
+# @require_http_methods(["POST"])
+# def edit_board_content(request):
+#     user = get_authenticated_user(request)
+#     data = json.loads(request.body)
+#
+#     trgt_type = data["target_type"]
+#
+#     if trgt_board := get_board(user, data["target_id"]["target_id_board"]):
+#         trgt_list = List.objects.get(board=trgt_board, position=data["target_id"]["target_id_list"])
+#         new_value = data["new_value"]
+#
+#         if trgt_type == "list":
+#             trgt_list.title = new_value
+#             trgt_list.save()
+#         elif trgt_type == "card":
+#             trgt_field = data["target_field"]
+#             trgt_card = Card.objects.get(list=trgt_list, position=data["target_id"]["target_id_card"])
+#
+#             if trgt_field == "name":
+#                 trgt_card.title = new_value
+#             elif trgt_field == "description":
+#                 trgt_card.description = new_value
+#             elif trgt_field == "date":
+#                 trgt_card.date = datetime.fromtimestamp(new_value)
+#             elif trgt_field == "img":
+#                 pass  # TODO
+#             elif trgt_field == "checks":
+#                 trgt_card.checklist = json.loads(new_value)
+#             elif trgt_field == "members":
+#                 trgt_card.members = json.loads(new_value)
+#             elif trgt_field == "tags":
+#                 trgt_card.tags = json.loads(new_value)
+#
+#             trgt_card.save()
+#
+#         return HttpResponse("Content edited", status=200)
+#     else:
+#         return HttpResponse(f"Board {data['target_id']['target_id_board']} not found", status=406)
 
 
 @login_required
 @require_http_methods(["POST"])
 def move_cards(request):
     user, data = get_user_data(request)
+
+    owner = get_user_from_username(data.get("owner", None))
 
     """
     Formato JSON
@@ -382,29 +384,31 @@ def move_cards(request):
     }
     """
 
-    board_obj = get_board(user, data["board"])
-    dest_list = get_list_in_board(data["dest_list"], board_obj)
-    targets = data["targets"]
+    if board_obj := get_board(user, data["board"], owner=owner):
+        dest_list = get_list_in_board(data["dest_list"], board_obj)
+        targets = data["targets"]
 
-    pos = dest_list.cards_count
+        pos = dest_list.cards_count
 
-    for target in targets:
-        origin_list = get_list_in_board(target["origin_list"], board_obj)
-        card_id = target["card_id"]
+        for target in targets:
+            origin_list = get_list_in_board(target["origin_list"], board_obj)
+            card_id = target["card_id"]
 
-        card_obj = get_card_in_list(card_id, origin_list)
+            card_obj = get_card_in_list(card_id, origin_list)
 
-        card_obj.list = dest_list
-        card_obj.position = pos
-        card_obj.save()
+            card_obj.list = dest_list
+            card_obj.position = pos
+            card_obj.save()
 
-        pos += 1
+            pos += 1
 
-    dest_list.cards_count += len(targets)
-    dest_list.save()
+        dest_list.cards_count += len(targets)
+        dest_list.save()
 
-    return render(request, "board/board_lists.html",
-                  context={"lists": [get_list_dict(l) for l in get_lists_in_board(board_obj)]})
+        return render(request, "board/board_lists.html",
+                      context={"lists": [get_list_dict(l) for l in get_lists_in_board(board_obj)]})
+    else:
+        return HttpResponse(f"Board not found", status=406)
 
 
 @login_required

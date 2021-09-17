@@ -62,6 +62,7 @@ function batchMoveCards() {
     let targets = []
     let data = {
         "board": currentBoard,
+        "owner": boardOwner,
         "dest_list": destination_list.replace("list_", ""),
         "targets": []
     }

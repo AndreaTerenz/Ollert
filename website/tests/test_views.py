@@ -40,7 +40,7 @@ class TestViews(TestCase):
             "favorite": True
         }), content_type="application/json")
 
-        b:Board = Board.objects.get(name="thnithroneppje", description="Board di prova")
+        b: Board = Board.objects.get(name="thnithroneppje", description="Board di prova")
         self.assertEqual(b.name, "thnithroneppje")
         self.assertEqual(get_username(b.user), "test1")
         self.assertEqual(response.status_code, 200)
