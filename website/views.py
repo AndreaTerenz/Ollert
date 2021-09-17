@@ -164,7 +164,7 @@ def create_board(request):
 
         messages.success(request, f"Board {data['name']} creata con successo!")
         return render(request, "profile/profile-boards-list.html", context={"boards": get_user_boards(user)})
-
+    ic("AOOOO")
     # Se esiste, segnala un errore
     messages.warning(request, f"La board {data['name']} esiste già per questo utente")
     return redirect("profile")

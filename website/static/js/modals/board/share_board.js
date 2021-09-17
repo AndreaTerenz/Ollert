@@ -26,14 +26,15 @@ function ok_shareModal() {
 
         console.log(data)
 
-        make_modal_request(data, share_board_url, "shareModal",
-            (data) => {
+        make_modal_request(data, share_board_url, "shareModal", (data) => {
+            if (data != null)
+            {
                 console.log(data);
-            },
-            (err) => {
-                console.log("AAAAAAAAAAAAAOOOOOOOOOOOOOOOOO")
             }
-        )
+            else {
+                console.log("error user not found")
+            }
+        })
     }
     else if (tab_link.classList.contains('active'))
     {

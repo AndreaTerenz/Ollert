@@ -26,17 +26,9 @@ function make_modal_request(input_data, url, modalID, after, on_error = (err)=>{
         },
         body: JSON.stringify(input_data)
     }).then((r) => {
-        return {
-            "text": r.text(),
-            "status": r.status
-        }
+        return r.text()
     }).then((data) => {
-        if (data["text"]) {
-            after(data)
-        }
-        else {
-            on_error(data["status"])
-        }
+        after(data)
 
         if (modalID)
             closeModal(modalID)
