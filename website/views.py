@@ -14,10 +14,6 @@ from django.views.decorators.http import require_http_methods
 from .models import UserProfile, Category, Card, Notification, NotificationType
 from .forms import NewUserForm
 from .utils import *
-from icecream import ic
-
-
-# ic.disable()
 
 
 @require_http_methods(["GET", "HEAD", "POST"])
@@ -232,8 +228,6 @@ def create_board_content(request):
     if trgt_board := get_board(user, data["target_id"]["target_id_board"], owner=owner):
         actual_user = user if not owner else owner
         trgt_content: dict = data["new_data"]
-
-        ic(trgt_content)
 
         if trgt_type == "list":
             pos = trgt_board.lists_count
@@ -474,7 +468,7 @@ class ManageBoardUser(View):
             action: <ADDED|REMOVED>
         }
         """
-        ic(data)
+
         receiver = data["receiver"]
         perm = data.get("permissions", None)
 

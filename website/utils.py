@@ -1,11 +1,7 @@
 import json
-from typing import Union
-
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-from icecream import ic
-
 from website.models import Board, List, Card, Category, UserProfile
 
 
@@ -162,7 +158,6 @@ def get_card_dict(c_obj: Card, l_obj: List):
     ids = get_card_ids(l_obj, c_obj.position)
 
     date = c_obj.date
-    ic(date)
 
     return {
         "card_unique_id": ids[0],

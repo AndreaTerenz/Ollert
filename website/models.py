@@ -9,8 +9,6 @@ from django.db.models.signals import post_delete
 from django.dispatch import receiver
 from django.utils import timezone
 
-from icecream import ic
-
 
 class UserProfile(Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -144,22 +142,6 @@ class Card(Model):
 
     class Meta:
         unique_together = ("position", "list", "board", "user")
-
-
-@receiver(post_delete, sender=Card)
-def on_card_delete(sender, instance: Card, using, **kwargs):
-    p_list = instance.list
-    p_board = p_list.board
-    user = p_board.user
-    for c in Card.objects.filter(user=user, board=p_board, list=p_list,
-                                 position__gt=instance.position):
-        pass
-        # c.position -= 1
-        # c.save()
-    # p_list.cards_count -= 1
-    p_list.save()
-
-    # ic(p_list.title, p_list.cards_count)
 
 
 class NotificationType(Enum):
