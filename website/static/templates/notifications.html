@@ -1,3 +1,5 @@
+{% load custom_tags %}
+
 {% block content %}
     <div class="dropdown nav-item">
         <a class="btn btn-secondary dropdown-toggle navbar-btn" role="button" href="#" id="notifications-dropdown"
@@ -14,7 +16,7 @@
                     {% if notification.board %}
                         <li><a class="dropdown-item"
                                href="{% url 'board-notification' notification.pk notification.board.name %}">
-                            <b>@{{ notification.from_user }}</b> ti ha
+                            <b>@{{ notification.from_user|username }}</b> ti ha
                             {% if notification.notif_type == 0 %}
                                 aggiunto nella
                             {% elif notification.notif_type == 1 %}
@@ -25,7 +27,7 @@
                     {% elif notification.card %}
                         <li><a class="dropdown-item"
                                href="{% url 'card-notification' notification.pk notification.card.id %}">
-                            <b>@{{ notification.from_user }}</b> ti ha
+                            <b>@{{ notification.from_user|username }}</b> ti ha
                             {% if notification.notif_type == 0 %}
                                 assegnato alla
                             {% elif notification.notif_type == 1 %}
