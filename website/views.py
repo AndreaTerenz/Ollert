@@ -10,6 +10,7 @@ from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
 from django.views import View
 from django.views.decorators.http import require_http_methods
+from icecream import ic
 
 from .models import UserProfile, Category, Card, Notification, NotificationType
 from .forms import NewUserForm
@@ -169,8 +170,7 @@ def create_board(request):
 @login_required
 @require_http_methods(["POST"])
 def delete_board(request):
-    user = get_authenticated_user(request)
-    data = json.loads(request.body)
+    user, data = get_user_data(request)
 
     # Cerca la board per l'utente
     if board_obj := get_board(user, data["name"]):

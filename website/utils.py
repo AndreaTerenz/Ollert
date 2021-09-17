@@ -32,14 +32,16 @@ def get_username(user: UserProfile):
 
 
 def get_board(user: UserProfile, name, owner: UserProfile = None):
-    if not owner or owner == user:
-        return Board.objects.get(user=user, name=name)
-    else:
-        output = Board.objects.get(user=owner, name=name)
-        if is_board_member(output, user):
-            return output
-
-    return None
+    try:
+        if not owner or owner == user:
+            return Board.objects.get(user=user, name=name)
+        else:
+            output = Board.objects.get(user=owner, name=name)
+            if is_board_member(output, user):
+                return output
+            return None
+    except ObjectDoesNotExist:
+        return None
 
 
 def get_user_boards(user: UserProfile):

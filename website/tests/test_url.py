@@ -25,9 +25,4 @@ class TestUrls(SimpleTestCase):
         print(resolve(url))
         self.assertEqual(resolve(url).func, create_board)
 
-    # def test_get_board_url_is_resolved(self):
-    #     url = reverse('get-board', args=['Serena'])
-    #     print(resolve(url))
-    #     self.assertEqual(resolve(url).func, register_request)
-
 
