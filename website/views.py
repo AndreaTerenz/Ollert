@@ -454,7 +454,7 @@ class JoinBoard(View):
 
         manage_user(board_obj, owner_obj, user, "VIEW", NotificationType.ADDED, send_notif=False)
 
-        return redirect("get-board", name=name, owner=owner)
+        return redirect("get-other-board", name=name, owner=owner)
 
 
 class ManageBoardUser(View):
@@ -555,7 +555,7 @@ class BoardNotification(View):
         notification.save()
 
         if notification.notif_type == NotificationType.ADDED.value:
-            return redirect('get-board', name=board_name, owner=get_username(notification.from_user))
+            return redirect('get-other-board', name=board_name, owner=get_username(notification.from_user))
         else:
             return redirect('profile')
 
@@ -571,4 +571,4 @@ class CardNotification(View):
         parent_list = card.list
         parent_board = parent_list.board
 
-        return redirect('get-board', name=parent_board.name, owner=get_username(notification.from_user))
+        return redirect('get-other-board', name=parent_board.name, owner=get_username(notification.from_user))
