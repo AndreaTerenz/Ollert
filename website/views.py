@@ -1,8 +1,5 @@
-import datetime
 import os
-from datetime import datetime
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 from django.core.files.uploadedfile import UploadedFile
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -10,9 +7,8 @@ from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
 from django.views import View
 from django.views.decorators.http import require_http_methods
-from icecream import ic
 
-from .models import UserProfile, Category, Card, Notification, NotificationType
+from .models import Notification, NotificationType
 from .forms import NewUserForm
 from .utils import *
 
@@ -315,68 +311,12 @@ def delete_board_content(request):
         return HttpResponse(f"Board not found", status=406)
 
 
-# @login_required
-# @require_http_methods(["POST"])
-# def edit_board_content(request):
-#     user = get_authenticated_user(request)
-#     data = json.loads(request.body)
-#
-#     trgt_type = data["target_type"]
-#
-#     if trgt_board := get_board(user, data["target_id"]["target_id_board"]):
-#         trgt_list = List.objects.get(board=trgt_board, position=data["target_id"]["target_id_list"])
-#         new_value = data["new_value"]
-#
-#         if trgt_type == "list":
-#             trgt_list.title = new_value
-#             trgt_list.save()
-#         elif trgt_type == "card":
-#             trgt_field = data["target_field"]
-#             trgt_card = Card.objects.get(list=trgt_list, position=data["target_id"]["target_id_card"])
-#
-#             if trgt_field == "name":
-#                 trgt_card.title = new_value
-#             elif trgt_field == "description":
-#                 trgt_card.description = new_value
-#             elif trgt_field == "date":
-#                 trgt_card.date = datetime.fromtimestamp(new_value)
-#             elif trgt_field == "img":
-#                 pass  # TODO
-#             elif trgt_field == "checks":
-#                 trgt_card.checklist = json.loads(new_value)
-#             elif trgt_field == "members":
-#                 trgt_card.members = json.loads(new_value)
-#             elif trgt_field == "tags":
-#                 trgt_card.tags = json.loads(new_value)
-#
-#             trgt_card.save()
-#
-#         return HttpResponse("Content edited", status=200)
-#     else:
-#         return HttpResponse(f"Board {data['target_id']['target_id_board']} not found", status=406)
-
-
 @login_required
 @require_http_methods(["POST"])
 def move_cards(request):
     user, data = get_user_data(request)
 
     owner = get_user_from_username(data.get("owner", None))
-
-    """
-    Formato JSON
-    {
-        board: <nome board>
-        dest_list: <id lista di destinazione>
-        targets:
-        [...<lista card da spostare>
-            {
-                origin_list: <id lista di origine>
-                card_id: <id card da spostare>
-            }
-        ...]
-    }
-    """
 
     if board_obj := get_board(user, data["board"], owner=owner):
         dest_list = get_list_in_board(data["dest_list"], board_obj)
