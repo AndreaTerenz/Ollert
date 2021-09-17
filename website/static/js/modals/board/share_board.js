@@ -43,7 +43,8 @@ function ok_shareModal() {
 }
 
 function getURL() {
-    navigator.clipboard.writeText(share_link_url).then(function () {
+    let localhost = location.protocol + '//' + location.host;
+    navigator.clipboard.writeText(localhost + share_link_url).then(function () {
         alert('Il link è stato copiato con successo!');
     }, function (err) {
         alert('Errore: impossibile copiare link');
