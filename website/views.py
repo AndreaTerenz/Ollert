@@ -468,8 +468,9 @@ class ManageBoardUser(View):
             action: <ADDED|REMOVED>
         }
         """
-
+        ic(data)
         receiver = data["receiver"]
+        perm = data.get("permissions", None)
 
         try:
             receiver_obj = get_user_from_username(receiver)
@@ -477,7 +478,7 @@ class ManageBoardUser(View):
             try:
                 board_obj = get_user_board(user, board_name)
                 action = NotificationType[data["action"]]
-                manage_user(board_obj, user, receiver_obj, data["permissions"], action)
+                manage_user(board_obj, user, receiver_obj, perm, action)
                 return HttpResponse("ok")
             except ObjectDoesNotExist:
                 return HttpResponse("Board not found", status=406)
@@ -500,7 +501,7 @@ def manage_user(board_obj: Board, owner: UserProfile, receiver: UserProfile, per
             from_user=owner,
             to_user=receiver,
             board=board_obj,
-            notif_type=NotificationType.ADDED.value
+            notif_type=action.value
         )
 
 
@@ -551,7 +552,10 @@ class BoardNotification(View):
         notification.user_has_seen = True
         notification.save()
 
-        return redirect('get-board', name=board_name, owner=get_username(notification.from_user))
+        if notification.notif_type == NotificationType.ADDED.value:
+            return redirect('get-board', name=board_name, owner=get_username(notification.from_user))
+        else:
+            return redirect('profile')
 
 
 class CardNotification(View):

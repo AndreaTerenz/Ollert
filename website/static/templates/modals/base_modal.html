@@ -3,7 +3,8 @@
 <!-- Modal -->
 {% block modal_wrapper %}
     {% compress css %}
-        <link type="text/x-scss" rel="stylesheet" href="{% static 'styles/modal_style.scss' %}"/>
+        {% block modal_extra_style %}
+        {% endblock %}
     {% endcompress %}
 
     <div class="modal fade" id="{{ modalID }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

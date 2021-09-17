@@ -1,0 +1,10 @@
+.board-member-li {
+    &>button:focus {
+        box-shadow: none;
+    }
+
+    &.selected-member {
+        //background: red;
+        box-shadow: inset 0 0 0 3px #e02121;
+    }
+}

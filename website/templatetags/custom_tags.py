@@ -1,4 +1,6 @@
 from django import template
+from icecream import ic
+
 from website.models import Notification
 
 register = template.Library()
@@ -11,4 +13,5 @@ def show_notifications(context):
     notifications = Notification.objects.filter(to_user=request_user.userprofile)\
         .exclude(user_has_seen=True)\
         .order_by('-date')
+
     return {'notifications': notifications}
